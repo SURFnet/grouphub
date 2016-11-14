@@ -654,7 +654,8 @@ nav input[type="checkbox"]:checked + label span i {
     color: white; }
 /* line 42, _navigation.scss */
 nav .search_container {
-    margin-top: 7px; }
+    margin-top: 7px;
+}
 @media screen and (max-width: 800px) {
     /* line 42, _navigation.scss */
     nav .search_container {
@@ -1260,12 +1261,14 @@ footer a {
     float: right; }
 /* line 171, _edit_group.scss */
 .edit_group_container .search_container {
-    border-bottom: 3px solid #eaeaea; }
+    background-color: #ffffff;
+    border-bottom: 3px solid #eaeaea;
+    padding: 15px; }
 /* line 174, _edit_group.scss */
 .edit_group_container .search_container .input_container {
     position: relative;
     width: 100%;
-    padding: 15px;
+    padding-top: 15px;
     background-color: white;
     border-bottom: 1px solid #bbbbbb; }
 /* line 180, _edit_group.scss */
@@ -1273,7 +1276,7 @@ footer a {
     position: absolute;
     font-size: 20px;
     top: 19px;
-    left: 23px;
+    left: 8px;
     color: #52b2cd; }
 /* line 187, _edit_group.scss */
 .edit_group_container .search_container .input_container input {

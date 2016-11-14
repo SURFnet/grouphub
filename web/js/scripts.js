@@ -26,11 +26,15 @@ var grouphub = (function ($) {
 
     var searchUsers = function () {
         var $this = $(this),
-            $searchResults = $this.closest('.search_container').next('ul');
+            $searchContainer = $this.closest('.search_container'),
+            $searchResults = $searchContainer.next('ul');
 
         userSearchReq = $.get({
             url: $searchResults.data('url'),
-            data: {query: $this.val()},
+            data: {
+                query: $this.val(),
+                type: $searchContainer.find("input[name='search-type']:checked").val()
+            },
             beforeSend: function () {
                 userSearchReq && userSearchReq.abort();
             },
