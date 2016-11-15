@@ -1,7 +1,7 @@
 var grouphub = (function ($) {
     'use strict';
 
-    var groupSearchReq, userSearchReq,
+    var groupSearchReq, searchReq,
         userId = $('body').data('user-id');
 
     var searchGroups = function () {
@@ -24,19 +24,24 @@ var grouphub = (function ($) {
         });
     };
 
-    var searchUsers = function () {
+    var searchUsersOrGroups = function () {
         var $this = $(this),
             $searchContainer = $this.closest('.search_container'),
             $searchResults = $searchContainer.next('ul');
 
-        userSearchReq = $.get({
-            url: $searchResults.data('url'),
+        var url = $searchResults.data('url');
+        var type = $searchContainer.find("input[name='search-type']:checked").val();
+        if (type == 'group') {
+            url = url.replace('users', 'groups');
+        }
+
+        searchReq = $.get({
+            url: url,
             data: {
-                query: $this.val(),
-                type: $searchContainer.find("input[name='search-type']:checked").val()
+                query: $this.val()
             },
             beforeSend: function () {
-                userSearchReq && userSearchReq.abort();
+                searchReq && searchReq.abort();
             },
             success: function (data) {
                 $searchResults.html(data);
@@ -454,7 +459,7 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $editGroup.on('keyup', '.searchInput', $.debounce(250, searchUsers));
+        $editGroup.on('keyup', '.searchInput', $.debounce(250, searchUsersOrGroups));
 
         $editGroup.on('click', '.prospect_details', function () {
             $(this).next('div').find('div.details').toggleClass('hidden');

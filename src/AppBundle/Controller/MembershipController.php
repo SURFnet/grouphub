@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,6 +36,35 @@ class MembershipController extends Controller
         $this->denyAccessUnlessGranted('EDIT', $group);
 
         $this->get('app.membership_manager')->addMembership($groupId, $userId);
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/group/{groupId}/group/{groupToAddId}/add", name="membership_add_group")
+     * @Method("POST")
+     *
+     * @param int $groupId
+     * @param int $groupToAddId
+     *
+     * @return Response
+     */
+    public function addMembershipGroupAction($groupId, $groupToAddId)
+    {
+        $group = $this->get('app.group_manager')->getGroup($groupId);
+
+        if (empty($group)) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        /** @var Group $groupToAdd */
+        $groupToAdd = $this->get('app.group_manager')->getGroup($groupToAddId);
+
+        // TODO get users
+
+        $this->get('app.membership_manager')->addMembership($groupId, $groupToAddId);
 
         return new Response();
     }
