@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Manager\GroupManager;
+use AppBundle\Manager\MembershipManager;
 use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -51,7 +53,11 @@ class MembershipController extends Controller
      */
     public function addMembershipGroupAction($groupId, $groupToAddId)
     {
-        $group = $this->get('app.group_manager')->getGroup($groupId);
+        /** @var GroupManager $groupManager */
+        $groupManager = $this->get('app.group_manager');
+
+        /** @var Group $group */
+        $group = $groupManager->getGroup($groupId);
 
         if (empty($group)) {
             throw $this->createNotFoundException();
@@ -59,12 +65,22 @@ class MembershipController extends Controller
 
         $this->denyAccessUnlessGranted('EDIT', $group);
 
-        /** @var Group $groupToAdd */
-        $groupToAdd = $this->get('app.group_manager')->getGroup($groupToAddId);
+        /** @var MembershipManager $membershipManager */
+        $membershipManager = $this->get('app.membership_manager');
 
-        // TODO get users
+        $findMemberShips = function() use ($membershipManager, $groupToAddId) {
+            return $membershipManager
+                ->findGroupMemberships($groupToAddId, null, 0, null)
+                ->toArray();
+        };
 
-        $this->get('app.membership_manager')->addMembership($groupId, $groupToAddId);
+        $mapUsersToIds = function (Membership $membership) {
+            return $membership->getUser()->getId();
+        };
+
+        foreach (array_map($mapUsersToIds, $findMemberShips()) as $userId) {
+            $membershipManager->addMembership($groupId, $userId);
+        };
 
         return new Response();
     }
