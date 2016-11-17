@@ -68,7 +68,7 @@ class MembershipController extends Controller
         /** @var MembershipManager $membershipManager */
         $membershipManager = $this->get('app.membership_manager');
 
-        $findMemberShips = function() use ($membershipManager, $groupToAddId) {
+        $findMemberShips = function () use ($membershipManager, $groupToAddId) {
             return $membershipManager
                 ->findGroupMemberships($groupToAddId, null, 0, null)
                 ->toArray();
