@@ -1,5 +1,7 @@
 # config valid only for current version of Capistrano
 
+set :symfony_console_path, "bin/console"
+
 set :application, 'grouphub'
 set :repo_url, 'git@github.com:SURFnet/grouphub.git'
 
