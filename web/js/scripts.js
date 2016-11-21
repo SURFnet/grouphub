@@ -35,6 +35,8 @@ var grouphub = (function ($) {
             url = url.replace('users', 'groups');
         }
 
+        $searchResults.html('<li class="spinner"><i class="fa fa-spinner fa-spin"></li>');
+
         searchReq = $.get({
             url: url,
             data: {
