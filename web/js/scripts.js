@@ -349,11 +349,27 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('click', '.add', function () {
-            var $this = $(this);
+            var $this = $(this),
+                $searchResults = $editGroup.find('#add_members_tab .users');
 
-            $.post($this.data('url'), function () {
+            $.post($this.data('url'), function (membersHtml) {
                 var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
+                    $searchResult = $this.closest('li'),
+                    user = $searchResult.data('user-id'),
+                    group = $searchResult.data('group-id');
+
+                if (group) {
+                    $searchResults.html(membersHtml);
+
+                    // Init each user
+                    $searchResults.find('li').each(function (index, userLi) {
+                        // var userId = $(userLi).data('user-id');
+                    });
+
+                    raiseGroupCount(id);
+                    updateGroups();
+                    return;
+                }
 
                 raiseGroupCount(id);
 
