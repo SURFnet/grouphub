@@ -72,7 +72,7 @@ class MembershipController extends Controller
 
         $findMemberShips = function () use ($membershipManager, $groupToAddId) {
             return $membershipManager
-                ->findGroupMemberships($groupToAddId, null, 0, null)
+                ->findGroupMemberships($groupToAddId, null, 0, PHP_INT_MAX)
                 ->toArray();
         };
 
