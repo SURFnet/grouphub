@@ -2,6 +2,18 @@
 
 set :symfony_console_path, "bin/console"
 
+set :symfony_directory_structure, 3
+
+set :app_path, "app"
+set :web_path, "web"
+set :var_path, "var"
+set :bin_path, "bin"
+
+set :log_path, "var/logs"
+set :linked_dirs, ["var/logs"]
+
+set :file_permissions_paths, ["var"]
+
 set :application, 'grouphub'
 set :repo_url, 'git@github.com:SURFnet/grouphub.git'
 
