@@ -1,7 +1,7 @@
 var grouphub = (function ($) {
     'use strict';
 
-    var groupSearchReq, userSearchReq,
+    var groupSearchReq, searchReq,
         userId = $('body').data('user-id');
 
     var searchGroups = function () {
@@ -24,15 +24,26 @@ var grouphub = (function ($) {
         });
     };
 
-    var searchUsers = function () {
+    var searchUsersOrGroups = function () {
         var $this = $(this),
-            $searchResults = $this.closest('.search_container').next('ul');
+            $searchContainer = $this.closest('.search_container'),
+            $searchResults = $searchContainer.next('ul');
 
-        userSearchReq = $.get({
-            url: $searchResults.data('url'),
-            data: {query: $this.val()},
+        var url = $searchResults.data('url');
+        var type = $searchContainer.find("input[name='search-type']:checked").val();
+        if (type == 'group') {
+            url = url.replace('users', 'groups');
+        }
+
+        $searchResults.html('<li class="spinner"><i class="fa fa-spinner fa-spin"></li>');
+
+        searchReq = $.get({
+            url: url,
+            data: {
+                query: $this.val()
+            },
             beforeSend: function () {
-                userSearchReq && userSearchReq.abort();
+                searchReq && searchReq.abort();
             },
             success: function (data) {
                 $searchResults.html(data);
@@ -338,11 +349,28 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('click', '.add', function () {
-            var $this = $(this);
+            var $this = $(this),
+                $searchResults = $editGroup.find('#add_members_tab .users');
 
-            $.post($this.data('url'), function () {
+            $.post($this.data('url'), function (membersHtml) {
                 var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
+                    $searchResult = $this.closest('li'),
+                    user = $searchResult.data('user-id'),
+                    group = $searchResult.data('group-id');
+
+                if (group) {
+                    $searchResults.html(membersHtml);
+
+                    // Init each user
+                    $searchResults.find('li').each(function (index, userLi) {
+                        var userId = $(userLi).data('user-id');
+                        raiseGroupCount(id);
+                        userEditMode(id, userId);
+                    });
+
+                    updateGroups();
+                    return;
+                }
 
                 raiseGroupCount(id);
 
@@ -450,7 +478,12 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $editGroup.on('keyup', '.searchInput', $.debounce(250, searchUsers));
+        $editGroup.on('keyup', '.searchInput', $.debounce(250, searchUsersOrGroups));
+
+        // Trigger search when type is changed
+        $editGroup.on('click', 'input[name=search-type]', function(){
+            $('.searchInput').trigger('keyup');
+        });
 
         $editGroup.on('click', '.prospect_details', function () {
             $(this).next('div').find('div.details').toggleClass('hidden');

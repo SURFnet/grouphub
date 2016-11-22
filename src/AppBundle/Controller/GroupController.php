@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\GroupType;
+use AppBundle\Manager\GroupManager;
+use AppBundle\Manager\UserManager;
 use AppBundle\Model\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -154,7 +156,10 @@ class GroupController extends Controller
         $offset = $request->query->get('offset', 0);
         $limit = $request->query->get('limit', 12);
 
-        $users = $this->get('app.user_manager')->findUsers($query, $offset, $limit);
+        /** @var UserManager $userManager */
+        $userManager = $this->get('app.user_manager');
+        $users = $userManager->findUsers($query, $offset, $limit);
+
         $members = $this->get('app.membership_manager')->findGroupMembershipsForUsers($group->getId(), $users);
 
         $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
@@ -172,6 +177,47 @@ class GroupController extends Controller
                 'query'         => $query,
                 'offset'        => $offset,
                 'limit'         => $limit
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/group/{id}/groups/search", name="search_group_groups")
+     * @Method("GET")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function searchGroupsAction($id, Request $request)
+    {
+        $group = $this->getGroup($id);
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $query = $request->query->get('query');
+        $offset = $request->query->get('offset', 0);
+        $limit = $request->query->get('limit', 12);
+
+        /** @var GroupManager $groupManager */
+        $groupManager = $this->get('app.group_manager');
+        $groups = $groupManager->findGroups($query, null, $offset, $limit);
+
+        $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
+            $this->getUser()->getId(),
+            $group->getId()
+        );
+
+        return $this->render(
+            ':popups:group_groups.html.twig',
+            [
+                'group' => $group,
+                'groups' => $groups,
+                'notifications' => $notifications,
+                'query' => $query,
+                'offset' => $offset,
+                'limit' => $limit
             ]
         );
     }

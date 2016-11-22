@@ -3,6 +3,7 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Api\ApiClient;
+use AppBundle\Model\Collection;
 use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
 use AppBundle\Model\User;
@@ -52,7 +53,7 @@ class MembershipManager
      * @param int    $offset
      * @param int    $limit
      *
-     * @return Membership[]
+     * @return Collection|Membership[]
      */
     public function findGroupMemberships($id, $query = null, $offset = 0, $limit = 100)
     {

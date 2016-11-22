@@ -2,10 +2,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Manager\GroupManager;
+use AppBundle\Manager\MembershipManager;
+use AppBundle\Model\Collection;
+use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -37,6 +42,70 @@ class MembershipController extends Controller
         $this->get('app.membership_manager')->addMembership($groupId, $userId);
 
         return new Response();
+    }
+
+    /**
+     * @Route("/group/{groupId}/group/{groupToAddId}/add", name="membership_add_group")
+     * @Method("POST")
+     *
+     * @param int $groupId
+     * @param int $groupToAddId
+     *
+     * @return Response
+     */
+    public function addMembershipGroupAction($groupId, $groupToAddId)
+    {
+        /** @var GroupManager $groupManager */
+        $groupManager = $this->get('app.group_manager');
+
+        /** @var Group $group */
+        $group = $groupManager->getGroup($groupId);
+
+        if (empty($group)) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        /** @var MembershipManager $membershipManager */
+        $membershipManager = $this->get('app.membership_manager');
+
+        $findMemberShips = function () use ($membershipManager, $groupToAddId) {
+            return $membershipManager
+                ->findGroupMemberships($groupToAddId, null, 0, null)
+                ->toArray();
+        };
+
+        $mapMembersToUserIds = function (Membership $membership) {
+            return $membership->getUser()->getId();
+        };
+
+        $newMemberUserIds = [];
+        foreach (array_map($mapMembersToUserIds, $findMemberShips()) as $userId) {
+            $membershipManager->addMembership($groupId, $userId);
+            $newMemberUserIds[] = $userId;
+        };
+
+        /** @var Collection $members */
+        $members = $this
+            ->get('app.membership_manager')
+            ->findGroupMemberships($group->getId(), null, 0, PHP_INT_MAX);
+
+        $filterAddedMembers = function (Membership $membership) use ($newMemberUserIds) {
+            return in_array($membership->getUser()->getId(), $newMemberUserIds);
+        };
+
+        return $this->render(
+            ':popups:group_members.html.twig',
+            [
+                'group'         => $group,
+                'members'       => $members->filter($filterAddedMembers),
+                'notifications' => [],
+                'query'         => null,
+                'offset'        => 0,
+                'limit'         => PHP_INT_MAX
+            ]
+        );
     }
 
     /**

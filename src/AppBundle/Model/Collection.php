@@ -32,4 +32,13 @@ class Collection extends SynchronizableSequence
     {
         return $this->totalCount;
     }
+
+    /**
+     * @param callable $f
+     * @return Collection
+     */
+    public function filter(callable $f)
+    {
+        return new self(array_filter($this->toArray(), $f));
+    }
 }

@@ -75,6 +75,8 @@
         {% if is_granted('EDIT', group) %}
             <div id="add_members_tab" class="hidden">
                 <div class="search_container">
+                    <label for="search-type-user">{{ 'Gebruiker'|trans }}</label> <input type="radio" name="search-type" id="search-type-user" value="user" checked="checked">
+                    <label for="search-type-group">{{ 'Groep'|trans }}</label> <input type="radio" name="search-type" id="search-type-group" value="group">
                     <div class="input_container">
                         <i class="fa fa-search"></i>
                         <input class="searchInput" type="text"/>
