@@ -365,6 +365,7 @@ var grouphub = (function ($) {
                     $searchResults.find('li').each(function (index, userLi) {
                         var userId = $(userLi).data('user-id');
                         raiseGroupCount(id);
+                        userEditMode(id, userId);
                     });
 
                     updateGroups();
