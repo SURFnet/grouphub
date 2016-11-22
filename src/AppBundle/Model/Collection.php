@@ -41,5 +41,4 @@ class Collection extends SynchronizableSequence
     {
         return new self(array_filter($this->toArray(), $f));
     }
-
 }
