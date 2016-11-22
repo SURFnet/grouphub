@@ -363,10 +363,10 @@ var grouphub = (function ($) {
 
                     // Init each user
                     $searchResults.find('li').each(function (index, userLi) {
-                        // var userId = $(userLi).data('user-id');
+                        var userId = $(userLi).data('user-id');
+                        raiseGroupCount(id);
                     });
 
-                    raiseGroupCount(id);
                     updateGroups();
                     return;
                 }
