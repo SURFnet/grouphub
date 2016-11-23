@@ -215,7 +215,7 @@ class Normalizer
         $maxLength = 64 - 1 - strlen($group->getId()) - strlen($this->mapping['group']['name_prefix']);
 
         $cn = substr($cn, 0, $maxLength);
-        $cn = $this->mapping['group']['name_prefix'] . strtolower($cn) . '_' . $group->getId();
+        $cn = $this->mapping['group']['name_prefix'] . $cn . '_' . $group->getId();
 
         return $cn;
     }

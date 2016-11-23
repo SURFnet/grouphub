@@ -470,7 +470,7 @@ class GrouphubClient
 
         $cn = $this->readLdap->escape($group['cn'], '', LDAP_ESCAPE_DN);
 
-        return strtolower('cn=' . $cn . ',' . $dn);
+        return 'cn=' . $cn . ',' . $dn;
     }
 
     /**
