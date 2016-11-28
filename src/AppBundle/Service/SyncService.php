@@ -342,7 +342,7 @@ class SyncService
             ($offset + self::BATCH_SIZE) . '...'
         );
 
-        $grouphubUsers = $this->api->findGroupUsers($group, $offset, self::BATCH_SIZE);
+        $grouphubUsers = $this->api->findGroupUsers($group, $offset, self::BATCH_SIZE, Membership::ROLE_MEMBER);
         $ldapUsers = $this->ldap->findGrouphubGroupUsers($group->getReference(), $offset, self::BATCH_SIZE);
 
         if (count($grouphubUsers) === 0 && count($ldapUsers) === 0) {
