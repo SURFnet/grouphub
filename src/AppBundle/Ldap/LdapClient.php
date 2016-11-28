@@ -213,6 +213,28 @@ class LdapClient implements LdapClientInterface
      */
     public function modify($dn, array $data)
     {
+        $isEmptyValue = function ($v) {
+            return $v === '' || $v === null;
+        };
+
+        $isNonEmptyValue = function ($v) use ($isEmptyValue) {
+            return !$isEmptyValue($v);
+        };
+
+        $mapToDeleteValue = function() {
+            return [];
+        };
+
+        $this->deleteAttribute($dn, array_map($mapToDeleteValue, array_filter($data, $isEmptyValue)));
+        $this->updateAttribute($dn, array_filter($data, $isNonEmptyValue));
+    }
+
+    /**
+     * @param string $dn
+     * @param array $data
+     */
+    private function updateAttribute($dn, array $data)
+    {
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
