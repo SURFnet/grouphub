@@ -125,6 +125,10 @@ class Normalizer
     {
         $mapping = $this->mapping['group'];
 
+        $extractIdFromCn = function ($cn) {
+            return substr($cn, strrpos($cn, '_') + 1);
+        };
+
         $extractNameFromCn = function ($cn) {
             return substr($cn, 0, strrpos($cn, '_'));
         };
@@ -134,7 +138,7 @@ class Normalizer
             $group = $groups[$i];
 
             $result[] = new Group(
-                null,
+                $extractIdFromCn($group['cn'][0]),
                 $group['dn'],
                 $extractNameFromCn($group['cn'][0]),
                 isset($group[$mapping['description']][0]) ? $group[$mapping['description']][0] : ''
