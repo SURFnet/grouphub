@@ -221,7 +221,7 @@ class LdapClient implements LdapClientInterface
             return !$isEmptyValue($v);
         };
 
-        $mapToDeleteValue = function() {
+        $mapToDeleteValue = function () {
             return [];
         };
 
@@ -286,7 +286,6 @@ class LdapClient implements LdapClientInterface
         }
 
         if (false === @ldap_mod_del($this->connection, $dn, $data)) {
-
             $ldapError = ldap_error($this->connection);
 
             if ($ldapError === self::ERROR_NO_SUCH_ATTRIBUTE) {
