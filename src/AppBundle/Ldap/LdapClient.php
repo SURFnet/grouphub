@@ -12,6 +12,7 @@ use Symfony\Component\Ldap\LdapClientInterface;
 class LdapClient implements LdapClientInterface
 {
     const PAGE_SIZE = 1000;
+    const ERROR_NO_SUCH_ATTRIBUTE = 'No such attribute';
 
     /**
      * @var string
@@ -212,6 +213,28 @@ class LdapClient implements LdapClientInterface
      */
     public function modify($dn, array $data)
     {
+        $isEmptyValue = function ($v) {
+            return $v === '' || $v === null;
+        };
+
+        $isNonEmptyValue = function ($v) use ($isEmptyValue) {
+            return !$isEmptyValue($v);
+        };
+
+        $mapToDeleteValue = function () {
+            return [];
+        };
+
+        $this->deleteAttribute($dn, array_map($mapToDeleteValue, array_filter($data, $isEmptyValue)));
+        $this->updateAttribute($dn, array_filter($data, $isNonEmptyValue));
+    }
+
+    /**
+     * @param string $dn
+     * @param array $data
+     */
+    private function updateAttribute($dn, array $data)
+    {
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
@@ -262,7 +285,15 @@ class LdapClient implements LdapClientInterface
             $this->bind($this->dn, $this->password);
         }
 
-        ldap_mod_del($this->connection, $dn, $data);
+        if (false === @ldap_mod_del($this->connection, $dn, $data)) {
+            $ldapError = ldap_error($this->connection);
+
+            if ($ldapError === self::ERROR_NO_SUCH_ATTRIBUTE) {
+                return;
+            }
+
+            throw new LdapException($ldapError);
+        }
 
         $this->cache = [];
     }
