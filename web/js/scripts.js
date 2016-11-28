@@ -227,8 +227,12 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $groupContainer.on('click', '#sort_menu_blue, #sort_menu_green, #sort_menu_purple, #sort_menu_grey', function () {
+        $groupContainer.on('click', '.sort_menu', function () {
             $(this).next('div').toggleClass('hidden');
+        });
+
+        $groupContainer.on('mouseleave', '.sort_menu + div', function () {
+            $(this).toggleClass('hidden');
         });
 
         $groupContainer.on('change', '.sort', function () {
