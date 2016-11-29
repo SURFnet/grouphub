@@ -31,7 +31,7 @@ var grouphub = (function ($) {
 
         var url = $searchResults.data('url');
         var type = $searchContainer.find("input[name='search-type']:checked").val();
-        if (type == 'group') {
+        if (type === 'group') {
             url = url.replace('users', 'groups');
         }
 
@@ -227,8 +227,12 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $groupContainer.on('click', '#sort_menu_blue, #sort_menu_green, #sort_menu_purple, #sort_menu_grey', function () {
+        $groupContainer.on('click', '.sort_menu', function () {
             $(this).next('div').toggleClass('hidden');
+        });
+
+        $groupContainer.on('mouseleave', '.sort_menu + div', function () {
+            $(this).toggleClass('hidden');
         });
 
         $groupContainer.on('change', '.sort', function () {
