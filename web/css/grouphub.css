@@ -832,6 +832,14 @@ nav .search_container .input_container input:focus {
     padding: 0;
     margin: 0; }
 
+.group p.name{
+    overflow-x: auto;
+}
+#group_title {
+    margin: 0 60px 0 60px;
+    overflow-x: auto;
+}
+
 /* line 1, _group_section.scss */
 li.group_section {
     border-bottom: solid 1px #eaeaea;
@@ -1316,13 +1324,13 @@ footer a {
     margin-bottom: 20px; }
 .edit_group_container ul.users > div:last-child > li:last-child {
     margin-bottom: 20px; }
-/* line 223, _edit_group.scss */
-.edit_group_container ul.users li div {
-    display: inline-block; }
-/* line 227, _edit_group.scss */
+
 .edit_group_container ul.users li p {
-    margin: 0;
-    padding: 0; }
+    margin: 0 60px 0 0;
+    padding: 0;
+    overflow-x: auto;
+}
+
 /* line 231, _edit_group.scss */
 .edit_group_container ul.users li span {
     color: #8a8a8a;
