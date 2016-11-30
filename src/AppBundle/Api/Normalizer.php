@@ -146,7 +146,7 @@ class Normalizer
         return new Group(
             $group['id'],
             isset($group['reference']) ? $group['reference'] : '',
-            isset($group['name']) ? $group['name'] : '',
+            isset($group['name']) ? sprintf('%s_%s', $group['name'], $group['id']) : '',
             isset($group['description']) ? $group['description'] : '',
             isset($group['type']) ? $group['type'] : '',
             isset($group['owner']) ? $this->denormalizeUser($group['owner']) : null,
