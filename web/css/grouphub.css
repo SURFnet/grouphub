@@ -964,26 +964,22 @@ li.group_section div:last-child .button_join.grey:hover {
     color: white;
     background: #e6e6e6; }
 
-/* line 1, _footer.scss */
 footer {
     position: absolute;
     height: 47px;
     background-color: black;
     padding: 0;
     width: 100%;
+    bottom: 0;
+    left: 0;
 }
+
 /* line 2, _mixins.scss */
 footer:after {
     content: "";
     display: table;
     clear: both; }
-@media screen and (min-width: 1200px) {
-    /* line 1, _footer.scss */
-    footer {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        left: 0; } }
+
 /* line 14, _footer.scss */
 footer ul {
     list-style-type: none; }
