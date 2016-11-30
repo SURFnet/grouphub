@@ -36,6 +36,10 @@ class VootController extends Controller
         $result = [];
 
         foreach ($memberships as $membership) {
+            if ($membership->getRole() === 'prospect') {
+                continue;
+            }
+
             $result[] = [
                 'id'          => $membership->getGroup()->getId(),
                 'displayName' => $membership->getGroup()->getName(),
