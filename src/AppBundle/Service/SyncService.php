@@ -342,7 +342,7 @@ class SyncService
             ($offset + self::BATCH_SIZE) . '...'
         );
 
-        $grouphubUsers = $this->api->findGroupUsers($group, $offset, self::BATCH_SIZE);
+        $grouphubUsers = $this->api->findGroupUsers($group, $offset, self::BATCH_SIZE, [Membership::ROLE_MEMBER, Membership::ROLE_ADMIN]);
         $ldapUsers = $this->ldap->findGrouphubGroupUsers($group->getReference(), $offset, self::BATCH_SIZE);
 
         if (count($grouphubUsers) === 0 && count($ldapUsers) === 0) {
@@ -389,7 +389,7 @@ class SyncService
 
         $this->ldap->addAdminGroupIfNotExists($group);
 
-        $grouphubAdmins = $this->api->findGroupUsers($group, $offset, self::BATCH_SIZE, Membership::ROLE_ADMIN);
+        $grouphubAdmins = $this->api->findGroupUsers($group, $offset, self::BATCH_SIZE, [Membership::ROLE_ADMIN]);
         $ldapAdmins = $this->ldap->findGroupAdmins($group, $offset, self::BATCH_SIZE);
 
         if (count($grouphubAdmins) === 0 && count($ldapAdmins) === 0) {

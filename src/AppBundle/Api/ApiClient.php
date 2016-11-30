@@ -125,11 +125,11 @@ class ApiClient
      * @param Group  $group
      * @param int    $offset
      * @param int    $limit
-     * @param string $role
+     * @param array  $roles
      *
      * @return SynchronizableSequence
      */
-    public function findGroupUsers(Group $group, $offset = 0, $limit = 100, $role = null)
+    public function findGroupUsers(Group $group, $offset = 0, $limit = 100, array $roles = null)
     {
         // New group, so no Users yet
         if ($group->getId() === null) {
@@ -141,7 +141,7 @@ class ApiClient
                 'offset' => $offset,
                 'limit'  => $limit,
                 'sort'   => 'reference',
-                'role'   => $role,
+                'roles'   => $roles,
             ],
         ]);
 
