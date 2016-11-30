@@ -126,10 +126,12 @@ class Normalizer
         $mapping = $this->mapping['group'];
 
         $extractIdFromCn = function ($cn) {
+            return null;
             return substr($cn, strrpos($cn, '_') + 1);
         };
 
         $extractNameFromCn = function ($cn) {
+            return $cn;
             return substr($cn, 0, strrpos($cn, '_'));
         };
 
