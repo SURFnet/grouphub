@@ -14,25 +14,25 @@ class SortOrderTest extends PHPUnit_Framework_TestCase
     public function shouldGuardAgainstInvalidName()
     {
         $this->setExpectedException(InvalidArgumentException::class);
-        SortOrder::createFromSignedName('"foo"');
+        SortOrder::createFromSignedOrder('"foo"');
     }
 
     /**
      * @test
      */
-    public function shouldCreateInstanceFromAscendingSignedName()
+    public function shouldCreateInstanceFromAscendingSignedOrder()
     {
-        $sortOrder = SortOrder::createFromSignedName('name');
-        $this->assertEquals('name', $sortOrder->getSignedName());
+        $sortOrder = SortOrder::createFromSignedOrder('name');
+        $this->assertEquals('name', $sortOrder->toSignedOrder());
     }
 
     /**
      * @test
      */
-    public function shouldCreateInstanceFromDescendingSignedName()
+    public function shouldCreateInstanceFromDescendingSignedOrder()
     {
-        $sortOrder = SortOrder::createFromSignedName('-name');
-        $this->assertEquals('-name', $sortOrder->getSignedName());
+        $sortOrder = SortOrder::createFromSignedOrder('-name');
+        $this->assertEquals('-name', $sortOrder->toSignedOrder());
     }
 
     /**
@@ -41,7 +41,7 @@ class SortOrderTest extends PHPUnit_Framework_TestCase
     public function shouldCreateAscendingOrder()
     {
         $sortOrder = SortOrder::ascending('name');
-        $this->assertEquals('name', $sortOrder->getSignedName());
+        $this->assertEquals('name', $sortOrder->toSignedOrder());
     }
 
     /**
@@ -50,6 +50,6 @@ class SortOrderTest extends PHPUnit_Framework_TestCase
     public function shouldCreateInstanceFromNameAndOrder()
     {
         $sortOrder = SortOrder::descending('name');
-        $this->assertEquals('-name', $sortOrder->getSignedName());
+        $this->assertEquals('-name', $sortOrder->toSignedOrder());
     }
 }

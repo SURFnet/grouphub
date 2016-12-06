@@ -36,16 +36,16 @@ final class SortOrder
     }
 
     /**
-     * @param string $signedName
+     * @param string $signedOrder
      * @return SortOrder
      */
-    public static function createFromSignedName($signedName)
+    public static function createFromSignedOrder($signedOrder)
     {
-        if ($signedName[0] === self::DIRECTION_DESCENDING_PREFIX) {
-            return new self(substr($signedName, 1), self::DIRECTION_DESCENDING);
+        if ($signedOrder[0] === self::DIRECTION_DESCENDING_PREFIX) {
+            return new self(substr($signedOrder, 1), self::DIRECTION_DESCENDING);
         }
 
-        return new self($signedName, self::DIRECTION_ASCENDING);
+        return new self($signedOrder, self::DIRECTION_ASCENDING);
     }
 
     /**
@@ -69,7 +69,7 @@ final class SortOrder
     /**
      * @return string
      */
-    public function getSignedName()
+    public function toSignedOrder()
     {
         return ($this->direction === self::DIRECTION_DESCENDING ? self::DIRECTION_DESCENDING_PREFIX : self::DIRECTION_ASCENDING_PREFIX) . $this->column;
     }

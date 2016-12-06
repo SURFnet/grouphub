@@ -166,7 +166,7 @@ class ApiClient
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => $sortOrder->getSignedName(),
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
             ]
         ]);
@@ -191,7 +191,7 @@ class ApiClient
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => $sortOrder->getSignedName(),
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
             ]
         ]);
@@ -216,7 +216,7 @@ class ApiClient
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => $sortOrder->getSignedName(),
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
             ]
         ]);
@@ -354,7 +354,7 @@ class ApiClient
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => $sortOrder->getSignedName(),
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
                 'query'  => $query,
                 'ids'    => $groupIds
