@@ -117,7 +117,7 @@ class GroupManager
 
         $memberships = $this->client->findUserMemberships(
             $userId,
-            new SortOrder('name'),
+            SortOrder::ascending('name'),
             'admin',
             $offset,
             $limit

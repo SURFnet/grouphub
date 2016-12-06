@@ -45,7 +45,7 @@ class MembershipManager
      */
     public function findUserMemberships($userId, $offset = 0, $limit = 100)
     {
-        return $this->client->findUserMemberships($userId, new SortOrder('name'), '', $offset, $limit);
+        return $this->client->findUserMemberships($userId, SortOrder::ascending('name'), '', $offset, $limit);
     }
 
     /**

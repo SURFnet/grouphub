@@ -23,7 +23,7 @@ final class SortOrder
      * @param string $column
      * @param string $direction
      */
-    public function __construct($column, $direction = self::DIRECTION_ASCENDING)
+    private function __construct($column, $direction = self::DIRECTION_ASCENDING)
     {
         $this->setColumn($column);
         $this->setDirection($direction);
@@ -40,6 +40,24 @@ final class SortOrder
         }
 
         return new self($signedName, self::DIRECTION_ASCENDING);
+    }
+
+    /**
+     * @param $string
+     * @return SortOrder
+     */
+    public static function ascending($string)
+    {
+        return new self($string, self::DIRECTION_ASCENDING);
+    }
+
+    /**
+     * @param $string
+     * @return SortOrder
+     */
+    public static function descending($string)
+    {
+        return new self($string, self::DIRECTION_DESCENDING);
     }
 
     /**

@@ -119,7 +119,7 @@ class ApiClient
      */
     public function findLdapGroups($offset = 0, $limit = 100)
     {
-        return $this->findGroups(null, 'ldap', $offset, $limit, new SortOrder('reference'));
+        return $this->findGroups(null, 'ldap', $offset, $limit, SortOrder::ascending('reference'));
     }
 
     /**
@@ -316,7 +316,7 @@ class ApiClient
      */
     public function findGrouphubGroups($offset = 0, $limit = 100)
     {
-        return $this->findGroups(null, '!ldap', $offset, $limit, new SortOrder('reference'));
+        return $this->findGroups(null, '!ldap', $offset, $limit, SortOrder::ascending('reference'));
     }
 
     /**
@@ -330,7 +330,7 @@ class ApiClient
             return new SynchronizableSequence([]);
         }
 
-        return $this->findGroups(null, '!ldap', 0, 0, new SortOrder('reference'), $groupIds);
+        return $this->findGroups(null, '!ldap', 0, 0, SortOrder::ascending('reference'), $groupIds);
     }
 
     /**

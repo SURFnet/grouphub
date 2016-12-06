@@ -13,16 +13,7 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
     public function shouldGuardAgainstInvalidName()
     {
         $this->setExpectedException(InvalidArgumentException::class);
-        new SortOrder('"foo"');
-    }
-
-    /**
-     * @test
-     */
-    public function shouldGuardAgainstInvalidDirection()
-    {
-        $this->setExpectedException(InvalidArgumentException::class);
-        new SortOrder('foo', 'bar');
+        SortOrder::createFromSignedName('"foo"');
     }
 
     /**
@@ -50,9 +41,9 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCreateInstanceFromNameWithDefaultOrder()
+    public function shouldCreateAscendingOrder()
     {
-        $sortOrder = new SortOrder('name');
+        $sortOrder = SortOrder::ascending('name');
         $this->assertEquals('name', $sortOrder->getColumn());
         $this->assertEquals(0, $sortOrder->getDirection());
         $this->assertEquals('name', $sortOrder->getSignedName());
@@ -63,7 +54,7 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateInstanceFromNameAndOrder()
     {
-        $sortOrder = new SortOrder('name', 1);
+        $sortOrder = SortOrder::descending('name');
         $this->assertEquals('name', $sortOrder->getColumn());
         $this->assertEquals(1, $sortOrder->getDirection());
         $this->assertEquals('-name', $sortOrder->getSignedName());

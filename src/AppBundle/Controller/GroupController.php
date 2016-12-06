@@ -203,7 +203,7 @@ class GroupController extends Controller
 
         /** @var GroupManager $groupManager */
         $groupManager = $this->get('app.group_manager');
-        $groups = $groupManager->findGroups($query, null, $offset, $limit, new SortOrder('name'));
+        $groups = $groupManager->findGroups($query, null, $offset, $limit, SortOrder::ascending('name'));
 
         $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
             $this->getUser()->getId(),
