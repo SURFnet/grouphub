@@ -13,7 +13,6 @@ final class SortOrder
     const DIRECTION_ASCENDING = 'asc';
     const DIRECTION_DESCENDING = 'desc';
     const DIRECTION_DESCENDING_PREFIX = '-';
-    const DIRECTION_ASCENDING_PREFIX = '';
 
     /**
      * @var string
@@ -71,7 +70,11 @@ final class SortOrder
      */
     public function toSignedOrder()
     {
-        return ($this->direction === self::DIRECTION_DESCENDING ? self::DIRECTION_DESCENDING_PREFIX : self::DIRECTION_ASCENDING_PREFIX) . $this->column;
+        if ($this->direction === self::DIRECTION_DESCENDING) {
+            return self::DIRECTION_DESCENDING_PREFIX . $this->column;
+        }
+
+        return $this->column;
     }
 
     /**
