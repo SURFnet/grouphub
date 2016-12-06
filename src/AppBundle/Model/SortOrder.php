@@ -63,25 +63,9 @@ final class SortOrder
     /**
      * @return string
      */
-    public function getColumn()
-    {
-        return $this->column;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDirection()
-    {
-        return $this->direction;
-    }
-
-    /**
-     * @return string
-     */
     public function getSignedName()
     {
-        return ($this->getDirection() ? '-' : '') . $this->getColumn();
+        return ($this->direction ? '-' : '') . $this->column;
     }
 
     /**

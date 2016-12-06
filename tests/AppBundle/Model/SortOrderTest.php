@@ -22,8 +22,6 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateInstanceFromAscendingSignedName()
     {
         $sortOrder = SortOrder::createFromSignedName('name');
-        $this->assertEquals('name', $sortOrder->getColumn());
-        $this->assertEquals(0, $sortOrder->getDirection());
         $this->assertEquals('name', $sortOrder->getSignedName());
     }
 
@@ -33,8 +31,6 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateInstanceFromDescendingSignedName()
     {
         $sortOrder = SortOrder::createFromSignedName('-name');
-        $this->assertEquals('name', $sortOrder->getColumn());
-        $this->assertEquals(1, $sortOrder->getDirection());
         $this->assertEquals('-name', $sortOrder->getSignedName());
     }
 
@@ -44,8 +40,6 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateAscendingOrder()
     {
         $sortOrder = SortOrder::ascending('name');
-        $this->assertEquals('name', $sortOrder->getColumn());
-        $this->assertEquals(0, $sortOrder->getDirection());
         $this->assertEquals('name', $sortOrder->getSignedName());
     }
 
@@ -55,8 +49,6 @@ class SortOrderTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateInstanceFromNameAndOrder()
     {
         $sortOrder = SortOrder::descending('name');
-        $this->assertEquals('name', $sortOrder->getColumn());
-        $this->assertEquals(1, $sortOrder->getDirection());
         $this->assertEquals('-name', $sortOrder->getSignedName());
     }
 }
