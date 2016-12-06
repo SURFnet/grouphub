@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\GroupType;
 use AppBundle\Model\Collection;
 use AppBundle\Model\SortOrder;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -222,7 +223,7 @@ class IndexController extends Controller
         if ($customSignedOrder) {
             try {
                 return SortOrder::createFromSignedOrder($customSignedOrder);
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 $this->get('logger')->warning($ex->getMessage());
             }
         }
