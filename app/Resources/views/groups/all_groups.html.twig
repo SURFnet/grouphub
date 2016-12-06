@@ -4,11 +4,11 @@
     <section class="background_purple sort">
         <a id="close_all_groups" href="#" class="close"><i class="fa fa-times"></i></a>
 
-        {% include ':groups:_sort.html.twig' with {'color': 'purple'} %}
+        {% include ':groups:_sort.html.twig' with {'color': 'purple', 'sort': allGroups.sort} %}
 
         <div>
             <h3>{{ attribute(_context, 'all_groups_column_title_' ~ app.request.locale)|upper }}</h3>
-            <p>{{ 'There is a total of %count% groups'|trans({'%count%': allGroups.totalCount}) }}</p>
+            <p>{{ 'There is a total of %count% groups'|trans({'%count%': allGroups.collection.totalCount}) }}</p>
         </div>
     </section>
 

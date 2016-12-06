@@ -6,6 +6,7 @@ use AppBundle\Form\GroupType;
 use AppBundle\Manager\GroupManager;
 use AppBundle\Manager\UserManager;
 use AppBundle\Model\Group;
+use AppBundle\Model\SortOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -202,7 +203,7 @@ class GroupController extends Controller
 
         /** @var GroupManager $groupManager */
         $groupManager = $this->get('app.group_manager');
-        $groups = $groupManager->findGroups($query, null, $offset, $limit);
+        $groups = $groupManager->findGroups($query, null, $offset, $limit, new SortOrder('name'));
 
         $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
             $this->getUser()->getId(),
