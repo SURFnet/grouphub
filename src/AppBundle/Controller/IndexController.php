@@ -226,8 +226,7 @@ class IndexController extends Controller
             try {
                 return SortOrder::createFromSignedName($signedSortFromCookie);
             } catch (\Exception $ex) {
-                $this->get('logger')->warning($ex
-                    >getMessage());
+                $this->get('logger')->warning($ex->getMessage());
             }
         }
 
