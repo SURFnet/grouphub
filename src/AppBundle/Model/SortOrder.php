@@ -4,6 +4,10 @@ namespace AppBundle\Model;
 
 use InvalidArgumentException;
 
+/**
+ * Sort order represents a column and a direction in which a collection can be sorted.
+ * Note that the convention is to prefix the column with a '-' to denote a descending order.
+ */
 final class SortOrder
 {
     const DIRECTION_ASCENDING = 'asc';
