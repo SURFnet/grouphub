@@ -95,21 +95,21 @@ class IndexController extends Controller
             $allGroups = $groupManager->findGroups(null, null, $offset, $limit, $allGroupsSortOrder);
         }
 
-        $searchGroups = new Collection();
-        $searchGroupsSortOrder = $this->createSortOrder($cookies, 'search_groups', $signedSort);
+        $organisationGroups = new Collection();
+        $organisationGroupsSortOrder = $this->createSortOrder($cookies, 'organisation_groups', $signedSort);
         if (!empty($searchQuery) && ($type === null || $type === 'search' || $type === 'results')) {
-            $searchGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $searchGroupsSortOrder);
+            $organisationGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $organisationGroupsSortOrder);
         }
 
         $memberships = $this->get('app.membership_manager')->findUserMembershipOfGroups(
             $this->getUser()->getId(),
-            array_merge($allGroups->toArray(), $searchGroups->toArray())
+            array_merge($allGroups->toArray(), $organisationGroups->toArray())
         );
 
         return [
             'myGroups'      => ['sort'=> $myGroupsSortOrder->getSignedName(), 'collection' => $myGroups],
             'allGroups'     => ['sort'=> $allGroupsSortOrder->getSignedName(), 'collection' => $allGroups],
-            'organisationGroups' => ['sort'=> $searchGroupsSortOrder->getSignedName(), 'collection' => $searchGroups],
+            'organisationGroups' => ['sort'=> $organisationGroupsSortOrder->getSignedName(), 'collection' => $organisationGroups],
             'memberships'   => $memberships,
             'offset'        => $offset,
             'limit'         => $limit,
