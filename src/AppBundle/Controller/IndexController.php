@@ -214,8 +214,8 @@ class IndexController extends Controller
     }
 
     /**
-     * @param $customSignedOrder
-     * @param $defaultSignedOrder
+     * @param string $customSignedOrder
+     * @param string $defaultSignedOrder
      * @return SortOrder
      */
     private function createSortOrder($customSignedOrder, $defaultSignedOrder)
