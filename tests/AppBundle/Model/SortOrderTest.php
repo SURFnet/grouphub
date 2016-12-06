@@ -3,9 +3,10 @@
 namespace Tests\AppBundle\Model;
 
 use AppBundle\Model\SortOrder;
-use \InvalidArgumentException;
+use InvalidArgumentException;
+use PHPUnit_Framework_TestCase;
 
-class SortOrderTest extends \PHPUnit_Framework_TestCase
+class SortOrderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
