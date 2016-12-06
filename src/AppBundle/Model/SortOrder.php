@@ -8,6 +8,8 @@ final class SortOrder
 {
     const DIRECTION_ASCENDING = 0;
     const DIRECTION_DESCENDING = 1;
+    const DIRECTION_DESCENDING_PREFIX = '-';
+    const DIRECTION_ASCENDING_PREFIX = '';
 
     /**
      * @var string
@@ -35,7 +37,7 @@ final class SortOrder
      */
     public static function createFromSignedName($signedName)
     {
-        if ($signedName[0] === '-') {
+        if ($signedName[0] === self::DIRECTION_DESCENDING_PREFIX) {
             return new self(substr($signedName, 1), self::DIRECTION_DESCENDING);
         }
 
@@ -65,7 +67,7 @@ final class SortOrder
      */
     public function getSignedName()
     {
-        return ($this->direction ? '-' : '') . $this->column;
+        return ($this->direction ? self::DIRECTION_DESCENDING_PREFIX : self::DIRECTION_ASCENDING_PREFIX) . $this->column;
     }
 
     /**
