@@ -6,8 +6,8 @@ use InvalidArgumentException;
 
 final class SortOrder
 {
-    const DIRECTION_ASCENDING = 0;
-    const DIRECTION_DESCENDING = 1;
+    const DIRECTION_ASCENDING = 'asc';
+    const DIRECTION_DESCENDING = 'desc';
     const DIRECTION_DESCENDING_PREFIX = '-';
     const DIRECTION_ASCENDING_PREFIX = '';
 
@@ -67,7 +67,7 @@ final class SortOrder
      */
     public function getSignedName()
     {
-        return ($this->direction ? self::DIRECTION_DESCENDING_PREFIX : self::DIRECTION_ASCENDING_PREFIX) . $this->column;
+        return ($this->direction === self::DIRECTION_DESCENDING ? self::DIRECTION_DESCENDING_PREFIX : self::DIRECTION_ASCENDING_PREFIX) . $this->column;
     }
 
     /**
