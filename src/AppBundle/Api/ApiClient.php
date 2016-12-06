@@ -5,6 +5,7 @@ namespace AppBundle\Api;
 use AppBundle\Model\Collection;
 use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
+use AppBundle\Model\SortOrder;
 use AppBundle\Model\User;
 use AppBundle\Sequence;
 use AppBundle\SynchronizableSequence;
@@ -118,7 +119,7 @@ class ApiClient
      */
     public function findLdapGroups($offset = 0, $limit = 100)
     {
-        return $this->findGroups(null, 'ldap', $offset, $limit);
+        return $this->findGroups(null, 'ldap', $offset, $limit, SortOrder::ascending('reference'));
     }
 
     /**
@@ -152,21 +153,20 @@ class ApiClient
 
     /**
      * @param int    $userId
-     * @param string $sortColumn
-     * @param int    $sortDirection 0 => asc, 1 => desc
+     * @param SortOrder   $sortOrder
      * @param string $type
      * @param int    $offset
      * @param int    $limit
      *
      * @return Collection|Membership[]
      */
-    public function findUserMemberships($userId, $sortColumn = 'name', $sortDirection = 0, $type = '', $offset = 0, $limit = 100)
+    public function findUserMemberships($userId, SortOrder $sortOrder, $type = '', $offset = 0, $limit = 100)
     {
         $data = $this->guzzle->get('users/' . $userId . '/groups', [
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => ($sortDirection ? '-' : '') . $sortColumn,
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
             ]
         ]);
@@ -179,21 +179,19 @@ class ApiClient
     /**
      * @param int    $userId
      * @param string $role
-     * @param string $sortColumn
-     * @param int    $sortDirection
-     * @param string $type
+     * @param SortOrder   $sortOrder
      * @param int    $offset
      * @param int    $limit
      *
      * @return Collection|Membership[]
      */
-    public function findUserMembershipsForRole($userId, $role, $sortColumn = 'name', $sortDirection = 0, $type = '', $offset = 0, $limit = 100)
+    public function findUserMembershipsForRole($userId, $role, SortOrder $sortOrder, $type = '', $offset = 0, $limit = 100)
     {
         $data = $this->guzzle->get('users/' . $userId . '/groups/' . $role, [
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => ($sortDirection ? '-' : '') . $sortColumn,
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
             ]
         ]);
@@ -205,21 +203,20 @@ class ApiClient
 
     /**
      * @param int    $userId
-     * @param string $sortColumn
-     * @param int    $sortDirection 0 => asc, 1 => desc
+     * @param SortOrder   $sortOrder
      * @param string $type
      * @param int    $offset
      * @param int    $limit
      *
      * @return array
      */
-    public function findGroupedUserMemberships($userId, $sortColumn = 'name', $sortDirection = 0, $type = '', $offset = 0, $limit = 10)
+    public function findGroupedUserMemberships($userId, SortOrder $sortOrder, $type = '', $offset = 0, $limit = 10)
     {
         $data = $this->guzzle->get('users/' . $userId . '/groups/grouped', [
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => ($sortDirection ? '-' : '') . $sortColumn,
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
             ]
         ]);
@@ -319,7 +316,7 @@ class ApiClient
      */
     public function findGrouphubGroups($offset = 0, $limit = 100)
     {
-        return $this->findGroups(null, '!ldap', $offset, $limit);
+        return $this->findGroups(null, '!ldap', $offset, $limit, SortOrder::ascending('reference'));
     }
 
     /**
@@ -333,34 +330,31 @@ class ApiClient
             return new SynchronizableSequence([]);
         }
 
-        return $this->findGroups(null, '!ldap', 0, 0, 'reference', 0, $groupIds);
+        return $this->findGroups(null, '!ldap', 0, 0, SortOrder::ascending('reference'), $groupIds);
     }
 
     /**
      * @param string $query
      * @param string $type
-     * @param int    $offset
-     * @param int    $limit
-     * @param string $sortColumn
-     * @param int    $sortDirection
-     * @param int[]  $groupIds
-     *
+     * @param int $offset
+     * @param int $limit
+     * @param SortOrder $sortOrder
+     * @param int[] $groupIds
      * @return Collection
      */
     public function findGroups(
-        $query = null,
-        $type = null,
-        $offset = 0,
-        $limit = 100,
-        $sortColumn = 'reference',
-        $sortDirection = 0,
+        $query,
+        $type,
+        $offset,
+        $limit,
+        SortOrder $sortOrder,
         array $groupIds = null
     ) {
         $data = $this->guzzle->get('groups', [
             'query' => [
                 'offset' => $offset,
                 'limit'  => $limit,
-                'sort'   => ($sortDirection ? '-' : '') . $sortColumn,
+                'sort'   => $sortOrder->toSignedOrder(),
                 'type'   => $type,
                 'query'  => $query,
                 'ids'    => $groupIds

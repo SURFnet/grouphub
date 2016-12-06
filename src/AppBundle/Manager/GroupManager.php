@@ -5,6 +5,7 @@ namespace AppBundle\Manager;
 use AppBundle\Api\ApiClient;
 use AppBundle\Model\Collection;
 use AppBundle\Model\Group;
+use AppBundle\Model\SortOrder;
 use AppBundle\Service\QueueService;
 
 /**
@@ -36,15 +37,14 @@ class GroupManager
      * @param int    $userId
      * @param string $type
      * @param string $role
-     * @param string $sortColumn
-     * @param int    $sortDirection
+     * @param SortOrder   $sortOrder
      * @param int    $offset
      * @param int    $limit
      *
      * @return array
      * @todo: integrate better way of caching
      */
-    public function getMyGroups($userId, $type = null, $role = null, $sortColumn = 'name', $sortDirection = 0, $offset = 0, $limit = 5)
+    public function getMyGroups($userId, $type, $role, SortOrder $sortOrder, $offset, $limit)
     {
         static $cache;
 
@@ -58,8 +58,7 @@ class GroupManager
             $memberships = $this->client->findUserMembershipsForRole(
                 $userId,
                 $role,
-                $sortColumn,
-                $sortDirection,
+                $sortOrder,
                 $type,
                 $offset,
                 $limit
@@ -67,8 +66,7 @@ class GroupManager
         } else {
             $memberships = $this->client->findGroupedUserMemberships(
                 $userId,
-                $sortColumn,
-                $sortDirection,
+                $sortOrder,
                 $type,
                 $offset,
                 $limit
@@ -85,20 +83,18 @@ class GroupManager
      * @param string $type
      * @param int    $offset
      * @param int    $limit
-     * @param string $sortColumn
-     * @param int    $sortDirection
+     * @param SortOrder $sortOrder
      *
      * @return Collection|Group[]
      */
     public function findGroups(
-        $query = null,
-        $type = null,
-        $offset = 0,
-        $limit = 100,
-        $sortColumn = 'name',
-        $sortDirection = 0
+        $query,
+        $type,
+        $offset,
+        $limit,
+        SortOrder $sortOrder
     ) {
-        return $this->client->findGroups($query, $type, $offset, $limit, $sortColumn, $sortDirection);
+        return $this->client->findGroups($query, $type, $offset, $limit, $sortOrder);
     }
 
     /**
@@ -121,8 +117,7 @@ class GroupManager
 
         $memberships = $this->client->findUserMemberships(
             $userId,
-            'name',
-            0,
+            SortOrder::ascending('name'),
             'admin',
             $offset,
             $limit

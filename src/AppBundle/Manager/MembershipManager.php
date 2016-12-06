@@ -6,6 +6,7 @@ use AppBundle\Api\ApiClient;
 use AppBundle\Model\Collection;
 use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
+use AppBundle\Model\SortOrder;
 use AppBundle\Model\User;
 use AppBundle\Service\QueueService;
 use Traversable;
@@ -44,7 +45,7 @@ class MembershipManager
      */
     public function findUserMemberships($userId, $offset = 0, $limit = 100)
     {
-        return $this->client->findUserMemberships($userId, 'name', 0, '', $offset, $limit);
+        return $this->client->findUserMemberships($userId, SortOrder::ascending('name'), '', $offset, $limit);
     }
 
     /**
