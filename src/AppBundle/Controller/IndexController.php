@@ -85,18 +85,18 @@ class IndexController extends Controller
      */
     private function getGroups(ParameterBag $cookies, $searchQuery = '', $signedSort = 'name', $offset = 0, $limit = 12, $type = null)
     {
-        $myGroupsSortOrder = $this->createSortOrder($cookies, 'my_groups', $signedSort);
+        $myGroupsSortOrder = $this->createSortOrder($this->getSignedOrderFromCookie($cookies, 'my_groups'), $signedSort);
         $myGroups = $this->getMyGroups($type, $myGroupsSortOrder, $offset, $limit);
         $groupManager = $this->get('app.group_manager');
 
         $allGroups = new Collection();
-        $allGroupsSortOrder = $this->createSortOrder($cookies, 'all_groups', $signedSort);
+        $allGroupsSortOrder = $this->createSortOrder($this->getSignedOrderFromCookie($cookies, 'all_groups'), $signedSort);
         if ($type === null || $type === 'all' || $type === 'all-groups') {
             $allGroups = $groupManager->findGroups(null, null, $offset, $limit, $allGroupsSortOrder);
         }
 
         $organisationGroups = new Collection();
-        $organisationGroupsSortOrder = $this->createSortOrder($cookies, 'organisation_groups', $signedSort);
+        $organisationGroupsSortOrder = $this->createSortOrder($this->getSignedOrderFromCookie($cookies, 'organisation_groups'), $signedSort);
         if (!empty($searchQuery) && ($type === null || $type === 'search' || $type === 'results')) {
             $organisationGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $organisationGroupsSortOrder);
         }
@@ -213,23 +213,30 @@ class IndexController extends Controller
     }
 
     /**
-     * @param ParameterBag $cookies
-     * @param string $groupName
-     * @param $defaultSignedName
+     * @param $customSignedOrder
+     * @param $defaultSignedOrder
      * @return SortOrder
      */
-    private function createSortOrder(ParameterBag $cookies, $groupName, $defaultSignedName)
+    private function createSortOrder($customSignedOrder, $defaultSignedOrder)
     {
-        $signedSortFromCookie = json_decode($cookies->get(sprintf('group_%s_sort_order', $groupName)));
-
-        if ($signedSortFromCookie) {
+        if ($customSignedOrder) {
             try {
-                return SortOrder::createFromSignedName($signedSortFromCookie);
+                return SortOrder::createFromSignedName($customSignedOrder);
             } catch (\Exception $ex) {
                 $this->get('logger')->warning($ex->getMessage());
             }
         }
 
-        return SortOrder::createFromSignedName($defaultSignedName);
+        return SortOrder::createFromSignedName($defaultSignedOrder);
+    }
+
+    /**
+     * @param ParameterBag $cookies
+     * @param string $groupName
+     * @return mixed
+     */
+    private function getSignedOrderFromCookie(ParameterBag $cookies, $groupName)
+    {
+        return json_decode($cookies->get(sprintf('group_%s_sort_order', $groupName)));
     }
 }
