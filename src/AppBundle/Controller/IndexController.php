@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\GroupType;
 use AppBundle\Model\Collection;
+use AppBundle\Model\SortOrder;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -75,47 +77,41 @@ class IndexController extends Controller
     /**
      * @param ParameterBag $cookies
      * @param string       $searchQuery
-     * @param string       $sort
+     * @param string       $signedOrder
      * @param int          $offset
      * @param int          $limit
      * @param string       $type
      *
      * @return array
      */
-    private function getGroups(ParameterBag $cookies, $searchQuery = '', $sort = 'name', $offset = 0, $limit = 12, $type = null)
+    private function getGroups(ParameterBag $cookies, $searchQuery = '', $signedOrder = 'name', $offset = 0, $limit = 12, $type = null)
     {
-        $sortColumn = $sort;
-        $sortDirection = 0;
-        if ($sort[0] === '-') {
-            $sortDirection = 1;
-            $sortColumn = substr($sort, 1);
-        }
-
-        $myGroups = $this->getMyGroups($type, $sortColumn, $sortDirection, $offset, $limit);
-
+        $myGroupsSortOrder = $this->createSortOrder($this->findSignedOrderInCookie($cookies, 'my_groups'), $signedOrder);
+        $myGroups = $this->getMyGroups($type, $myGroupsSortOrder, $offset, $limit);
         $groupManager = $this->get('app.group_manager');
 
         $allGroups = new Collection();
+        $allGroupsSortOrder = $this->createSortOrder($this->findSignedOrderInCookie($cookies, 'all_groups'), $signedOrder);
         if ($type === null || $type === 'all' || $type === 'all-groups') {
-            $allGroups = $groupManager->findGroups(null, null, $offset, $limit, $sortColumn, $sortDirection);
+            $allGroups = $groupManager->findGroups(null, null, $offset, $limit, $allGroupsSortOrder);
         }
 
-        $searchGroups = new Collection();
+        $organisationGroups = new Collection();
+        $organisationGroupsSortOrder = $this->createSortOrder($this->findSignedOrderInCookie($cookies, 'organisation_groups'), $signedOrder);
         if (!empty($searchQuery) && ($type === null || $type === 'search' || $type === 'results')) {
-            $searchGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $sortColumn, $sortDirection);
+            $organisationGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $organisationGroupsSortOrder);
         }
 
         $memberships = $this->get('app.membership_manager')->findUserMembershipOfGroups(
             $this->getUser()->getId(),
-            array_merge($allGroups->toArray(), $searchGroups->toArray())
+            array_merge($allGroups->toArray(), $organisationGroups->toArray())
         );
 
         return [
-            'myGroups'      => $myGroups,
-            'allGroups'     => $allGroups,
-            'groups'        => $searchGroups,
+            'myGroups'      => ['sort'=> $myGroupsSortOrder->toSignedOrder(), 'collection' => $myGroups],
+            'allGroups'     => ['sort'=> $allGroupsSortOrder->toSignedOrder(), 'collection' => $allGroups],
+            'organisationGroups' => ['sort'=> $organisationGroupsSortOrder->toSignedOrder(), 'collection' => $organisationGroups],
             'memberships'   => $memberships,
-            'sort'          => $sort,
             'offset'        => $offset,
             'limit'         => $limit,
             'query'         => $searchQuery,
@@ -126,8 +122,7 @@ class IndexController extends Controller
 
     /**
      * @param string $type
-     * @param string $sortColumn
-     * @param string $sortDirection
+     * @param SortOrder   $sortOrder
      * @param int    $offset
      * @param int    $limit
      *
@@ -135,37 +130,37 @@ class IndexController extends Controller
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function getMyGroups($type, $sortColumn, $sortDirection, $offset, $limit)
+    private function getMyGroups($type, SortOrder $sortOrder, $offset, $limit)
     {
         $groupManager = $this->get('app.group_manager');
 
         switch ($type) {
             case null:
-                return $groupManager->getMyGroups($this->getUser()->getId(), null, null, $sortColumn, $sortDirection, 0, 4);
+                return $groupManager->getMyGroups($this->getUser()->getId(), null, null, $sortOrder, 0, 4);
 
             case 'my':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', null, $sortColumn, $sortDirection, 0, 4);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', null, $sortOrder, 0, 4);
 
             case 'my-owner':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', 'owner', $sortColumn, $sortDirection, $offset, $limit);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', 'owner', $sortOrder, $offset, $limit);
 
             case 'my-admin':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', 'admin', $sortColumn, $sortDirection, $offset, $limit);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', 'admin', $sortOrder, $offset, $limit);
 
             case 'my-member':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', 'member', $sortColumn, $sortDirection, $offset, $limit);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'grouphub', 'member', $sortOrder, $offset, $limit);
 
             case 'org':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', null, $sortColumn, $sortDirection, 0, 4);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', null, $sortOrder, 0, 4);
 
             case 'org-owner':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', 'owner', $sortColumn, $sortDirection, $offset, $limit);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', 'owner', $sortOrder, $offset, $limit);
 
             case 'org-admin':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', 'admin', $sortColumn, $sortDirection, $offset, $limit);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', 'admin', $sortOrder, $offset, $limit);
 
             case 'org-member':
-                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', 'member', $sortColumn, $sortDirection, $offset, $limit);
+                return $groupManager->getMyGroups($this->getUser()->getId(), 'other', 'member', $sortOrder, $offset, $limit);
 
             default:
                 return new Collection();
@@ -216,5 +211,33 @@ class IndexController extends Controller
             ['group_my_groups' => true, 'group_organisation_groups' => true, 'group_all_groups' => true],
             $cookie
         );
+    }
+
+    /**
+     * @param string $customSignedOrder
+     * @param string $defaultSignedOrder
+     * @return SortOrder
+     */
+    private function createSortOrder($customSignedOrder, $defaultSignedOrder)
+    {
+        if ($customSignedOrder) {
+            try {
+                return SortOrder::createFromSignedOrder($customSignedOrder);
+            } catch (Exception $ex) {
+                $this->get('logger')->warning($ex->getMessage());
+            }
+        }
+
+        return SortOrder::createFromSignedOrder($defaultSignedOrder);
+    }
+
+    /**
+     * @param ParameterBag $cookies
+     * @param string $groupName
+     * @return mixed
+     */
+    private function findSignedOrderInCookie(ParameterBag $cookies, $groupName)
+    {
+        return json_decode($cookies->get(sprintf('group_%s_sort_order', $groupName)));
     }
 }

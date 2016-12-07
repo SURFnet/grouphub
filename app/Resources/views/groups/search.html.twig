@@ -4,7 +4,7 @@
     <section class="background_grey sort">
         <a id="close_search" href="#" class="close"><i class="fa fa-times"></i></a>
 
-        {% include ':groups:_sort.html.twig' with {'color': 'grey'} %}
+        {% include ':groups:_sort.html.twig' with {'color': 'grey', 'sort': organisationGroups.sort} %}
 
         <div>
             <h3>{{ 'SEARCH'|trans }}</h3>

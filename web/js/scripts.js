@@ -242,6 +242,8 @@ var grouphub = (function ($) {
                 isSearch = $container.is('#group_search'),
                 query = isSearch ? $('#searchInput').val() : '';
 
+            $.cookie($container.attr('id') + '_sort_order', $sort.val(), {path: '/'});
+
             $.get($container.data('url'), {query: query, sort: $sort.val()}, function (data) {
                 $container.replaceWith(data);
                 initScroll('#' + $container.attr('id'));

@@ -4,7 +4,7 @@
     <section class="background_blue sort">
         <a id="close_my_groups" href="#" class="close"><i class="fa fa-times"></i></a>
 
-        {% include ':groups:_sort.html.twig' with {'color': 'blue'} %}
+        {% include ':groups:_sort.html.twig' with {'color': 'blue', 'sort': myGroups.sort} %}
 
         <div>
             <h3>{{ attribute(_context, 'my_groups_column_title_' ~ app.request.locale)|upper }}</h3>
@@ -12,36 +12,36 @@
         </div>
     </section>
 
-    {% if myGroups.grouphub.owner|length %}
+    {% if myGroups.collection.grouphub.owner|length %}
         <section class="owned">
             <i class="fa fa-fw fa-angle-down"></i>
             <h3>{{ 'Owner'|trans }}</h3>
         </section>
 
         <ul>
-            {% include ':groups:my_groups-groups.html.twig' with {'type': 'my-owner', 'limit': 4, 'myGroups': myGroups.grouphub.owner} %}
+            {% include ':groups:my_groups-groups.html.twig' with {'type': 'my-owner', 'limit': 4, 'myGroups': myGroups.collection.grouphub.owner} %}
         </ul>
     {% endif %}
 
-    {% if myGroups.grouphub.admin|length %}
+    {% if myGroups.collection.grouphub.admin|length %}
         <section class="owned">
             <i class="fa fa-fw fa-angle-down"></i>
             <h3>{{ 'Administrator'|trans }}</h3>
         </section>
 
         <ul>
-            {% include ':groups:my_groups-groups.html.twig' with {'type': 'my-admin', 'limit': 4, 'myGroups': myGroups.grouphub.admin} %}
+            {% include ':groups:my_groups-groups.html.twig' with {'type': 'my-admin', 'limit': 4, 'myGroups': myGroups.collection.grouphub.admin} %}
         </ul>
     {% endif %}
 
-    {% if myGroups.grouphub.member|length %}
+    {% if myGroups.collection.grouphub.member|length %}
         <section class="owned">
             <i class="fa fa-fw fa-angle-down"></i>
             <h3>{{ 'Member'|trans }}</h3>
         </section>
 
         <ul>
-            {% include ':groups:my_groups-groups.html.twig' with {'type': 'my-member', 'limit': 4, 'myGroups': myGroups.grouphub.member} %}
+            {% include ':groups:my_groups-groups.html.twig' with {'type': 'my-member', 'limit': 4, 'myGroups': myGroups.collection.grouphub.member} %}
         </ul>
     {% endif %}
 
