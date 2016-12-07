@@ -218,7 +218,9 @@ class GrouphubClient
 
         $entities = array_slice($entities, $offset, $limit);
 
-        return new SynchronizableSequence($entities, $this->mapping);
+        $mapping = reset($entities) instanceof Group ? $this->mapping['group'] : [];
+
+        return new SynchronizableSequence($entities, $mapping);
     }
 
     /**
