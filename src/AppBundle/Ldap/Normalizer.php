@@ -182,11 +182,9 @@ class Normalizer
     {
         $mapping = $this->mapping['group'];
 
-        $data = array_filter(
-            [
-                $mapping['description'] => $group->getDescription(),
-            ]
-        );
+        if (!empty($mapping['description'])) {
+            $data[$mapping['description']] = $group->getDescription();
+        }
 
         if (!empty($mapping['owner'])) {
             $data[$mapping['owner']] = $group->getOwner()->getReference();
