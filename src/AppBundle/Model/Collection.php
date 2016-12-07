@@ -16,11 +16,12 @@ class Collection extends SynchronizableSequence
 
     /**
      * @param array $elements
-     * @param int   $totalCount
+     * @param int $totalCount
+     * @param array $mapping
      */
-    public function __construct(array $elements = [], $totalCount = 0)
+    public function __construct(array $elements = [], $totalCount = 0, array $mapping = [])
     {
-        parent::__construct($elements);
+        parent::__construct($elements, $mapping);
 
         $this->totalCount = $totalCount;
     }

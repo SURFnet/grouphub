@@ -228,19 +228,20 @@ class Group implements Comparable
     /**
      * @param Group $other
      *
+     * @param array $mapping
      * @return bool
      */
-    public function equals($other)
+    public function equals($other, array $mapping)
     {
         if ($this->compareTo($other) !== 0) {
             return false;
         }
 
-        if ($other->getName() !== $this->name) {
+        if (isset($mapping['name']) && $other->getName() !== $this->name) {
             return false;
         }
 
-        if ($other->getDescription() !== $this->description) {
+        if (isset($mapping['description']) && $other->getDescription() !== $this->description) {
             return false;
         }
 
