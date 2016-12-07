@@ -78,6 +78,11 @@ class GrouphubClient
     private $groupQuery;
 
     /**
+     * @var array
+     */
+    private $mapping;
+
+    /**
      * @param LdapClient  $readLdap
      * @param LdapClient  $writeLdap
      * @param LdapClients $fallbackLdaps
@@ -90,6 +95,7 @@ class GrouphubClient
      * @param string      $adminGroupsDn
      * @param string      $userQuery
      * @param string      $groupQuery
+     * @param array $mapping
      */
     public function __construct(
         LdapClient $readLdap,
@@ -103,7 +109,8 @@ class GrouphubClient
         $adhocDn,
         $adminGroupsDn = '',
         $userQuery = 'cn=*',
-        $groupQuery = 'cn=*'
+        $groupQuery = 'cn=*',
+        array $mapping = []
     ) {
         $this->readLdap = $readLdap;
         $this->writeLdap = $writeLdap;
@@ -119,6 +126,7 @@ class GrouphubClient
         $this->adminGroupsDn = $adminGroupsDn;
         $this->userQuery = $userQuery;
         $this->groupQuery = $groupQuery;
+        $this->mapping = $mapping;
     }
 
     /**
@@ -210,7 +218,9 @@ class GrouphubClient
 
         $entities = array_slice($entities, $offset, $limit);
 
-        return new SynchronizableSequence($entities);
+        $mapping = reset($entities) instanceof Group ? $this->mapping['group'] : [];
+
+        return new SynchronizableSequence($entities, $mapping);
     }
 
     /**

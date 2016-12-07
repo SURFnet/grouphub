@@ -31,6 +31,16 @@ class SynchronizableSequence extends Sequence
      * @var array
      */
     private $equalElements = [];
+    /**
+     * @var array
+     */
+    private $mapping;
+
+    public function __construct(array $elements, array $mapping)
+    {
+        parent::__construct($elements);
+        $this->mapping = $mapping;
+    }
 
     /**
      * @param Traversable $sourceSequence
@@ -161,7 +171,7 @@ class SynchronizableSequence extends Sequence
                 throw new RuntimeException('Elements are not the same');
             }
 
-            return $sourceElement->equals($destinationElement);
+            return $sourceElement->equals($destinationElement, $this->mapping);
         }
 
         return $sourceElement == $destinationElement;

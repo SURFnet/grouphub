@@ -10,7 +10,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncForEqualSequences()
     {
         $seq1 = new Sequence([1, 2, 3, 4, 5]);
-        $seq2 = new SynchronizableSequence([1, 2, 3, 4, 5]);
+        $seq2 = new SynchronizableSequence([1, 2, 3, 4, 5], []);
 
         $lastIndex = $seq2->synchronize($seq1);
 
@@ -26,7 +26,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncForRemovedElement()
     {
         $seq1 = new Sequence([1, 3, 4, 5]);
-        $seq2 = new SynchronizableSequence([1, 2, 3, 4, 5]);
+        $seq2 = new SynchronizableSequence([1, 2, 3, 4, 5], []);
 
         $lastIndex = $seq2->synchronize($seq1);
 
@@ -42,7 +42,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncForAddedElement()
     {
         $seq1 = new Sequence([1, 2, 3, 4, 5, 6]);
-        $seq2 = new SynchronizableSequence([1, 2, 3, 4, 5]);
+        $seq2 = new SynchronizableSequence([1, 2, 3, 4, 5], []);
 
         $lastIndex = $seq2->synchronize($seq1);
 
@@ -58,7 +58,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithoutOutOfBoundCheck()
     {
         $seq1 = new Sequence([1, 4, 6]);
-        $seq2 = new SynchronizableSequence([1, 2, 3, 4]);
+        $seq2 = new SynchronizableSequence([1, 2, 3, 4], []);
 
         $lastIndex = $seq2->synchronize($seq1);
 
@@ -74,7 +74,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithCheckAndOutOfBoundElement()
     {
         $seq1 = new Sequence([1, 4, 6]);
-        $seq2 = new SynchronizableSequence([1, 2, 3, 4]);
+        $seq2 = new SynchronizableSequence([1, 2, 3, 4], []);
 
         $lastIndex = $seq2->synchronize($seq1, true);
 
@@ -90,7 +90,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithoutCheckAndRemovalAtEnd()
     {
         $seq1 = new Sequence([1, 3, 4]);
-        $seq2 = new SynchronizableSequence([1, 2, 4, 7]);
+        $seq2 = new SynchronizableSequence([1, 2, 4, 7], []);
 
         $lastIndex = $seq2->synchronize($seq1);
 
@@ -106,7 +106,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithCheckAndRemovalAtEnd()
     {
         $seq1 = new Sequence([1, 3, 4]);
-        $seq2 = new SynchronizableSequence([1, 2, 4, 7]);
+        $seq2 = new SynchronizableSequence([1, 2, 4, 7], []);
 
         $lastIndex = $seq2->synchronize($seq1, true);
 
@@ -122,7 +122,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithCheckAndOutOfBoundAtEnd()
     {
         $seq1 = new Sequence([1, 3, 4]);
-        $seq2 = new SynchronizableSequence([1, 5, 6]);
+        $seq2 = new SynchronizableSequence([1, 5, 6], []);
 
         $lastIndex = $seq2->synchronize($seq1, true);
 
@@ -138,7 +138,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithCheckAndFullAddition()
     {
         $seq1 = new Sequence([1, 3, 4]);
-        $seq2 = new SynchronizableSequence([]);
+        $seq2 = new SynchronizableSequence([], []);
 
         $lastIndex = $seq2->synchronize($seq1, true);
 
@@ -154,7 +154,7 @@ class SynchronizableSequenceTest extends \PHPUnit_Framework_TestCase
     public function testSyncWithCheckAndFullRemoval()
     {
         $seq1 = new Sequence([]);
-        $seq2 = new SynchronizableSequence([1, 3, 4]);
+        $seq2 = new SynchronizableSequence([1, 3, 4], []);
 
         $lastIndex = $seq2->synchronize($seq1, true);
 

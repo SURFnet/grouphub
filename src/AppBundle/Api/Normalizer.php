@@ -18,6 +18,17 @@ use DateTime;
 class Normalizer
 {
     /**
+     * @var array
+     */
+    private $mapping;
+
+    public function __construct(array $mapping)
+    {
+        $this->mapping = $mapping;
+    }
+
+
+    /**
      * @param User $user
      *
      * @return array
@@ -133,7 +144,7 @@ class Normalizer
             $result[] = $this->denormalizeGroup($group);
         }
 
-        return new Collection($result, $groups['count']);
+        return new Collection($result, $groups['count'], $this->mapping['group']);
     }
 
     /**
@@ -146,7 +157,7 @@ class Normalizer
         return new Group(
             $group['id'],
             isset($group['reference']) ? $group['reference'] : '',
-            isset($group['name']) ? $group['name'] : '',
+            isset($group['name']) ? sprintf('%s_%s', $group['name'], $group['id']) : '',
             isset($group['description']) ? $group['description'] : '',
             isset($group['type']) ? $group['type'] : '',
             isset($group['owner']) ? $this->denormalizeUser($group['owner']) : null,
