@@ -487,7 +487,7 @@ var grouphub = (function ($) {
         $editGroup.on('keyup', '.searchInput', $.debounce(250, searchUsersOrGroups));
 
         // Trigger search when type is changed
-        $editGroup.on('click', 'input[name=search-type]', function(){
+        $editGroup.on('change', 'select[name=search-type]', function() {
             $('.searchInput').trigger('keyup');
         });
 
