@@ -1342,6 +1342,11 @@ footer a {
 .edit_group_container ul.users > div:last-child > li:last-child {
     margin-bottom: 20px; }
 
+.edit_group_container ul.users li div:first-child {
+    float:left;
+    max-width: 90%;
+}
+
 .edit_group_container ul.users li p {
     margin: 0 60px 0 0;
     padding: 0;
@@ -1367,7 +1372,8 @@ footer a {
 /* line 248, _edit_group.scss */
 .edit_group_container ul.users li a {
     float: right;
-    display: inline-block; }
+}
+
 /* line 251, _edit_group.scss */
 .edit_group_container ul.users li a i {
     background-color: white;
@@ -1375,7 +1381,7 @@ footer a {
     border: 1px solid #a6a6a6;
     border-radius: 50%;
     padding: 2px 4px;
-    margin: 6px 15px 0 5px; }
+    margin: 0 15px }
 /* line 262, _edit_group.scss */
 .edit_group_container #group_deletion_confirmation {
     position: absolute;
