@@ -235,6 +235,11 @@ class LdapClient implements LdapClientInterface
      */
     private function updateAttribute($dn, array $data)
     {
+        if (!count($data)) {
+            $this->cache = [];
+            return;
+        }
+
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
@@ -266,6 +271,11 @@ class LdapClient implements LdapClientInterface
      */
     public function addAttribute($dn, array $data)
     {
+        if (!count($data)) {
+            $this->cache = [];
+            return;
+        }
+
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
@@ -281,6 +291,11 @@ class LdapClient implements LdapClientInterface
      */
     public function deleteAttribute($dn, array $data)
     {
+        if (!count($data)) {
+            $this->cache = [];
+            return;
+        }
+
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
