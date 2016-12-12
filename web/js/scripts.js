@@ -30,7 +30,7 @@ var grouphub = (function ($) {
             $searchResults = $searchContainer.next('ul');
 
         var url = $searchResults.data('url');
-        var type = $searchContainer.find("input[name='search-type']:checked").val();
+        var type = $searchContainer.find("select[name=search-type]").val();
         if (type === 'group') {
             url = url.replace('users', 'groups');
         }
