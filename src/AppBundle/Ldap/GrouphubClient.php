@@ -427,7 +427,7 @@ class GrouphubClient
      */
     public function addGroupUser($groupReference, $userReference)
     {
-        $this->writeLdap->addAttribute($groupReference, ['member' => $userReference]);
+        $this->writeLdap->addAttributes($groupReference, ['member' => $userReference]);
     }
 
     /**
@@ -445,7 +445,7 @@ class GrouphubClient
      */
     public function removeGroupUser($groupReference, $userReference)
     {
-        $this->writeLdap->deleteAttribute($groupReference, ['member' => $userReference]);
+        $this->writeLdap->deleteAttributes($groupReference, ['member' => $userReference]);
     }
 
     /**

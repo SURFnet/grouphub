@@ -225,16 +225,23 @@ class LdapClient implements LdapClientInterface
             return [];
         };
 
-        $this->deleteAttribute($dn, array_map($mapToDeleteValue, array_filter($data, $isEmptyValue)));
-        $this->updateAttribute($dn, array_filter($data, $isNonEmptyValue));
+        $this->deleteAttributes($dn, array_map($mapToDeleteValue, array_filter($data, $isEmptyValue)));
+        $this->updateAttributes($dn, array_filter($data, $isNonEmptyValue));
     }
 
     /**
+     * Updates one or more existing attributes in the specified dn.
+     *
      * @param string $dn
      * @param array $data
      */
-    private function updateAttribute($dn, array $data)
+    private function updateAttributes($dn, array $data)
     {
+        if (!count($data)) {
+            $this->cache = [];
+            return;
+        }
+
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
@@ -261,11 +268,18 @@ class LdapClient implements LdapClientInterface
     }
 
     /**
+     * Adds one or more attributes to the specified dn.
+     *
      * @param string $dn
      * @param array  $data
      */
-    public function addAttribute($dn, array $data)
+    public function addAttributes($dn, array $data)
     {
+        if (!count($data)) {
+            $this->cache = [];
+            return;
+        }
+
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
@@ -276,11 +290,18 @@ class LdapClient implements LdapClientInterface
     }
 
     /**
+     * Removes one or more attributes from the specified dn
+     *
      * @param string $dn
-     * @param array  $data
+     * @param array  $data names of the attributes to delete
      */
-    public function deleteAttribute($dn, array $data)
+    public function deleteAttributes($dn, array $data)
     {
+        if (!count($data)) {
+            $this->cache = [];
+            return;
+        }
+
         if (!$this->isBound) {
             $this->bind($this->dn, $this->password);
         }
