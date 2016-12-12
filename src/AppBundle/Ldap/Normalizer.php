@@ -132,7 +132,7 @@ class Normalizer
             $result[] = new Group(
                 null,
                 $group['dn'],
-                $group['cn'][0],
+                isset($group[$mapping['name']][0]) ? $group[$mapping['name']][0] : '',
                 isset($group[$mapping['description']][0]) ? $group[$mapping['description']][0] : ''
             );
         }
