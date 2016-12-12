@@ -112,6 +112,7 @@ class IndexController extends Controller
             'allGroups'     => ['sort'=> $allGroupsSortOrder->toSignedOrder(), 'collection' => $allGroups],
             'organisationGroups' => ['sort'=> $organisationGroupsSortOrder->toSignedOrder(), 'collection' => $organisationGroups],
             'memberships'   => $memberships,
+            'sort'          => $signedOrder,
             'offset'        => $offset,
             'limit'         => $limit,
             'query'         => $searchQuery,
