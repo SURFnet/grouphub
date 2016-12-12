@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Model\Membership;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,6 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VootController extends Controller
 {
+    private $allowedRoles = [
+        Membership::ROLE_ADMIN,
+        Membership::ROLE_MEMBER
+    ];
+
     /**
      * @Route("/user/{loginName}/groups", name="voot_groups")
      * @Method("GET")
@@ -31,15 +37,17 @@ class VootController extends Controller
             throw $this->createNotFoundException('User not found');
         }
 
-        $memberships = $this->get('app.membership_manager')->findUserMemberships($user->getId(), 0, 9999);
+        $filterAllowedRoles = function(Membership $membership) {
+            return in_array($membership->getRole(), $this->allowedRoles);
+        };
+
+        $memberships = $this->get('app.membership_manager')
+            ->findUserMemberships($user->getId(), 0, 9999)
+            ->filter($filterAllowedRoles);
 
         $result = [];
 
         foreach ($memberships as $membership) {
-            if ($membership->getRole() === 'prospect') {
-                continue;
-            }
-
             $result[] = [
                 'id'          => $membership->getGroup()->getId(),
                 'displayName' => $membership->getGroup()->getName(),
