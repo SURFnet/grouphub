@@ -838,12 +838,16 @@ nav .search_container .input_container input:focus {
     padding: 0;
     margin: 0; }
 
-.group p.name{
-    overflow-x: auto;
+.group p.name,
+#group_title,
+.edit_group_container ul.users li p {
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
+
 #group_title {
-    margin: 0 60px 0 60px;
-    overflow-x: auto;
+    margin: 0 60px;
 }
 
 /* line 1, _group_section.scss */
@@ -1341,7 +1345,6 @@ footer a {
 .edit_group_container ul.users li p {
     margin: 0 60px 0 0;
     padding: 0;
-    overflow-x: auto;
 }
 
 /* line 231, _edit_group.scss */
