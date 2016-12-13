@@ -13,34 +13,34 @@
     </section>
 
     {% if myGroups.collection.other.owner|length %}
-        <section class="owned">
-            <i class="fa fa-fw fa-angle-down"></i>
+        <section class="owned" id="group_organisation_groups_owner">
+            <i class="fa fa-fw {% if displayState.organisation_groups_owner == 'collapsed' %}fa-angle-right{% else %}fa-angle-down{% endif %}"></i>
             <h3>{{ 'Owner'|trans }}</h3>
         </section>
 
-        <ul>
+        <ul class="{% if displayState.organisation_groups_owner == 'collapsed' %}hidden{% endif %}">
             {% include ':groups:organisation_groups-groups.html.twig' with {'type': 'org-owner', 'limit': 4, 'myGroups': myGroups.collection.other.owner} %}
         </ul>
     {% endif %}
 
     {% if myGroups.collection.other.admin|length %}
-        <section class="owned">
-            <i class="fa fa-fw fa-angle-down"></i>
+        <section class="owned" id="group_organisation_groups_admin">
+            <i class="fa fa-fw {% if displayState.organisation_groups_admin == 'collapsed' %}fa-angle-right{% else %}fa-angle-down{% endif %}"></i>
             <h3>{{ 'Administrator'|trans }}</h3>
         </section>
 
-        <ul>
+        <ul class="{% if displayState.organisation_groups_admin == 'collapsed' %}hidden{% endif %}">
             {% include ':groups:organisation_groups-groups.html.twig' with {'type': 'org-admin', 'limit': 4, 'myGroups': myGroups.collection.other.admin} %}
         </ul>
     {% endif %}
 
     {% if myGroups.collection.other.member|length %}
-        <section class="owned">
-            <i class="fa fa-fw fa-angle-down"></i>
+        <section class="owned" id="group_organisation_groups_member">
+            <i class="fa fa-fw {% if displayState.organisation_groups_member == 'collapsed' %}fa-angle-right{% else %}fa-angle-down{% endif %}"></i>
             <h3>{{ 'Member'|trans }}</h3>
         </section>
 
-        <ul>
+        <ul class="{% if displayState.organisation_groups_member == 'collapsed' %}hidden{% endif %}">
             {% include ':groups:organisation_groups-groups.html.twig' with {'type': 'org-member', 'limit': 4, 'myGroups': myGroups.collection.other.member} %}
         </ul>
     {% endif %}
