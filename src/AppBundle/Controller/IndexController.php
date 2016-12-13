@@ -117,6 +117,28 @@ class IndexController extends Controller
             array_merge($allGroups->toArray(), $organisationGroups->toArray())
         );
 
+        $expandableGroups = [
+            'my_groups_owner',
+            'my_groups_admin',
+            'my_groups_member',
+            'organisation_groups_owner',
+            'organisation_groups_admin',
+            'organisation_groups_member',
+        ];
+
+        $getCookieValue = function($name) use ($cookies) {
+            return json_decode($cookies->get(sprintf('group_%s_display', $name)));
+        };
+
+        $getDisplayState = function () use ($expandableGroups, $getCookieValue) {
+            return array_map(
+                function ($name) use ($getCookieValue) {
+                    return $getCookieValue($name) === 'collapsed' ? 'collapsed' : 'expanded';
+                },
+                array_combine($expandableGroups, $expandableGroups)
+            );
+        };
+
         return [
             'myGroups'      => ['sort'=> $myGroupsSortOrder->toSignedOrder(), 'collection' => $myGroups],
             'allGroups'     => ['sort'=> $allGroupsSortOrder->toSignedOrder(), 'collection' => $allGroups],
@@ -128,6 +150,7 @@ class IndexController extends Controller
             'query'         => $searchQuery,
             'type'          => $type,
             'visibleGroups' => $this->parsePanelsCookie($cookies),
+            'displayState'  => $getDisplayState()
         ];
     }
 

@@ -222,7 +222,12 @@ var grouphub = (function ($) {
 
         $groupContainer.on('click', '.group .owned i', function () {
             $(this).toggleClass('fa-angle-down').toggleClass('fa-angle-right');
-            $(this).closest('.owned').next('ul').toggleClass('hidden');
+            var $list = $(this).closest('.owned').next('ul');
+            var $header = $(this).closest('.owned');
+
+            $list.toggleClass('hidden');
+
+            $.cookie($header.attr('id') + '_display', ($list.hasClass('hidden') ? 'collapsed' : 'expanded'), {path: '/'});
 
             return false;
         });
