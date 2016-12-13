@@ -68,9 +68,19 @@ class IndexController extends Controller
             throw new BadRequestHttpException();
         }
 
+        $groups = $this->getGroups($request->cookies, $query, $sort, $offset, $limit, $type);
+
+        $pluckCollection = function ($value) {
+            if (isset($value['collection'])) {
+                return $value['collection'];
+            }
+
+            return $value;
+        };
+
         return $this->render(
             $this->getTemplate($type),
-            $this->getGroups($request->cookies, $query, $sort, $offset, $limit, $type)
+            is_null($type) ? $groups: array_map($pluckCollection, $groups)
         );
     }
 
