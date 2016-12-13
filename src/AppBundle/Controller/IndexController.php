@@ -126,7 +126,7 @@ class IndexController extends Controller
             'organisation_groups_member',
         ];
 
-        $getCookieValue = function($name) use ($cookies) {
+        $getCookieValue = function ($name) use ($cookies) {
             return json_decode($cookies->get(sprintf('group_%s_display', $name)));
         };
 
