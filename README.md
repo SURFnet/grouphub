@@ -227,3 +227,5 @@ Add the following to the crontab:
 # Sync modified groups back to LDAP every 5 minutes
 */5 * * * * /project/dir/current/current/bin/console grouphub:sync -e=prod --type=queue
 ```
+
+also see: [Docs](docs/)
