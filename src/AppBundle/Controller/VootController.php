@@ -37,7 +37,7 @@ class VootController extends Controller
             throw $this->createNotFoundException('User not found');
         }
 
-        $filterAllowedRoles = function(Membership $membership) {
+        $filterAllowedRoles = function (Membership $membership) {
             return in_array($membership->getRole(), $this->allowedRoles);
         };
 
