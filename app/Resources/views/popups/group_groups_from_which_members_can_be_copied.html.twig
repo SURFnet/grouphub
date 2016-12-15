@@ -1,12 +1,12 @@
 <div class="jscroll-inner">
-{% for groupToAdd in groups %}
-    <li class="group-{{ groupToAdd.id }}" data-group-id="{{ groupToAdd.id }}">
+{% for groupToCopyMembersFrom in groups %}
+    <li class="group-{{ groupToCopyMembersFrom.id }}" data-group-id="{{ groupToCopyMembersFrom.id }}">
         <div>
-            <p>{{ groupToAdd.name }}</p>
+            <p>{{ groupToCopyMembersFrom.name }}</p>
         </div>
 
         <a href="#" class="add rounded"
-           data-url="{{ path('membership_add_group', {groupId: group.id, groupToAddId: groupToAdd.id}) }}">
+           data-url="{{ path('membership_copy_members_from_group', {groupId: group.id, groupToCopyMembersFromId: groupToCopyMembersFrom.id}) }}">
             <i class="fa fa-plus"></i>
         </a>
 

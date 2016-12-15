@@ -211,7 +211,7 @@ class GroupController extends Controller
         );
 
         return $this->render(
-            ':popups:group_groups.html.twig',
+            'group_groups_from_which_members_can_be_copied.html.twig',
             [
                 'group' => $group,
                 'groups' => $groups,

@@ -51,14 +51,26 @@
                 </a>
             </li>
             <li>
+                {# Add members tab button #}
                 {% if is_granted('EDIT', group) %}
                 <a id="add_members" href="#">
                     <i class="rounded fa fa-plus"></i>{{ 'Add members'|trans }}
                 </a>
                 {% endif %}
             </li>
+
+            <li>
+                {# Add groups tab button #}
+                {% if is_granted('EDIT', group) %}
+                <a id="add_groups" href="#">
+                    <i class="rounded fa fa-plus"></i>{{ 'Add groups'|trans }}
+                </a>
+                {% endif %}
+            </li>
+
         </ul>
 
+        <div>
         <div id="group_members_tab">
             <div class="search_container">
                 <div class="input_container">
@@ -69,11 +81,12 @@
                 </div>
             </div>
 
-            <ul class="users" data-url="{{ path('search_group_members', {'id': group.id}) }}">
+            <ul class="users_or_groups" data-url="{{ path('search_group_members', {'id': group.id}) }}">
                 {% include(':popups:group_members.html.twig') %}
             </ul>
         </div>
 
+        {# Add users tab content #}
         {% if is_granted('EDIT', group) %}
             <div id="add_members_tab" class="hidden">
                 <div class="search_container">
@@ -89,11 +102,30 @@
                     </div>
                 </div>
 
-                <ul class="users" data-url="{{ path('search_group_users', {'id': group.id}) }}">
+                <ul class="users_or_groups" data-url="{{ path('search_group_users', {'id': group.id}) }}">
                     {% include(':popups:group_users.html.twig') with {'members': memberships} %}
                 </ul>
             </div>
         {% endif %}
+
+        {# Add groups tab content #}
+        {% if is_granted('EDIT', group) %}
+            <div id="add_groups_tab" class="hidden">
+                <div class="search_container">
+                    <div class="input_container">
+                        <i class="fa fa-search"></i>
+                        <div class="overflow">
+                            <input class="searchInput" type="text"/>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="users_or_groups" data-url="{{ path('search_group_groups', {'id': group.id}) }}">
+                    {#{% include(':popups:group_groups_from_which_members_can_be_copied.html.twig') with {'groups': groups} %}#}
+                </ul>
+            </div>
+        {% endif %}
+        </div>
     </div>
 
     {% if is_granted('EDIT', group) %}

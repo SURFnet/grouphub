@@ -45,15 +45,15 @@ class MembershipController extends Controller
     }
 
     /**
-     * @Route("/group/{groupId}/group/{groupToAddId}/add", name="membership_add_group")
+     * @Route("/group/{groupId}/copyMembersFromGroup/{groupToCopyMembersFromId}", name="membership_copy_members_from_group")
      * @Method("POST")
      *
      * @param int $groupId
-     * @param int $groupToAddId
+     * @param int $groupToCopyMembersFromId
      *
      * @return Response
      */
-    public function addMembershipGroupAction($groupId, $groupToAddId)
+    public function addMembersFromGroupAction($groupId, $groupToCopyMembersFromId)
     {
         /** @var GroupManager $groupManager */
         $groupManager = $this->get('app.group_manager');
@@ -70,9 +70,9 @@ class MembershipController extends Controller
         /** @var MembershipManager $membershipManager */
         $membershipManager = $this->get('app.membership_manager');
 
-        $findMemberShips = function () use ($membershipManager, $groupToAddId) {
+        $findMemberShips = function () use ($membershipManager, $groupToCopyMembersFromId) {
             return $membershipManager
-                ->findGroupMemberships($groupToAddId, null, 0, PHP_INT_MAX)
+                ->findGroupMemberships($groupToCopyMembersFromId, null, 0, PHP_INT_MAX)
                 ->toArray();
         };
 

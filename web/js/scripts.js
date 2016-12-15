@@ -335,28 +335,21 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $editGroup.on('click', '#add_members', function() {
-            $('#group_members').removeClass('active');
-            $('#group_members_tab').addClass('hidden');
+        function toggleActiveTab ($tab) {
+            var $tabContent = $('#' + $tab.attr('id') + '_tab');
+            $tabContent.siblings().addClass('hidden');
+            $tab.closest('ul').find('a').removeClass('active');
 
-            $('#add_members').addClass('active');
-            $('#add_members_tab').removeClass('hidden');
+            $tabContent.removeClass('hidden');
+            $tab.addClass('active');
 
-            initScroll('#add_members_tab ul');
-
-            return false;
-        });
-
-        $editGroup.on('click', '#group_members', function() {
-            $('#group_members').addClass('active');
-            $('#group_members_tab').removeClass('hidden');
-
-            $('#add_members').removeClass('active');
-            $('#add_members_tab').addClass('hidden');
-
-            initScroll('#group_members_tab ul');
+            initScroll($tabContent.attr('id') + ' ul');
 
             return false;
+        }
+
+        $editGroup.on('click', '.tabs a', function() {
+            return toggleActiveTab($(this));
         });
 
         $editGroup.on('click', '.add', function () {
