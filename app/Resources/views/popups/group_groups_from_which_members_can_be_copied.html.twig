@@ -7,7 +7,7 @@
 
         <a href="#" class="add rounded"
            data-url="{{ path('membership_copy_members_from_group', {groupId: group.id, groupToCopyMembersFromId: groupToCopyMembersFrom.id}) }}">
-            <i class="fa fa-plus"></i>
+            <i class="fa fa-copy"></i>
         </a>
 
     </li>
@@ -15,6 +15,6 @@
 
 {% set offset = offset + limit %}
 {% if offset < groups.totalCount %}
-    <a class="groups-next" href="{{ path('search_group_groups', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
+    <a class="groups-next" href="{{ path('search_group_groups_from_which_members_can_be_copied', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
 {% endif %}
 </div>

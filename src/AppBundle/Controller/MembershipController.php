@@ -45,6 +45,30 @@ class MembershipController extends Controller
     }
 
     /**
+     * @Route("/group/{groupId}/user/{groupToAddId}/add", name="group_membership_add")
+     * @Method("POST")
+     *
+     * @param int $groupId
+     * @param int $groupToAddId
+     *
+     * @return Response
+     */
+    public function addGroupMembershipAction($groupId, $groupToAddId)
+    {
+        $group = $this->get('app.group_manager')->getGroup($groupId);
+
+        if (empty($group)) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $this->get('app.membership_manager')->addGroupMembership($groupId, $groupToAddId);
+
+        return new Response();
+    }
+
+    /**
      * @Route("/group/{groupId}/copyMembersFromGroup/{groupToCopyMembersFromId}", name="membership_copy_members_from_group")
      * @Method("POST")
      *

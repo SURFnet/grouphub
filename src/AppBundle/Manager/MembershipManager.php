@@ -160,6 +160,15 @@ class MembershipManager
     }
 
     /**
+     * @param int $groupId
+     * @param int $groupToAddId
+     */
+    public function addGroupMembership($groupId, $groupToAddId)
+    {
+        $this->client->addGroupGroup($groupId, $groupToAddId);
+    }
+
+    /**
      * @param int    $groupId
      * @param int    $userId
      * @param string $message

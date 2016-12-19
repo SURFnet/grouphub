@@ -120,8 +120,8 @@
                     </div>
                 </div>
 
-                <ul class="users_or_groups" data-url="{{ path('search_group_groups', {'id': group.id}) }}">
-                    {#{% include(':popups:group_groups_from_which_members_can_be_copied.html.twig') with {'groups': groups} %}#}
+                <ul class="users_or_groups" data-url="{{ path('search_group_groups_which_can_be_added', {'id': group.id}) }}">
+                    {% include(':popups:group_groups_which_can_be_added.html.twig') with {'groups': groups} %}
                 </ul>
             </div>
         {% endif %}

@@ -1,0 +1,20 @@
+<div class="jscroll-inner">
+{% for groupToAdd in groups %}
+    <li class="group-{{ groupToAdd.id }}" data-group-id="{{ groupToAdd.id }}">
+        <div>
+            <p>{{ groupToAdd.name }}</p>
+        </div>
+
+        <a href="#" class="add rounded"
+           data-url="{{ path('group_membership_add', {groupId: group.id, groupToAddId: groupToAdd.id}) }}">
+            <i class="fa fa-plus"></i>
+        </a>
+
+    </li>
+{% endfor %}
+
+{% set offset = offset + limit %}
+{% if offset < groups.totalCount %}
+    <a class="groups-next" href="{{ path('search_group_groups_which_can_be_added', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
+{% endif %}
+</div>

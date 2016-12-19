@@ -60,9 +60,10 @@ class GroupController extends Controller
 
         $members = $this->get('app.membership_manager')->findGroupMemberships($group->getId(), null, $offset, $limit);
 
-        $users = $form = $notifications = $memberships = null;
+        $users = $groups = $form = $notifications = $memberships = null;
         if ($this->isGranted('EDIT', $group)) {
             $users = $this->get('app.user_manager')->findUsers(null, $offset, $limit);
+            $groups = $this->get('app.group_manager')->findGroups(null, null, $offset, $limit, SortOrder::ascending('name'));
             $memberships = $this->get('app.membership_manager')->findGroupMembershipsForUsers($group->getId(), $users);
 
             $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
@@ -82,6 +83,7 @@ class GroupController extends Controller
                 'members'       => $members,
                 'memberships'   => $memberships,
                 'users'         => $users,
+                'groups'        => $groups,
                 'form'          => $form,
                 'notifications' => $notifications,
                 'query'         => '',
@@ -183,7 +185,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/group/{id}/groups/search", name="search_group_groups")
+     * @Route("/{_locale}/group/{id}/groups_from_which_members_can_be_copied/search", name="search_group_groups_from_which_members_can_be_copied")
      * @Method("GET")
      *
      * @param int $id
@@ -191,7 +193,7 @@ class GroupController extends Controller
      *
      * @return Response
      */
-    public function searchGroupsAction($id, Request $request)
+    public function searchGroupsFromWhichMembersCanBeCopiedAction($id, Request $request)
     {
         $group = $this->getGroup($id);
 
@@ -211,7 +213,48 @@ class GroupController extends Controller
         );
 
         return $this->render(
-            'group_groups_from_which_members_can_be_copied.html.twig',
+            ':popups:group_groups_from_which_members_can_be_copied.html.twig',
+            [
+                'group' => $group,
+                'groups' => $groups,
+                'notifications' => $notifications,
+                'query' => $query,
+                'offset' => $offset,
+                'limit' => $limit
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/group/{id}/groups_which_can_be_added/search", name="search_group_groups_which_can_be_added")
+     * @Method("GET")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function searchGroupsWhichCanBeAddedAction($id, Request $request)
+    {
+        $group = $this->getGroup($id);
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $query = $request->query->get('query');
+        $offset = $request->query->get('offset', 0);
+        $limit = $request->query->get('limit', 12);
+
+        /** @var GroupManager $groupManager */
+        $groupManager = $this->get('app.group_manager');
+        $groups = $groupManager->findGroups($query, null, $offset, $limit, SortOrder::ascending('name'));
+
+        $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
+            $this->getUser()->getId(),
+            $group->getId()
+        );
+
+        return $this->render(
+            ':popups:group_groups_which_can_be_added.html.twig',
             [
                 'group' => $group,
                 'groups' => $groups,

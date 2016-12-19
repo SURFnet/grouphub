@@ -27,12 +27,20 @@ var grouphub = (function ($) {
     var searchUsersOrGroups = function () {
         var $this = $(this),
             $searchContainer = $this.closest('.search_container'),
-            $searchResults = $searchContainer.next('ul');
+            $searchResults = $searchContainer.next('ul'),
+            $searchTab = $searchResults.parent(),
+            url = $searchResults.data('url'),
+            searchType;
 
-        var url = $searchResults.data('url');
-        var type = $searchContainer.find("select[name=search-type]").val();
-        if (type === 'group') {
-            url = url.replace('users', 'groups');
+        if ($searchTab.attr('id') === 'add_groups_tab') {
+            url = url.replace('users', 'groups_which_can_be_added');
+        }
+
+        if ($searchTab.attr('id') === 'add_members_tab') {
+            var searchType = $searchContainer.find("select[name=search-type]").val();
+            if (searchType === 'group') {
+                url = url.replace('users', 'groups_from_which_members_can_be_copied');
+            }
         }
 
         $searchResults.html('<li class="spinner"><i class="fa fa-spinner fa-spin"></li>');
@@ -486,7 +494,7 @@ var grouphub = (function ($) {
 
         // Trigger search when type is changed
         $editGroup.on('change', 'select[name=search-type]', function() {
-            $('.searchInput').trigger('keyup');
+            $(this).parent().find('.searchInput').trigger('keyup');
         });
 
         $editGroup.on('click', '.prospect_details', function () {

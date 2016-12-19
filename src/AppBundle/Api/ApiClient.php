@@ -430,6 +430,17 @@ class ApiClient
     }
 
     /**
+     * @param int $groupId
+     * @param int $groupToAddId
+     */
+    public function addGroupGroup($groupId, $groupToAddId)
+    {
+        $data = $this->encode(['groupInGroup' => ['groupInGroup' => $groupToAddId]]);
+
+        $this->guzzle->post('groups/' . $groupId . '/groups', ['body' => $data]);
+    }
+
+    /**
      * @param int  $userId
      * @param User $user
      */
