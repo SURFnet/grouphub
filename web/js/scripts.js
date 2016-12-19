@@ -102,8 +102,8 @@ var grouphub = (function ($) {
     };
 
     var userAddMode = function (groupId, userId) {
-        var $member = $('.edit_group #group_members_tab .users').find('.user-' + userId),
-            $user = $('.edit_group #add_members_tab .users').find('.user-' + userId),
+        var $member = $('.edit_group #group_members_tab .users_or_groups').find('.user-' + userId),
+            $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId),
             $tpl = $('.edit_group .user-add-tpl').clone();
 
         $member.remove();
@@ -113,9 +113,9 @@ var grouphub = (function ($) {
     };
 
     var userEditMode = function (groupId, userId, value) {
-        var $members = $('.edit_group #group_members_tab .users'),
+        var $members = $('.edit_group #group_members_tab .users_or_groups'),
             $member = $members.find('.user-' + userId),
-            $user = $('.edit_group #add_members_tab .users').find('.user-' + userId),
+            $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId),
             $tpl = $('.edit_group .user-edit-tpl').clone();
 
         value = typeof value !== 'undefined' ? value : 'member';
@@ -362,7 +362,7 @@ var grouphub = (function ($) {
 
         $editGroup.on('click', '.add', function () {
             var $this = $(this),
-                $searchResults = $editGroup.find('#add_members_tab .users');
+                $searchResults = $editGroup.find('#add_members_tab .users_or_groups');
 
             $.post($this.data('url'), function (membersHtml) {
                 var id = $editGroup.find('.edit_group').data('id'),
