@@ -45,7 +45,7 @@ class MembershipController extends Controller
     }
 
     /**
-     * @Route("/group/{groupId}/user/{groupToAddId}/add", name="group_membership_add")
+     * @Route("/group/{groupId}/group/{groupToAddId}/add", name="group_membership_add")
      * @Method("POST")
      *
      * @param int $groupId
