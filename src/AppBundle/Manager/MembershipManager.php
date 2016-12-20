@@ -13,6 +13,8 @@ use Traversable;
 
 /**
  * Class MembershipManager
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class MembershipManager
 {
