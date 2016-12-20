@@ -24,6 +24,10 @@ class Collection extends SynchronizableSequence
         parent::__construct($elements, $mapping);
 
         $this->totalCount = $totalCount;
+
+        if (!empty($elements) && $totalCount === 0) {
+            $this->totalCount = count($elements);
+        }
     }
 
     /**

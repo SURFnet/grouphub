@@ -126,6 +126,17 @@ class MembershipManager
     }
 
     /**
+     * @param int $groupId
+     * @param string $offset
+     * @param string $limit
+     * @return Collection
+     */
+    public function findGroupMemberGroups($groupId, $offset, $limit)
+    {
+        return $this->client->findGroupMemberGroups($groupId, SortOrder::ascending('name'), $offset, $limit);
+    }
+
+    /**
      * @param int    $groupId
      * @param int    $userId
      * @param string $role
@@ -144,6 +155,17 @@ class MembershipManager
     public function deleteMembership($groupId, $userId)
     {
         $this->client->removeGroupUser($groupId, $userId);
+
+        $this->queue->addGroupToQueue($groupId);
+    }
+
+    /**
+     * @param int $groupId
+     * @param int $memberGroupId
+     */
+    public function deleteMemberGroup($groupId, $memberGroupId)
+    {
+        $this->client->removeGroupMemberGroup($groupId, $memberGroupId);
 
         $this->queue->addGroupToQueue($groupId);
     }

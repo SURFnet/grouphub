@@ -81,8 +81,20 @@
                 </div>
             </div>
 
-            <ul class="users_or_groups" data-url="{{ path('search_group_members', {'id': group.id}) }}">
+            <h2>
+                {{ 'Users'|trans }}
+            </h2>
+
+            <ul class="member_collection users_or_groups" data-url="{{ path('search_group_members', {'id': group.id}) }}">
                 {% include(':popups:group_members.html.twig') %}
+            </ul>
+
+            <h2>
+                {{ 'Groups'|trans }}
+            </h2>
+
+            <ul class="member_collection" data-url="{{ path('search_group_member_groups', {'id': group.id}) }}">
+                {% include(':popups:group_member_groups.html.twig') %}
             </ul>
         </div>
 
@@ -102,7 +114,7 @@
                     </div>
                 </div>
 
-                <ul class="users_or_groups" data-url="{{ path('search_group_users', {'id': group.id}) }}">
+                <ul class="member_collection users_or_groups" data-url="{{ path('search_group_users', {'id': group.id}) }}">
                     {% include(':popups:group_users.html.twig') with {'members': memberships} %}
                 </ul>
             </div>
@@ -120,7 +132,7 @@
                     </div>
                 </div>
 
-                <ul class="users_or_groups" data-url="{{ path('search_group_groups_which_can_be_added', {'id': group.id}) }}">
+                <ul class="member_collection users_or_groups" data-url="{{ path('search_group_groups_which_can_be_added', {'id': group.id}) }}">
                     {% include(':popups:group_groups_which_can_be_added.html.twig') with {'groups': groups} %}
                 </ul>
             </div>

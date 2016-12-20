@@ -177,6 +177,28 @@ class ApiClient
     }
 
     /**
+     * @param int    $groupId
+     * @param int    $offset
+     * @param int    $limit
+     *
+     * @return Collection
+     */
+    public function findGroupMemberGroups($groupId, SortOrder $sortOrder, $offset = 0, $limit = 100)
+    {
+        $data = $this->guzzle->get('groups/' . $groupId . '/groups', [
+            'query' => [
+                'sort'   => $sortOrder->toSignedOrder(),
+                'offset' => $offset,
+                'limit'  => $limit,
+            ],
+        ]);
+
+        $data = $this->decode($data->getBody());
+
+        return $this->normalizer->denormalizeMemberGroups($data);
+    }
+
+    /**
      * @param int    $userId
      * @param string $role
      * @param SortOrder   $sortOrder
@@ -509,6 +531,23 @@ class ApiClient
     {
         try {
             $this->guzzle->delete('groups/' . $groupId . '/users/' . $userId);
+        } catch (ClientException $e) {
+            if ($e->getResponse()->getStatusCode() !== 404) {
+                throw $e;
+            }
+
+            // Ignore not found when trying to delete the exact resource
+        }
+    }
+
+    /**
+     * @param int $groupId
+     * @param int $memberGroupId
+     */
+    public function removeGroupMemberGroup($groupId, $memberGroupId)
+    {
+        try {
+            $this->guzzle->delete('groups/' . $groupId . '/groups/' . $memberGroupId);
         } catch (ClientException $e) {
             if ($e->getResponse()->getStatusCode() !== 404) {
                 throw $e;

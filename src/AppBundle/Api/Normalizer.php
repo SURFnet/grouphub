@@ -4,6 +4,7 @@ namespace AppBundle\Api;
 
 use AppBundle\Model\Collection;
 use AppBundle\Model\Group;
+use AppBundle\Model\MemberGroup;
 use AppBundle\Model\Membership;
 use AppBundle\Model\Notification;
 use AppBundle\Model\User;
@@ -187,6 +188,18 @@ class Normalizer
     }
 
     /**
+     * @param array $memberGroups
+     *
+     * @return MemberGroup[]
+     */
+    public function denormalizeMemberGroups(array $memberGroups)
+    {
+        return new Collection(array_map(function(array $memberGroup) {
+            return $this->denormalizeMemberGroup($memberGroup);
+        }, $memberGroups));
+    }
+
+    /**
      * @param array $memberships
      *
      * @return array
@@ -224,6 +237,18 @@ class Normalizer
             $membership['role'],
             isset($membership['group']) ? $this->denormalizeGroup($membership['group']) : null,
             isset($membership['user']) ? $this->denormalizeUser($membership['user']) : null
+        );
+    }
+
+    /**
+     * @param array $memberGroup
+     *
+     * @return Membership
+     */
+    public function denormalizeMemberGroup(array $memberGroup)
+    {
+        return new MemberGroup(
+            isset($memberGroup['group_in_group']) ? $this->denormalizeGroup($memberGroup['group_in_group']) : null
         );
     }
 

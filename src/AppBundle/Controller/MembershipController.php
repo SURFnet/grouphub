@@ -188,6 +188,30 @@ class MembershipController extends Controller
     }
 
     /**
+     * @Route("/group/{groupId}/group/{memberGroupId}/delete", name="member_group_delete")
+     * @Method("POST")
+     *
+     * @param int $groupId
+     * @param int $memberGroupId
+     *
+     * @return Response
+     */
+    public function deleteMemberGroupAction($groupId, $memberGroupId)
+    {
+        $group = $this->get('app.group_manager')->getGroup($groupId);
+
+        if (empty($group)) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $this->get('app.membership_manager')->deleteMemberGroup($groupId, $memberGroupId);
+
+        return new Response();
+    }
+
+    /**
      * @Route("/group/{groupId}/me/add", name="my_membership_add")
      * @Method("POST")
      *

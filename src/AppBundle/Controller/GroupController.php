@@ -59,6 +59,7 @@ class GroupController extends Controller
         $limit = 12;
 
         $members = $this->get('app.membership_manager')->findGroupMemberships($group->getId(), null, $offset, $limit);
+        $memberGroups = $this->get('app.membership_manager')->findGroupMemberGroups($group->getId(), $offset, $limit);
 
         $users = $groups = $form = $notifications = $memberships = null;
         if ($this->isGranted('EDIT', $group)) {
@@ -82,6 +83,7 @@ class GroupController extends Controller
                 'group'         => $group,
                 'members'       => $members,
                 'memberships'   => $memberships,
+                'memberGroups'  => $memberGroups,
                 'users'         => $users,
                 'groups'        => $groups,
                 'form'          => $form,
@@ -298,6 +300,46 @@ class GroupController extends Controller
             [
                 'group'         => $group,
                 'members'       => $members,
+                'notifications' => $notifications,
+                'query'         => $query,
+                'offset'        => $offset,
+                'limit'         => $limit
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/group/{id}/member_groups/search", name="search_group_member_groups")
+     * @Method("GET")
+     *
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function searchMemberGroupsAction($id, Request $request)
+    {
+        $group = $this->getGroup($id);
+
+        $query = $request->query->get('query');
+        $offset = $request->query->get('offset', 0);
+        $limit = $request->query->get('limit', 12);
+
+        $memberGroups = $this->get('app.membership_manager')->findGroupMemberGroups($group->getId(), $query, $offset, $limit);
+
+        $notifications = null;
+        if ($this->isGranted('EDIT', $group)) {
+            $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
+                $this->getUser()->getId(),
+                $group->getId()
+            );
+        }
+
+        return $this->render(
+            ':popups:group_members.html.twig',
+            [
+                'group'         => $group,
+                'memberGroups'  => $memberGroups,
                 'notifications' => $notifications,
                 'query'         => $query,
                 'offset'        => $offset,

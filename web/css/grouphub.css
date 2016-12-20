@@ -840,7 +840,7 @@ nav .search_container .input_container input:focus {
 
 .group p.name,
 #group_title,
-.edit_group_container ul.users_or_groups li p {
+.edit_group_container ul.member_collection li p {
     text-overflow:ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -1329,7 +1329,7 @@ footer a {
 .edit_group_container .search_container .input_container input:focus {
     outline: none; }
 /* line 202, _edit_group.scss */
-.edit_group_container ul.users_or_groups {
+.edit_group_container ul.member_collection {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -1337,7 +1337,7 @@ footer a {
     overflow-y: auto;
     max-height: 380px; }
 /* line 210, _edit_group.scss */
-.edit_group_container ul.users_or_groups li {
+.edit_group_container ul.member_collection li {
     padding: 10px 0px 10px 20px;
     border-bottom: 1px solid #eaeaea;
     width: 100%;
@@ -1345,32 +1345,32 @@ footer a {
     display: inline-block;
 }
 /* line 212, _edit_group.scss */
-.edit_group_container ul.users_or_groups li.separator {
+.edit_group_container ul.member_collection li.separator {
     background-color: #52b2cd;
     color: white;
     text-align: center; }
 /* line 220, _edit_group.scss */
-.edit_group_container ul.users_or_groups > li:last-child {
+.edit_group_container ul.member_collection > li:last-child {
     margin-bottom: 20px; }
-.edit_group_container ul.users_or_groups > div:last-child > li:last-child {
+.edit_group_container ul.member_collection > div:last-child > li:last-child {
     margin-bottom: 20px; }
 
-.edit_group_container ul.users_or_groups li div:first-child {
+.edit_group_container ul.member_collection li div:first-child {
     float:left;
     max-width: 90%;
 }
 
-.edit_group_container ul.users_or_groups li p {
+.edit_group_container ul.member_collection li p {
     margin: 0 60px 0 0;
     padding: 0;
 }
 
 /* line 231, _edit_group.scss */
-.edit_group_container ul.users_or_groups li span {
+.edit_group_container ul.member_collection li span {
     color: #8a8a8a;
     font-size: 13px; }
 /* line 235, _edit_group.scss */
-.edit_group_container ul.users_or_groups li select {
+.edit_group_container ul.member_collection li select {
     margin-right: 10px;
     float: right;
     width: 80%;
@@ -1383,12 +1383,12 @@ footer a {
     font-size: 12px;
     margin-top: 4px; }
 /* line 248, _edit_group.scss */
-.edit_group_container ul.users_or_groups li a {
+.edit_group_container ul.member_collection li a {
     float: right;
 }
 
 /* line 251, _edit_group.scss */
-.edit_group_container ul.users_or_groups li a i {
+.edit_group_container ul.member_collection li a i {
     background-color: white;
     color: #a6a6a6;
     border: 1px solid #a6a6a6;
