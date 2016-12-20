@@ -1241,16 +1241,12 @@ footer a {
 /* line 131, _edit_group.scss */
 .edit_group_container ul.tabs li {
     text-align: center;
-    width: 33%;
+    width: 25%;
+    float:left;
     display: inline-block;
 }
 
-.edit_group_container ul.tabs li:first-child {
-    float:left;
-}
-
 .edit_group_container ul.tabs li:last-child {
-    width: 34%;
     float:right;
 }
 
