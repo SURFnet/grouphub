@@ -416,13 +416,20 @@ var grouphub = (function ($) {
 
             $.post($this.data('url'), function () {
                 var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
+                    $user = $this.closest('li'),
+                    $memberGroup = $this.closest('li');
+
+
+                if ($memberGroup) {
+                    $memberGroup.remove();
+                    return;
+                }
 
                 lowerGroupCount(id);
 
-                userAddMode(id, user);
+                userAddMode(id, $user.data('user-id'));
 
-                if (user == userId) {
+                if ($user.data('user-id') == userId) {
                     updateGroups();
                 }
             });
