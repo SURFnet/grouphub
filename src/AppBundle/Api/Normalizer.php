@@ -194,7 +194,7 @@ class Normalizer
      */
     public function denormalizeMemberGroups(array $memberGroups)
     {
-        return new Collection(array_map(function(array $memberGroup) {
+        return new Collection(array_map(function (array $memberGroup) {
             return $this->denormalizeMemberGroup($memberGroup);
         }, $memberGroups));
     }
