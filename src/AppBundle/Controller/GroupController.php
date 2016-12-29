@@ -228,7 +228,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/group/{id}/groups_which_can_be_added/search", name="search_group_groups_which_can_be_added")
+     * @Route("/{_locale}/group/{id}/groups/linkable", name="group_groups_linkable")
      * @Method("GET")
      *
      * @param int $id
@@ -236,7 +236,7 @@ class GroupController extends Controller
      *
      * @return Response
      */
-    public function searchGroupsWhichCanBeAddedAction($id, Request $request)
+    public function searchGroupsLinkableAction($id, Request $request)
     {
         $group = $this->getGroup($id);
 
@@ -248,7 +248,7 @@ class GroupController extends Controller
 
         /** @var GroupManager $groupManager */
         $groupManager = $this->get('app.group_manager');
-        $groups = $groupManager->findGroups($query, null, $offset, $limit, SortOrder::ascending('name'));
+        $groups = $groupManager->findGroupsLinkable($id, $query, null, $offset, $limit, SortOrder::ascending('name'));
 
         $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
             $this->getUser()->getId(),
@@ -256,7 +256,7 @@ class GroupController extends Controller
         );
 
         return $this->render(
-            ':popups:group_groups_which_can_be_added.html.twig',
+            ':popups:group_groups_linkable.html.twig',
             [
                 'group' => $group,
                 'groups' => $groups,

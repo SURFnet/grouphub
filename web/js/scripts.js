@@ -33,7 +33,7 @@ var grouphub = (function ($) {
             searchType;
 
         if ($searchTab.attr('id') === 'add_groups_tab') {
-            url = url.replace('users', 'groups_which_can_be_added');
+            url = url.replace('users', 'groups/linkable');
         }
 
         if ($searchTab.attr('id') === 'add_members_tab') {

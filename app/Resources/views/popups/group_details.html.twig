@@ -134,8 +134,8 @@
                     </div>
                 </div>
 
-                <ul class="member_collection users_or_groups" data-url="{{ path('search_group_groups_which_can_be_added', {'id': group.id}) }}">
-                    {% include(':popups:group_groups_which_can_be_added.html.twig') with {'groups': groups} %}
+                <ul class="member_collection users_or_groups" data-url="{{ path('group_groups_linkable', {'id': group.id}) }}">
+                    {% include(':popups:group_groups_linkable.html.twig') with {'groups': groups} %}
                 </ul>
             </div>
         {% endif %}

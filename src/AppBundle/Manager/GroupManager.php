@@ -98,6 +98,26 @@ class GroupManager
     }
 
     /**
+     * @param int $groupId
+     * @param string $query
+     * @param string $type
+     * @param int $offset
+     * @param int $limit
+     * @param SortOrder $sortOrder
+     * @return Collection|\AppBundle\Model\Group[]
+     */
+    public function findGroupsLinkable(
+        $groupId,
+        $query,
+        $type,
+        $offset,
+        $limit,
+        SortOrder $sortOrder
+    ) {
+        return $this->client->findGroupsLinkable($groupId, $query, $type, $offset, $limit, $sortOrder);
+    }
+
+    /**
      * @param int $userId
      * @param int $offset
      * @param int $limit

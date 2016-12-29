@@ -15,6 +15,6 @@
 
 {% set offset = offset + limit %}
 {% if offset < groups.totalCount %}
-    <a class="groups-next" href="{{ path('search_group_groups_which_can_be_added', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
+    <a class="groups-next" href="{{ path('group_groups_linkable', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
 {% endif %}
 </div>

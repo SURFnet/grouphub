@@ -389,6 +389,41 @@ class ApiClient
     }
 
     /**
+     * @param int $groupId
+     * @param string $query
+     * @param string $type
+     * @param int $offset
+     * @param int $limit
+     * @param SortOrder $sortOrder
+     * @param int[] $groupIds
+     * @return Collection
+     */
+    public function findGroupsLinkable(
+        $groupId,
+        $query,
+        $type,
+        $offset,
+        $limit,
+        SortOrder $sortOrder,
+        array $groupIds = null
+    ) {
+        $data = $this->guzzle->get(sprintf('groups/%u/groups/linkable', $groupId), [
+            'query' => [
+                'offset' => $offset,
+                'limit'  => $limit,
+                'sort'   => $sortOrder->toSignedOrder(),
+                'type'   => $type,
+                'query'  => $query,
+                'ids'    => $groupIds
+            ],
+        ]);
+
+        $data = $this->decode($data->getBody());
+
+        return $this->normalizer->denormalizeGroups($data);
+    }
+
+    /**
      * @param int $id
      *
      * @return Group
