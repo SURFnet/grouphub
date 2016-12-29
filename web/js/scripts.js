@@ -32,14 +32,10 @@ var grouphub = (function ($) {
             url = $searchResults.data('url'),
             searchType;
 
-        if ($searchTab.attr('id') === 'add_groups_tab') {
-            url = url.replace('users', 'groups/linkable');
-        }
-
         if ($searchTab.attr('id') === 'add_members_tab') {
             var searchType = $searchContainer.find("select[name=search-type]").val();
             if (searchType === 'group') {
-                url = url.replace('users', 'groups_from_which_members_can_be_copied');
+                url = url.replace('users/search', 'groups/copyable');
             }
         }
 

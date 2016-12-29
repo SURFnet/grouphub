@@ -187,7 +187,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/group/{id}/groups_from_which_members_can_be_copied/search", name="search_group_groups_from_which_members_can_be_copied")
+     * @Route("/{_locale}/group/{id}/groups/copyable", name="search_group_groups_copyable")
      * @Method("GET")
      *
      * @param int $id
@@ -195,7 +195,7 @@ class GroupController extends Controller
      *
      * @return Response
      */
-    public function searchGroupsFromWhichMembersCanBeCopiedAction($id, Request $request)
+    public function searchGroupsCopyableAction($id, Request $request)
     {
         $group = $this->getGroup($id);
 
@@ -215,7 +215,7 @@ class GroupController extends Controller
         );
 
         return $this->render(
-            ':popups:group_groups_from_which_members_can_be_copied.html.twig',
+            ':popups:group_groups_copyable.html.twig',
             [
                 'group' => $group,
                 'groups' => $groups,
