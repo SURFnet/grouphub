@@ -10,9 +10,9 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    grouphub_api_url: http://api.grouphub.surfuni.org
+    grouphub_api_url: http://dev.api.grouphub.org/app_dev.php/
     grouphub_api_username: 'grouphub'
-    grouphub_api_password: ~
+    grouphub_api_password: FooBar
 
     ldap_read_host: ~
     ldap_read_port: 389

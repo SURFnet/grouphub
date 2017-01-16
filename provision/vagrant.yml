@@ -11,7 +11,6 @@
   roles:
     - { role: franklinkim.timezone }
     - { role: geerlingguy.ntp, ntp_timezone: "{{ timezone }}" }
-    - { role: geerlingguy.ruby, ruby_install_from_source: true}
     - { role: apache }
     - { role: php, enable_xdebug: true }
     - { role: geerlingguy.composer }
@@ -89,8 +88,6 @@
         - npm install -g uglify-js
         - npm install -g uglifycss
 
-    - gem: name=capistrano-symfony pre_release=true
-
     - name: Configure virtualhost
       template: src="files/vhost.j2" dest="/etc/apache2/sites-available/{{ sitename }}"
 
@@ -107,3 +104,6 @@
       command: a2dissite default
 
     - service: name=apache2 state=restarted enabled=yes
+
+    - name: Dump assets to the web directory
+      command: /var/www/bin/console assetic:dump
