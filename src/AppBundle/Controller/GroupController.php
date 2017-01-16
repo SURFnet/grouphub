@@ -284,12 +284,14 @@ class GroupController extends Controller
             }
         );
 
+        $filename = sprintf('%s_%s_%s.csv', $group->getName(), $group->getId(), date('Y-m-d'));
+
         $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
         $response->headers->set(
             'Content-Disposition',
             $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                'grouphub-group-export.csv'
+                $filename
             )
         );
 
