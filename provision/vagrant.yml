@@ -104,3 +104,6 @@
       command: a2dissite default
 
     - service: name=apache2 state=restarted enabled=yes
+
+    - name: Dump assets to the web directory
+      command: /var/www/bin/console assetic:dump
