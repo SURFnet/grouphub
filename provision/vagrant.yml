@@ -11,7 +11,6 @@
   roles:
     - { role: franklinkim.timezone }
     - { role: geerlingguy.ntp, ntp_timezone: "{{ timezone }}" }
-    - { role: geerlingguy.ruby, ruby_install_from_source: true}
     - { role: apache }
     - { role: php, enable_xdebug: true }
     - { role: geerlingguy.composer }
@@ -88,8 +87,6 @@
         - npm -g update
         - npm install -g uglify-js
         - npm install -g uglifycss
-
-    - gem: name=capistrano-symfony pre_release=true
 
     - name: Configure virtualhost
       template: src="files/vhost.j2" dest="/etc/apache2/sites-available/{{ sitename }}"
