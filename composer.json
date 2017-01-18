@@ -69,5 +69,8 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
