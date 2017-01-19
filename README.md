@@ -1,39 +1,46 @@
-Grouphub
-=========
+# SURFnet GroupHub
 
-De business laag van de GroupHub applicatie: https://wiki.surfnet.nl/display/P3GFeI2015/2.+Business+Laag
+[![Build status](https://img.shields.io/travis/SURFnet/grouphub.svg)](https://travis-ci.org/SURFnet/grouphub)
 
-# Host machine requirements
+GroupHub is een groepsmanagementapplicatie voor het aanmaken en beheren van groepen binnen onderwijsinstellingen.
 
- - Virtualbox
- - Vagrant
- - Ansible
+Deze repository bevat GroupHub, de businesslaag die zijn data haalt uit de [GroupHub API](https://github.com/SURFnet/grouphub.api).
 
-## Vagrant plugins
-Make sure you have the following vagrant plugins installed.
+Zie de documentatie op [https://wiki.surfnet.nl/display/Grouphub/Systeemspecificaties](https://wiki.surfnet.nl/display/Grouphub/Systeemspecificaties).
 
-    vagrant-hostsupdater >=(0.0.11)
-    vagrant-share >=(1.1.4, system)
-    vagrant-vbguest >=(0.10.1)
+## Getting started
 
-# Installation
-- Run `vagrant up` in order to get the vagrant machine running
+### Prerequisites
 
-```sh
-<projectdir>$ vagrant ssh
-<vagrantbox>$ cd /vagrant
-<vagrantbox>$ composer install
-<vagrantbox>$ bin/console assetic:dump
+- [Vagrant](https://www.vagrantup.com/docs/installation/) + [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+  - [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) >=(0.0.11)
+  - vagrant-share >=(1.1.4, system)
+  - vagrant-vbguest >=(0.10.1)
+- [Ansible](https://docs.ansible.com/ansible/intro_installation.html)
+
+### Installing
+
+Install dependencies using:
+
+```
+composer install
 ```
 
-# Add
-`145.100.180.203 ldap.surfuni.org idp.surfuni.org`
+Add the following line to your hosts file (`/etc/hosts`):
 
-# Getting started
-After starting and provisioning your vagrant box you can go to:
-<http://dev.grouphub.org/app_dev.php>
+```
+145.100.180.203 ldap.surfuni.org idp.surfuni.org
+```
 
-# Running synchronization scripts
+Start the Vagrant machine (don't forget to also start the Vagrant machine of the [GroupHub API](https://github.com/SURFnet/grouphub.api)!)
+
+```
+vagrant up
+```
+
+Go to [http://dev.grouphub.org/app_dev.php](http://dev.grouphub.org/app_dev.php) to view the application in your browser.
+
+### Running synchronization scripts
 Note: you might have to add `app_dev.php/` to the `grouphub_api_url` parameter for dev
 ```sh
 <projectdir>$ vagrant ssh

@@ -5,41 +5,41 @@ services:
     app.ldap_read_client:
         class: AppBundle\Ldap\LdapClient
         arguments: ["%ldap_read_host%", "%ldap_read_port%", "%ldap_read_dn%", "%ldap_read_pass%"]
-        private: true
+        public: false
 
     app.ldap_write_client:
         class: AppBundle\Ldap\LdapClient
         arguments: ["%ldap_write_host%", "%ldap_write_port%", "%ldap_write_dn%", "%ldap_write_pass%"]
-        private: true
+        public: false
 
     app.ldap_fallback_clients:
         class: AppBundle\Ldap\LdapClients
-        private: true
+        public: false
 
     app.ldap_normalizer:
         class: AppBundle\Ldap\Normalizer
         arguments: ["%ldap.mapping%"]
-        private: true
+        public: false
 
     app.grouphub_ldap_client:
         class: AppBundle\Ldap\GrouphubClient
         arguments: ["@app.ldap_read_client", "@app.ldap_write_client", "@app.ldap_fallback_clients", "@app.ldap_normalizer", "%users_dn%", "%groups_dn%", "%grouphub_dn%", "%formal_dn%", "%adhoc_dn%", "%admin_groups_dn%", "%user_query%", "%group_query%", "%ldap.mapping%"]
-        private: true
+        public: false
 
     app.api_normalizer:
         class: AppBundle\Api\Normalizer
         arguments: ["%ldap.mapping%"]
-        private: true
+        public: false
 
     app.api_client:
         class: AppBundle\Api\ApiClient
         arguments: ["@guzzle.client.api_grouphub", "@app.api_normalizer"]
-        private: true
+        public: false
 
     app.queue:
         class: AppBundle\Service\QueueService
         arguments: ["@doctrine_cache.providers.cache"]
-        private: true
+        public: false
 
     app.sync:
         class: AppBundle\Service\SyncService
