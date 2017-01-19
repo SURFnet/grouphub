@@ -32,21 +32,20 @@ framework:
         save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
-    assets: ~
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        application_title: %application_title%
-        my_groups_column_title_en: %my_groups_column_title_en%
-        my_groups_column_title_nl: %my_groups_column_title_nl%
-        org_groups_column_title_en: %org_groups_column_title_en%
-        org_groups_column_title_nl: %org_groups_column_title_nl%
-        all_groups_column_title_en: %all_groups_column_title_en%
-        all_groups_column_title_nl: %all_groups_column_title_nl%
-        documentation_url: %documentation_url%
+        application_title: '%application_title%'
+        my_groups_column_title_en: '%my_groups_column_title_en%'
+        my_groups_column_title_nl: '%my_groups_column_title_nl%'
+        org_groups_column_title_en: '%org_groups_column_title_en%'
+        org_groups_column_title_nl: '%org_groups_column_title_nl%'
+        all_groups_column_title_en: '%all_groups_column_title_en%'
+        all_groups_column_title_nl: '%all_groups_column_title_nl%'
+        documentation_url: '%documentation_url%'
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -90,8 +89,8 @@ hslavich_simplesamlphp:
     authentication_attribute: urn:mace:dir:attribute-def:uid
 
 accelerator_cache:
-    host: %url%
-    web_dir: %kernel.root_dir%/../web
+    host: '%url%'
+    web_dir: '%kernel.root_dir%/../web'
 
 doctrine_cache:
     providers:
