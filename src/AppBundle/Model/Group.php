@@ -2,6 +2,7 @@
 
 namespace AppBundle\Model;
 
+use Assert\Assertion;
 use DateTime;
 use Doctrine\Common\Comparable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -165,6 +166,13 @@ class Group implements Comparable
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    public function isOfType($type)
+    {
+        Assertion::inArray($type, [self::TYPE_LDAP, self::TYPE_FORMAL, self::TYPE_GROUPHUB]);
+
+        return $this->type === $type;
     }
 
     /**

@@ -46,7 +46,9 @@ parameters:
             loginName: uid
             email:     mail
         group:
-            name_prefix: ~
+            name_prefix:
+                ad_hoc: ~
+                semi_formal: ~
             description: description
             accountName: ~
             owner: ~
