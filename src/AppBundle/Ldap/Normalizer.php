@@ -210,10 +210,12 @@ class Normalizer
             $group->getName()
         );
 
-        $maxLength = 64 - 1 - strlen($group->getId()) - strlen($this->mapping['group']['name_prefix']);
+        $namePrefix = $this->getGroupPrefix($group);
+
+        $maxLength = 64 - 1 - strlen($group->getId()) - strlen($namePrefix);
 
         $cn = substr($cn, 0, $maxLength);
-        $cn = $this->mapping['group']['name_prefix'] . $cn . '_' . $group->getId();
+        $cn = $namePrefix. $cn . '_' . $group->getId();
 
         return $cn;
     }
@@ -243,5 +245,23 @@ class Normalizer
             $this->mapping['user']['lastName'],
             $this->mapping['user']['loginName'],
         ];
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return string
+     */
+    private function getGroupPrefix(Group $group)
+    {
+        if ($group->isOfType(Group::TYPE_FORMAL)) {
+            return $this->mapping['group']['name_prefix']['semi_formal'];
+        }
+
+        if ($group->isOfType(Group::TYPE_GROUPHUB)) {
+            return $this->mapping['group']['name_prefix']['ad_hoc'];
+        }
+
+        return '';
     }
 }
