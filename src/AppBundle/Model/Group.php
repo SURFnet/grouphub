@@ -168,6 +168,11 @@ class Group implements Comparable
         $this->type = $type;
     }
 
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
     public function isOfType($type)
     {
         Assertion::inArray($type, [self::TYPE_LDAP, self::TYPE_FORMAL, self::TYPE_GROUPHUB]);
