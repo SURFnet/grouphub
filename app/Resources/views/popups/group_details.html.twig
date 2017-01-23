@@ -47,14 +47,12 @@
         <ul class="tabs">
             <li>
                 <a id="group_members" href="#" class="active">
-                    {{ 'Group members'|trans }}
+                    {{ 'Group members'|trans }} <span class="count">({{ group.userCount }})</span>
                 </a>
             </li>
             <li>
                 {% if is_granted('EDIT', group) %}
-                <a id="add_members" href="#">
-                    <i class="rounded fa fa-plus"></i>{{ 'Add members'|trans }}
-                </a>
+                    <a id="add_members" href="#">{{ 'Add members'|trans }}</a>
                 {% endif %}
             </li>
         </ul>

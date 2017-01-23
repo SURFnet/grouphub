@@ -63,24 +63,33 @@ var grouphub = (function ($) {
         });
     };
 
-    var lowerGroupCount = function (groupId) {
-        var $counts = $('.group-' + groupId).find('.count');
+    var incrementGroupMemberCount = function (groupId) {
+        var newMemberCount = getGroupMemberCount(groupId) + 1;
 
-        $counts.each(function () {
-            var $this = $(this);
-
-            $this.html(parseInt($this.text(), 10) - 1);
-        });
+        updateGroupMemberCounters(groupId, newMemberCount);
     };
 
-    var raiseGroupCount = function (groupId) {
-        var $counts = $('.group-' + groupId).find('.count');
+    var decrementGroupMemberCount = function (groupId) {
+        var newMemberCount = getGroupMemberCount(groupId) - 1;
 
-        $counts.each(function () {
-            var $this = $(this);
+        updateGroupMemberCounters(groupId, newMemberCount);
+    };
 
-            $this.html(parseInt($this.text(), 10) + 1);
+    var getGroupMemberCount = function (groupId) {
+        var $groupMemberCounts = $('.group-' + groupId).find('.count');
+
+        return parseInt($groupMemberCounts.first().text(), 10);
+    };
+
+    var updateGroupMemberCounters = function (groupId, newCount) {
+        var $groupMemberCounts = $('.group-' + groupId).find('.count');
+
+        $groupMemberCounts.each(function () {
+            $(this).html(newCount);
         });
+
+        var $editGroupMemberCount = $('.edit_group .count');
+        $editGroupMemberCount.text('(' + newCount + ')');
     };
 
     var updateGroups = function () {
@@ -375,7 +384,7 @@ var grouphub = (function ($) {
                     // Init each user
                     $searchResults.find('li').each(function (index, userLi) {
                         var userId = $(userLi).data('user-id');
-                        raiseGroupCount(id);
+                        incrementGroupMemberCount(id);
                         userEditMode(id, userId);
                     });
 
@@ -383,7 +392,7 @@ var grouphub = (function ($) {
                     return;
                 }
 
-                raiseGroupCount(id);
+                incrementGroupMemberCount(id);
 
                 userEditMode(id, user);
 
@@ -417,7 +426,7 @@ var grouphub = (function ($) {
                 var id = $editGroup.find('.edit_group').data('id'),
                     user = $this.closest('li').data('user-id');
 
-                lowerGroupCount(id);
+                decrementGroupMemberCount(id);
 
                 userAddMode(id, user);
 
@@ -511,7 +520,7 @@ var grouphub = (function ($) {
 
                 if ($this.hasClass('confirm')) {
 
-                    raiseGroupCount(id);
+                    incrementGroupMemberCount(id);
 
                     if (user == userId) {
                         updateGroups();
@@ -549,7 +558,7 @@ var grouphub = (function ($) {
                     return;
                 }
 
-                raiseGroupCount($article.data('group-id'));
+                incrementGroupMemberCount($article.data('group-id'));
 
                 if ($article.data('from-id') == userId) {
                     updateGroups();
