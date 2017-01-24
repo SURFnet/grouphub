@@ -254,11 +254,11 @@ class Normalizer
      */
     private function getGroupPrefix(Group $group)
     {
-        if ($group->isOfType(Group::TYPE_FORMAL)) {
+        if ($group->isOfType(Group::TYPE_SEMI_FORMAL)) {
             return $this->mapping['group']['name_prefix']['semi_formal'];
         }
 
-        if ($group->isOfType(Group::TYPE_GROUPHUB)) {
+        if ($group->isOfType(Group::TYPE_AD_HOC)) {
             return $this->mapping['group']['name_prefix']['ad_hoc'];
         }
 

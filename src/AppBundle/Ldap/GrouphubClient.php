@@ -466,10 +466,10 @@ class GrouphubClient
     {
         $dn = null;
         switch ($group->getType()) {
-            case Group::TYPE_FORMAL:
+            case Group::TYPE_SEMI_FORMAL:
                 $dn = $this->formalDn;
                 break;
-            case Group::TYPE_GROUPHUB:
+            case Group::TYPE_AD_HOC:
                 $dn = $this->adhocDn;
                 break;
             default:

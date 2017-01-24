@@ -94,9 +94,9 @@ class GroupTest extends PHPUnit_Framework_TestCase
     public function shouldReturnTrueIfGivenTypeMatchesType()
     {
         $group = new Group(1);
-        $group->setType(Group::TYPE_LDAP);
+        $group->setType(Group::TYPE_FORMAL);
 
-        $this->assertTrue($group->isOfType(Group::TYPE_LDAP));
+        $this->assertTrue($group->isOfType(Group::TYPE_FORMAL));
     }
 
     /**
@@ -105,8 +105,8 @@ class GroupTest extends PHPUnit_Framework_TestCase
     public function shouldReturnFalseIfGivenTypeDoesNotMatchType()
     {
         $group = new Group(1);
-        $group->setType(Group::TYPE_FORMAL);
+        $group->setType(Group::TYPE_SEMI_FORMAL);
 
-        $this->assertFalse($group->isOfType(Group::TYPE_GROUPHUB));
+        $this->assertFalse($group->isOfType(Group::TYPE_AD_HOC));
     }
 }

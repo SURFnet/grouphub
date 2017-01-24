@@ -31,7 +31,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
 
         $group = new Group(1);
         $group->setName('foo');
-        $group->setType(Group::TYPE_GROUPHUB);
+        $group->setType(Group::TYPE_AD_HOC);
 
         $data = $normalizer->normalizeGroup($group);
 
@@ -47,7 +47,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
 
         $group = new Group(1);
         $group->setName('foo');
-        $group->setType(Group::TYPE_FORMAL);
+        $group->setType(Group::TYPE_SEMI_FORMAL);
 
         $data = $normalizer->normalizeGroup($group);
 
@@ -63,7 +63,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
 
         $group = new Group(1);
         $group->setName('foo');
-        $group->setType(Group::TYPE_LDAP);
+        $group->setType(Group::TYPE_FORMAL);
 
         $data = $normalizer->normalizeGroup($group);
 

@@ -49,7 +49,7 @@ class MembershipVoter extends Voter
         }
 
         // A user is allowed to edit his own membership of grouphub groups
-        if ($subject->getType() === Group::TYPE_GROUPHUB) {
+        if ($subject->getType() === Group::TYPE_AD_HOC) {
             return true;
         }
 
