@@ -933,10 +933,7 @@ li.group_section div:last-child .button_member:hover span {
 /* line 92, _group_section.scss */
 li.group_section div:last-child .button_member:hover:before {
     content: attr(data-hover);
-    position: absolute;
-    top: 5px;
-    left: 0;
-    width: 100%; }
+}
 /* line 100, _group_section.scss */
 li.group_section div:last-child .button_member.purple {
     color: #8e5290;
