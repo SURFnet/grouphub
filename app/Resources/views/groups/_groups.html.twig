@@ -9,14 +9,20 @@
         <div>
             <p class="name">{{ group.name }}</p>
             <p class="description">{{ group.description }}&nbsp;</p>
-            <p>{{ group.timeStamp|localizeddate('medium', 'none') }}
+            <p class="date_and_owner">{{ group.timeStamp|localizeddate('medium', 'none') }}
                 {% if group.ownerId > 2 %}
                     - {{ group.owner.name }}
                 {% endif %}
             </p>
+
+            <div class="extra-group-info hidden">
+                <p>ID: {{ group.id }}</p>
+                <p>Prefix: {{ group|group_prefix }}</p>
+                <p>CN: {{ group|group_common_name }}</p>
+            </div>
         </div>
 
-        <div>
+        <div class="group-action">
             {% if group.type == 'grouphub' and attribute(memberships, group.id) is defined and attribute(memberships, group.id).role in ['member', 'admin'] %}
                 <a class="button_member {{ color }}" href="#" data-hover="{{ 'LEAVE'|trans }}"
                    data-url="{{ path('my_membership_delete', {'groupId': group.id}) }}">
@@ -32,6 +38,8 @@
                     <span>{{ 'JOIN'|trans }}</span>
                 </a>
             {% endif %}
+
+            <a class="toggle_extra_group_info" href="#"><span class="fa fa-angle-double-down"></span></a>
         </div>
     </li>
 {% endfor %}

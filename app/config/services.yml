@@ -109,3 +109,10 @@ services:
     app.exporter:
         class: AppBundle\Manager\Exporter
         arguments: ['@app.membership_manager']
+
+    app.twig_extension.group:
+        class: AppBundle\Twig\GroupExtension
+        arguments:
+          - '@app.ldap.group_name_formatter'
+        tags:
+          - { name: twig.extension }

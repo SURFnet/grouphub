@@ -886,7 +886,8 @@ li.group_section div:nth-child(2) p:first-child {
     color: black;
     padding-top: 10px; }
 /* line 44, _group_section.scss */
-li.group_section div:nth-child(2) p:nth-child(2) {
+li.group_section div:nth-child(2) p.description,
+li.group_section div:nth-child(2) div.extra-group-info p {
     color: #8a8a8a;
     font-size: 13px;
     overflow: hidden;
@@ -894,12 +895,12 @@ li.group_section div:nth-child(2) p:nth-child(2) {
     text-overflow: ellipsis;
 }
 /* line 49, _group_section.scss */
-li.group_section div:nth-child(2) p:last-child {
+li.group_section div:nth-child(2) p.date_and_owner {
     color: #52b2cd;
     font-size: 11px;
     line-height: 13px; }
 /* line 56, _group_section.scss */
-li.group_section div:last-child {
+li.group_section div.group-action {
     float: right;
     margin-top: 22px;
     margin-right: 10px; }
@@ -1489,20 +1490,29 @@ header .username {
     background-color: #ffffff;
 }
 
-#group_my_groups div:nth-child(2) p:last-child {
+#group_my_groups div:nth-child(2) p.date_and_owner {
     color: #52b2cd;
 }
 
-#group_organisation_groups div:nth-child(2) p:last-child {
+#group_organisation_groups div:nth-child(2) p.date_and_owner {
     color: #548c5b;
 }
 
-#group_all_groups div:nth-child(2) p:last-child {
+#group_all_groups div:nth-child(2) p.date_and_owner {
     color: #8e5290;
 }
 
-#group_search div:nth-child(2) p:last-child {
+#group_search div:nth-child(2) p.date_and_owner {
     color: #a6a6a6;
+}
+
+.toggle_extra_group_info span {
+    background-color: white;
+    color: #a6a6a6;
+    border: 1px solid #a6a6a6;
+    border-radius: 50%;
+    padding: 2px 4px;
+    margin: 0 10px;
 }
 
 li.spinner {
