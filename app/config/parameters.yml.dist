@@ -46,15 +46,15 @@ parameters:
             loginName: uid
             email:     mail
         group:
-            name_prefix:
-                ad_hoc: ~
-                semi_formal: ~
             description: description
             accountName: ~
             owner: ~
             name: ~
             extra_attributes:
                 objectClass: groupOfNames
+
+    ldap_ad_hoc_group_prefix: ~
+    ldap_semi_formal_group_prefix: ~
 
     admin_groups_sync: false
     admin_groups_dn: ~

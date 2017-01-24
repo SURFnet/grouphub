@@ -18,7 +18,16 @@ services:
 
     app.ldap_normalizer:
         class: AppBundle\Ldap\Normalizer
-        arguments: ["%ldap.mapping%"]
+        arguments:
+          - '@app.ldap.group_name_formatter'
+          - '%ldap.mapping%'
+        public: false
+
+    app.ldap.group_name_formatter:
+        class: AppBundle\Ldap\GroupNameFormatter
+        arguments:
+          - '%ldap_semi_formal_group_prefix%'
+          - '%ldap_ad_hoc_group_prefix%'
         public: false
 
     app.grouphub_ldap_client:
