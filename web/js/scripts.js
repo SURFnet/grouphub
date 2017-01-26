@@ -203,6 +203,17 @@ var grouphub = (function ($) {
             updatePanelsCookie($group.attr('id'), checked);
         });
 
+        $groupContainer.on('click', '.toggle_extra_group_info', function () {
+            var $extraGroupInfo = $(this).parents('li').find('.extra-group-info');
+            var $span = $(this).find('span');
+
+            $extraGroupInfo.toggleClass('hidden');
+
+            $span.toggleClass('fa-angle-double-down fa-angle-double-up');
+
+            return false;
+        });
+
         $groupContainer.on('click', '.sort .close', function () {
             var $this = $(this),
                 $container = $this.closest('.group');
