@@ -205,8 +205,7 @@ var grouphub = (function ($) {
 
             $extraGroupInfo.toggleClass('hidden');
 
-            $span.toggleClass('fa-angle-double-down');
-            $span.toggleClass('fa-angle-double-up');
+            $span.toggleClass('fa-angle-double-down fa-angle-double-up');
 
             return false;
         });
