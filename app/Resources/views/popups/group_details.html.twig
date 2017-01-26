@@ -133,7 +133,7 @@
                 </div>
 
                 <ul class="member_collection users_or_groups" data-url="{{ path('group_groups_linkable', {'id': group.id}) }}">
-                    {% include(':popups:group_groups_linkable.html.twig') with {'groups': groups} %}
+                    {% include(':popups:group_groups_linkable.html.twig') with {'groups': linkableGroups} %}
                 </ul>
             </div>
         {% endif %}

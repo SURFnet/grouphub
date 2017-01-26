@@ -61,10 +61,18 @@ class GroupController extends Controller
         $members = $this->get('app.membership_manager')->findGroupMemberships($group->getId(), null, $offset, $limit);
         $memberGroups = $this->get('app.membership_manager')->findGroupMemberGroups($group->getId(), $offset, $limit);
 
-        $users = $groups = $form = $notifications = $memberships = null;
+        $users = $groups = $linkableGroups = $form = $notifications = $memberships = null;
         if ($this->isGranted('EDIT', $group)) {
             $users = $this->get('app.user_manager')->findUsers(null, $offset, $limit);
             $groups = $this->get('app.group_manager')->findGroups(null, null, $offset, $limit, SortOrder::ascending('name'));
+            $linkableGroups = $this->get('app.group_manager')->findGroupsLinkable(
+                $group->getId(),
+                null,
+                null,
+                $offset,
+                $limit,
+                SortOrder::ascending('name')
+            );
             $memberships = $this->get('app.membership_manager')->findGroupMembershipsForUsers($group->getId(), $users);
 
             $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
@@ -80,17 +88,18 @@ class GroupController extends Controller
         return $this->render(
             ':popups:group_details.html.twig',
             [
-                'group'         => $group,
-                'members'       => $members,
-                'memberships'   => $memberships,
-                'memberGroups'  => $memberGroups,
-                'users'         => $users,
-                'groups'        => $groups,
-                'form'          => $form,
+                'group' => $group,
+                'members' => $members,
+                'memberships' => $memberships,
+                'memberGroups' => $memberGroups,
+                'users' => $users,
+                'groups' => $groups,
+                'linkableGroups' => $linkableGroups,
+                'form' => $form,
                 'notifications' => $notifications,
-                'query'         => '',
-                'offset'        => $offset,
-                'limit'         => $limit
+                'query' => '',
+                'offset' => $offset,
+                'limit' => $limit,
             ]
         );
     }
