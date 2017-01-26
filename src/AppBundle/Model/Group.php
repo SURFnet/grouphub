@@ -201,7 +201,14 @@ class Group implements Comparable
      */
     public function isOfType($type)
     {
-        Assertion::inArray($type, [self::TYPE_FORMAL, self::TYPE_SEMI_FORMAL, self::TYPE_AD_HOC]);
+        Assertion::inArray(
+            $type,
+            [self::TYPE_FORMAL, self::TYPE_SEMI_FORMAL, self::TYPE_AD_HOC],
+            sprintf(
+                '"$type" must be one of Group::TYPE_FORMAL, Group::TYPE_SEMI_FORMAL, Group::TYPE_AD_HOC; "%s" given',
+                $type
+            )
+        );
 
         return $this->type === $type;
     }
