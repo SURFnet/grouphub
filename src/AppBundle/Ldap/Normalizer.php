@@ -11,16 +11,23 @@ use AppBundle\Model\User;
 class Normalizer
 {
     /**
+     * @var GroupNameFormatter
+     */
+    private $nameFormatter;
+
+    /**
      * @var array
      */
     private $mapping;
 
     /**
-     * @param array $mapping
+     * @param GroupNameFormatter $nameFormatter
+     * @param array              $mapping
      */
-    public function __construct(array $mapping)
+    public function __construct(GroupNameFormatter $nameFormatter, array $mapping)
     {
         $this->mapping = $mapping;
+        $this->nameFormatter = $nameFormatter;
     }
 
     /**
@@ -149,7 +156,7 @@ class Normalizer
     {
         $mapping = $this->mapping['group'];
 
-        $cn = $this->getGroupCN($group);
+        $cn = $this->nameFormatter->getCommonName($group);
 
         $data = array_filter([
             'cn'                    => $cn,
@@ -198,29 +205,6 @@ class Normalizer
     }
 
     /**
-     * @param Group $group
-     *
-     * @return string
-     */
-    private function getGroupCN(Group $group)
-    {
-        $cn = str_replace(
-            ['"', '/', '\\', '[', ']', ':', ';', '|', '=', ',', '+', '*', '?', '<', '>'],
-            '',
-            $group->getName()
-        );
-
-        $namePrefix = $this->getGroupPrefix($group);
-
-        $maxLength = 64 - 1 - strlen($group->getId()) - strlen($namePrefix);
-
-        $cn = substr($cn, 0, $maxLength);
-        $cn = $namePrefix. $cn . '_' . $group->getId();
-
-        return $cn;
-    }
-
-    /**
      * @return array
      */
     public function getGroupFields()
@@ -245,23 +229,5 @@ class Normalizer
             $this->mapping['user']['lastName'],
             $this->mapping['user']['loginName'],
         ];
-    }
-
-    /**
-     * @param Group $group
-     *
-     * @return string
-     */
-    private function getGroupPrefix(Group $group)
-    {
-        if ($group->isOfType(Group::TYPE_FORMAL)) {
-            return $this->mapping['group']['name_prefix']['semi_formal'];
-        }
-
-        if ($group->isOfType(Group::TYPE_GROUPHUB)) {
-            return $this->mapping['group']['name_prefix']['ad_hoc'];
-        }
-
-        return '';
     }
 }

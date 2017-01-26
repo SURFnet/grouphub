@@ -116,10 +116,10 @@ class GroupType extends AbstractType
                 }
 
                 if (!empty($form->get('parent')->getData())) {
-                    $group->setType(Group::TYPE_FORMAL);
+                    $group->setType(Group::TYPE_SEMI_FORMAL);
                     $group->setParentId($form->get('parent')->getData()->getId());
                 } else {
-                    $group->setType(Group::TYPE_GROUPHUB);
+                    $group->setType(Group::TYPE_AD_HOC);
                     $group->setParentId(null);
                 }
             }
@@ -141,11 +141,11 @@ class GroupType extends AbstractType
             [
                 'data_class' => Group::class,
                 'empty_data' => function (FormInterface $form) use ($user) {
-                    $type = Group::TYPE_GROUPHUB;
+                    $type = Group::TYPE_AD_HOC;
                     $parent = null;
 
                     if ($form->has('parent') && !empty($form->get('parent')->getData())) {
-                        $type = Group::TYPE_FORMAL;
+                        $type = Group::TYPE_SEMI_FORMAL;
                         $parent = $form->get('parent')->getData()->getId();
                     }
 

@@ -7,14 +7,40 @@ use DateTime;
 use Doctrine\Common\Comparable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class Group
- */
 class Group implements Comparable
 {
-    const TYPE_LDAP = 'ldap';
-    const TYPE_FORMAL = 'formal';
-    const TYPE_GROUPHUB = 'grouphub';
+    /**
+     * A "formal" group is a group that is synced from an external LDAP. It can therefore also be referred to as "LDAP
+     * group".
+     *
+     * Please note that the constants were renamed to more closely follow the GroupHub naming, but the values were kept
+     * the same because of legacy issues. The previous name of this constant was TYPE_LDAP.
+     */
+    const TYPE_FORMAL = 'ldap';
+
+    /**
+     * A "semi-formal" group is a group that is created in GroupHub, but is created by an administrator and resembles
+     * an official organization (i.e. an institution)
+     *
+     * Together with ad-hoc groups, semi-formal groups can also be called "GroupHub groups" because they are created in
+     * GroupHub.
+     *
+     * Please note that the constants were renamed to more closely follow the GroupHub naming, but the values were kept
+     * the same because of legacy issues. The previous name of this constant was TYPE_FORMAL.
+     */
+    const TYPE_SEMI_FORMAL = 'formal';
+
+    /**
+     * An "ad-hoc" group is a group that can be created by everyone, and can for instance be used by a group of
+     * students working on the same project.
+     *
+     * Together with semi-formal groups, ad-hoc groups can also be called "GroupHub groups" because they are created in
+     * GroupHub.
+     *
+     * Please note that the constants were renamed to more closely follow the GroupHub naming, but the values were kept
+     * the same because of legacy issues. The previous name of this constant was TYPE_GROUPHUB.
+     */
+    const TYPE_AD_HOC = 'grouphub';
 
     /**
      * @var int
@@ -175,7 +201,14 @@ class Group implements Comparable
      */
     public function isOfType($type)
     {
-        Assertion::inArray($type, [self::TYPE_LDAP, self::TYPE_FORMAL, self::TYPE_GROUPHUB]);
+        Assertion::inArray(
+            $type,
+            [self::TYPE_FORMAL, self::TYPE_SEMI_FORMAL, self::TYPE_AD_HOC],
+            sprintf(
+                '"$type" must be one of Group::TYPE_FORMAL, Group::TYPE_SEMI_FORMAL, Group::TYPE_AD_HOC; "%s" given',
+                $type
+            )
+        );
 
         return $this->type === $type;
     }
@@ -235,6 +268,7 @@ class Group implements Comparable
         $ref2 = strtoupper($other->getReference());
 
         $c = new \Collator('en');
+
         return $c->compare($ref1, $ref2);
     }
 
