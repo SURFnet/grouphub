@@ -345,7 +345,7 @@ class GroupController extends Controller
         }
 
         return $this->render(
-            ':popups:group_members.html.twig',
+            ':popups:group_member_groups.html.twig',
             [
                 'group'         => $group,
                 'memberGroups'  => $memberGroups,

@@ -106,6 +106,14 @@ var grouphub = (function ($) {
         });
     };
 
+    var updateGroupsInGroup = function () {
+        var $groups = $('.edit_group #group_in_group_tab ul.member_collection');
+
+        $.get($groups.data('url'), function (data) {
+            $groups.html(data);
+        });
+    };
+
     var userAddMode = function (groupId, userId) {
         var $member = $('.edit_group #group_members_tab .users_or_groups').find('.user-' + userId),
             $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId),
@@ -396,6 +404,7 @@ var grouphub = (function ($) {
                     });
 
                     updateGroups();
+                    updateGroupsInGroup();
 
                     $member.hide();
 
