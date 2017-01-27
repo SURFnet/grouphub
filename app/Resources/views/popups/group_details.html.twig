@@ -45,25 +45,21 @@
         </header>
 
         <ul class="tabs">
-            {# Add members tab button #}
             <li>
                 <a id="group_members" href="#" class="active">
                     {{ 'Group members'|trans }} <span class="count">({{ group.userCount }})</span>
                 </a>
             </li>
-            {# Add group in group tab button #}
             <li>
                 <a id="group_in_group" href="#">
                     {{ 'Group In Group'|trans }}
                 </a>
             </li>
-            {# Add members tab button #}
             <li>
                 {% if is_granted('EDIT', group) %}
                     <a id="add_members" href="#">{{ 'Add members'|trans }}</a>
                 {% endif %}
             </li>
-            {# Add groups tab button #}
             <li>
                 {% if is_granted('EDIT', group) %}
                 <a id="add_groups" href="#">
@@ -75,7 +71,6 @@
         </ul>
 
         <div>
-        {# Add user in group tab content #}
         <div id="group_members_tab">
             <div class="search_container">
                 <div class="input_container">
@@ -91,14 +86,12 @@
             </ul>
         </div>
 
-        {# Add group in group tab content #}
         <div id="group_in_group_tab" class="hidden">
             <ul class="member_collection" data-url="{{ path('search_group_member_groups', {'id': group.id}) }}">
                 {% include(':popups:group_member_groups.html.twig') %}
             </ul>
         </div>
 
-        {# Add users tab content #}
         {% if is_granted('EDIT', group) %}
             <div id="add_members_tab" class="hidden">
                 <div class="search_container">
@@ -120,7 +113,6 @@
             </div>
         {% endif %}
 
-        {# Add groups tab content #}
         {% if is_granted('EDIT', group) %}
             <div id="add_groups_tab" class="hidden">
                 <div class="search_container">
