@@ -2,7 +2,7 @@ var grouphub = (function ($) {
     'use strict';
 
     var groupSearchReq, searchReq,
-        userId = $('body').data('user-id');
+        loggedInUserId = $('body').data('user-id');
 
     var searchGroups = function () {
         var $this = $(this),
@@ -377,17 +377,16 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('click', '.add', function () {
-            var $this = $(this),
-                $searchResults = $editGroup.find('#add_members_tab .users_or_groups');
+            var $this = $(this);
 
-            $.post($this.data('url'), function (membersHtml) {
+            $.post($this.data('url'), function () {
                 var id = $editGroup.find('.edit_group').data('id'),
-                    $searchResult = $this.closest('li'),
-                    user = $searchResult.data('user-id'),
-                    group = $searchResult.data('group-id');
+                    $member = $this.closest('li'),
+                    userId = $member.data('user-id'),
+                    groupId = $member.data('group-id');
 
-                if (group) {
-                    $searchResults.html(membersHtml);
+                if (groupId) {
+                    var $searchResults = $editGroup.find('#add_groups_tab .users_or_groups');
 
                     // Init each user
                     $searchResults.find('li').each(function (index, userLi) {
@@ -397,14 +396,17 @@ var grouphub = (function ($) {
                     });
 
                     updateGroups();
+
+                    $member.hide();
+
                     return;
                 }
 
                 incrementGroupMemberCount(id);
 
-                userEditMode(id, user);
+                userEditMode(id, userId);
 
-                if (user == userId) {
+                if (userId == loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -421,7 +423,7 @@ var grouphub = (function ($) {
 
                 userEditMode(id, user, $this.val());
 
-                if (user == userId) {
+                if (user == loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -445,7 +447,7 @@ var grouphub = (function ($) {
 
                 userAddMode(id, $user.data('user-id'));
 
-                if ($user.data('user-id') == userId) {
+                if ($user.data('user-id') == loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -537,7 +539,7 @@ var grouphub = (function ($) {
 
                     incrementGroupMemberCount(id);
 
-                    if (user == userId) {
+                    if (user == loggedInUserId) {
                         updateGroups();
                     }
 
@@ -575,7 +577,7 @@ var grouphub = (function ($) {
 
                 incrementGroupMemberCount($article.data('group-id'));
 
-                if ($article.data('from-id') == userId) {
+                if ($article.data('from-id') == loggedInUserId) {
                     updateGroups();
                 }
             });
