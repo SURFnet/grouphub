@@ -1,14 +1,15 @@
 var grouphub = (function ($) {
     'use strict';
 
-    var groupSearchReq, searchReq,
-        loggedInUserId = $('body').data('user-id');
+    var groupSearchReq;
+    var searchReq;
+    var loggedInUserId = $('body').data('user-id');
 
     var searchGroups = function () {
-        var $this = $(this),
-            $searchContainer = $('#group_search'),
-            $searchResults = $searchContainer.children('ul').first(),
-            $sort = $searchContainer.find('input:checked');
+        var $this = $(this);
+        var $searchContainer = $('#group_search');
+        var $searchResults = $searchContainer.children('ul').first();
+        var $sort = $searchContainer.find('input:checked');
 
         groupSearchReq = $.get({
             url: $searchResults.data('url'),
@@ -25,11 +26,11 @@ var grouphub = (function ($) {
     };
 
     var searchUsersOrGroups = function () {
-        var $this = $(this),
-            $searchContainer = $this.closest('.search_container'),
-            $searchResults = $searchContainer.next('ul'),
-            $searchTab = $searchResults.parent(),
-            url = $searchResults.data('url');
+        var $this = $(this);
+        var $searchContainer = $this.closest('.search_container');
+        var $searchResults = $searchContainer.next('ul');
+        var $searchTab = $searchResults.parent();
+        var url = $searchResults.data('url');
 
         if ($searchTab.attr('id') === 'add_members_tab') {
             var searchType = $searchContainer.find("select[name=search-type]").val();
@@ -114,9 +115,9 @@ var grouphub = (function ($) {
     };
 
     var userAddMode = function (groupId, userId) {
-        var $member = $('.edit_group #group_members_tab .users_or_groups').find('.user-' + userId),
-            $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId),
-            $tpl = $('.edit_group .user-add-tpl').clone();
+        var $member = $('.edit_group #group_members_tab .users_or_groups').find('.user-' + userId);
+        var $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId);
+        var $tpl = $('.edit_group .user-add-tpl').clone();
 
         $member.remove();
         $user.find('.actions').html(function () {
@@ -125,10 +126,10 @@ var grouphub = (function ($) {
     };
 
     var userEditMode = function (groupId, userId, value) {
-        var $members = $('.edit_group #group_members_tab .users_or_groups'),
-            $member = $members.find('.user-' + userId),
-            $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId),
-            $tpl = $('.edit_group .user-edit-tpl').clone();
+        var $members = $('.edit_group #group_members_tab .users_or_groups');
+        var $member = $members.find('.user-' + userId);
+        var $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId);
+        var $tpl = $('.edit_group .user-edit-tpl').clone();
 
         value = typeof value !== 'undefined' ? value : 'member';
 
@@ -167,10 +168,10 @@ var grouphub = (function ($) {
     };
 
     var init = function () {
-        var $editGroup = $('#edit_group'),
-            $joinConfirm = $('#join_group'),
-            $leaveConfirm = $('#group_leave_confirmation'),
-            $groupContainer = $('#groups');
+        var $editGroup = $('#edit_group');
+        var $joinConfirm = $('#join_group');
+        var $leaveConfirm = $('#group_leave_confirmation');
+        var $groupContainer = $('#groups');
 
         refreshNotificationsCount();
 
@@ -197,9 +198,9 @@ var grouphub = (function ($) {
         });
 
         $('nav ul li input').on('change', function () {
-            var $this = $(this),
-                $group = $('#' + $this.attr('class')),
-                checked = $this.is(':checked');
+            var $this = $(this);
+            var $group = $('#' + $this.attr('class'));
+            var checked = $this.is(':checked');
 
             if (checked) {
                 $group.removeClass('hidden');
@@ -222,8 +223,8 @@ var grouphub = (function ($) {
         });
 
         $groupContainer.on('click', '.sort .close', function () {
-            var $this = $(this),
-                $container = $this.closest('.group');
+            var $this = $(this);
+            var $container = $this.closest('.group');
 
             $container.addClass('hidden');
 
@@ -239,8 +240,8 @@ var grouphub = (function ($) {
         });
 
         $groupContainer.on('click', '.spinner a', function () {
-            var $this = $(this),
-                $container = $this.closest('.spinner');
+            var $this = $(this);
+            var $container = $this.closest('.spinner');
 
             $container.html('<i class="fa fa-spinner fa-spin">');
 
@@ -272,11 +273,11 @@ var grouphub = (function ($) {
         });
 
         $groupContainer.on('change', '.sort', function () {
-            var $this = $(this),
-                $container = $this.closest('.group'),
-                $sort = $this.find('input:checked'),
-                isSearch = $container.is('#group_search'),
-                query = isSearch ? $('#searchInput').val() : '';
+            var $this = $(this);
+            var $container = $this.closest('.group');
+            var $sort = $this.find('input:checked');
+            var isSearch = $container.is('#group_search');
+            var query = isSearch ? $('#searchInput').val() : '';
 
             $.cookie($container.attr('id') + '_sort_order', $sort.val(), {path: '/'});
 
@@ -301,8 +302,8 @@ var grouphub = (function ($) {
         });
 
         $joinConfirm.on('click', '.confirm', function () {
-            var $this = $(this),
-                $form = $this.closest('form');
+            var $this = $(this);
+            var $form = $this.closest('form');
 
             $form.attr('action', $this.data('url'));
             $form.submit();
@@ -387,10 +388,10 @@ var grouphub = (function ($) {
             var $this = $(this);
 
             $.post($this.data('url'), function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    $member = $this.closest('li'),
-                    userId = $member.data('user-id'),
-                    groupId = $member.data('group-id');
+                var id = $editGroup.find('.edit_group').data('id');
+                var $member = $this.closest('li');
+                var userId = $member.data('user-id');
+                var groupId = $member.data('group-id');
 
                 if (groupId) {
                     var $searchResults = $editGroup.find('#add_groups_tab .users_or_groups');
@@ -478,14 +479,14 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('change', 'header form :input', function () {
-            var $this = $(this),
-                $form = $this.closest('form');
+            var $this = $(this);
+            var $form = $this.closest('form');
 
             $.post($form.attr('action'), $form.serialize(), function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    $group = $('.group-' + id),
-                    title = $form.find('input').val(),
-                    descr = $form.find('textarea').val();
+                var id = $editGroup.find('.edit_group').data('id');
+                var $group = $('.group-' + id);
+                var title = $form.find('input').val();
+                var descr = $form.find('textarea').val();
 
                 descr = descr.length === 0 ? '&nbsp;' : descr;
 
@@ -508,8 +509,8 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('click', '#group_deletion_confirmation a.confirm', function () {
-            var $this = $(this),
-                $form = $this.closest('form');
+            var $this = $(this);
+            var $form = $this.closest('form');
 
             $form.attr('action', $this.data('url'));
             $form.submit();
@@ -540,8 +541,8 @@ var grouphub = (function ($) {
             var $this = $(this);
 
             $.post($this.data('url'), function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
+                var id = $editGroup.find('.edit_group').data('id');
+                var user = $this.closest('li').data('user-id');
 
                 if ($this.hasClass('confirm')) {
 
@@ -573,8 +574,8 @@ var grouphub = (function ($) {
         });
 
         $('#notifications').on('click', '.confirm, .cancel', function () {
-            var $this = $(this),
-                $article = $this.closest('article');
+            var $this = $(this);
+            var $article = $this.closest('article');
 
             $.post($this.data('url'), function () {
                 removeNotification($article.data('id'));
