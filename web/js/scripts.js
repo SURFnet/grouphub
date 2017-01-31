@@ -29,8 +29,7 @@ var grouphub = (function ($) {
             $searchContainer = $this.closest('.search_container'),
             $searchResults = $searchContainer.next('ul'),
             $searchTab = $searchResults.parent(),
-            url = $searchResults.data('url'),
-            searchType;
+            url = $searchResults.data('url');
 
         if ($searchTab.attr('id') === 'add_members_tab') {
             var searchType = $searchContainer.find("select[name=search-type]").val();
