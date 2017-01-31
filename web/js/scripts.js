@@ -138,7 +138,7 @@ var grouphub = (function ($) {
 
         $user.find('.actions').html($tpl);
 
-        if ($member.length == 0) {
+        if ($member.length === 0) {
             $members.append($user.clone());
         } else {
             $member.find('.actions').html($tpl);
@@ -415,7 +415,7 @@ var grouphub = (function ($) {
 
                 userEditMode(id, userId);
 
-                if (userId == loggedInUserId) {
+                if (userId === loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -432,7 +432,7 @@ var grouphub = (function ($) {
 
                 userEditMode(id, user, $this.val());
 
-                if (user == loggedInUserId) {
+                if (user === loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -456,7 +456,7 @@ var grouphub = (function ($) {
 
                 userAddMode(id, $user.data('user-id'));
 
-                if ($user.data('user-id') == loggedInUserId) {
+                if ($user.data('user-id') === loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -586,7 +586,7 @@ var grouphub = (function ($) {
 
                 incrementGroupMemberCount($article.data('group-id'));
 
-                if ($article.data('from-id') == loggedInUserId) {
+                if ($article.data('from-id') === loggedInUserId) {
                     updateGroups();
                 }
             });
