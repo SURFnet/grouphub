@@ -1,5 +1,8 @@
 GroupHUB: 'GroupHUB'
 
+Groups: 'Groepen'
+Users: 'Gebruikers'
+
 New Group: 'Nieuwe Groep'
 Notifications: 'Notificaties'
 Info: 'Info'
@@ -42,6 +45,7 @@ Cancel: 'Annuleren'
 
 Group members: 'Groepsleden'
 Add members: 'Lid toevoegen'
+Add groups: 'Groep toevoegen'
 
 Admin: 'Beheerder'
 

@@ -177,6 +177,28 @@ class ApiClient
     }
 
     /**
+     * @param int    $groupId
+     * @param int    $offset
+     * @param int    $limit
+     *
+     * @return Collection
+     */
+    public function findGroupMemberGroups($groupId, SortOrder $sortOrder, $offset = 0, $limit = 100)
+    {
+        $data = $this->guzzle->get('groups/' . $groupId . '/groups', [
+            'query' => [
+                'sort'   => $sortOrder->toSignedOrder(),
+                'offset' => $offset,
+                'limit'  => $limit,
+            ],
+        ]);
+
+        $data = $this->decode($data->getBody());
+
+        return $this->normalizer->denormalizeMemberGroups($data);
+    }
+
+    /**
      * @param int    $userId
      * @param string $role
      * @param SortOrder   $sortOrder
@@ -367,6 +389,41 @@ class ApiClient
     }
 
     /**
+     * @param int $groupId
+     * @param string $query
+     * @param string $type
+     * @param int $offset
+     * @param int $limit
+     * @param SortOrder $sortOrder
+     * @param int[] $groupIds
+     * @return Collection
+     */
+    public function findGroupsLinkable(
+        $groupId,
+        $query,
+        $type,
+        $offset,
+        $limit,
+        SortOrder $sortOrder,
+        array $groupIds = null
+    ) {
+        $data = $this->guzzle->get(sprintf('groups/%u/groups/linkable', $groupId), [
+            'query' => [
+                'offset' => $offset,
+                'limit'  => $limit,
+                'sort'   => $sortOrder->toSignedOrder(),
+                'type'   => $type,
+                'query'  => $query,
+                'ids'    => $groupIds
+            ],
+        ]);
+
+        $data = $this->decode($data->getBody());
+
+        return $this->normalizer->denormalizeGroups($data);
+    }
+
+    /**
      * @param int $id
      *
      * @return Group
@@ -427,6 +484,17 @@ class ApiClient
         $data = $this->encode(['userInGroup' => ['user' => $userId, 'role' => $role, 'message' => $message]]);
 
         $this->guzzle->post('groups/' . $groupId . '/users', ['body' => $data]);
+    }
+
+    /**
+     * @param int $groupId
+     * @param int $groupToAddId
+     */
+    public function addGroupGroup($groupId, $groupToAddId)
+    {
+        $data = $this->encode(['groupInGroup' => ['groupInGroup' => $groupToAddId]]);
+
+        $this->guzzle->post('groups/' . $groupId . '/groups', ['body' => $data]);
     }
 
     /**
@@ -498,6 +566,23 @@ class ApiClient
     {
         try {
             $this->guzzle->delete('groups/' . $groupId . '/users/' . $userId);
+        } catch (ClientException $e) {
+            if ($e->getResponse()->getStatusCode() !== 404) {
+                throw $e;
+            }
+
+            // Ignore not found when trying to delete the exact resource
+        }
+    }
+
+    /**
+     * @param int $groupId
+     * @param int $memberGroupId
+     */
+    public function removeGroupMemberGroup($groupId, $memberGroupId)
+    {
+        try {
+            $this->guzzle->delete('groups/' . $groupId . '/groups/' . $memberGroupId);
         } catch (ClientException $e) {
             if ($e->getResponse()->getStatusCode() !== 404) {
                 throw $e;

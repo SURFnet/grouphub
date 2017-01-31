@@ -13,6 +13,8 @@ use Traversable;
 
 /**
  * Class MembershipManager
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class MembershipManager
 {
@@ -126,6 +128,17 @@ class MembershipManager
     }
 
     /**
+     * @param int $groupId
+     * @param string $offset
+     * @param string $limit
+     * @return Collection
+     */
+    public function findGroupMemberGroups($groupId, $offset, $limit)
+    {
+        return $this->client->findGroupMemberGroups($groupId, SortOrder::ascending('name'), $offset, $limit);
+    }
+
+    /**
      * @param int    $groupId
      * @param int    $userId
      * @param string $role
@@ -150,6 +163,17 @@ class MembershipManager
 
     /**
      * @param int $groupId
+     * @param int $memberGroupId
+     */
+    public function deleteMemberGroup($groupId, $memberGroupId)
+    {
+        $this->client->removeGroupMemberGroup($groupId, $memberGroupId);
+
+        $this->queue->addGroupToQueue($groupId);
+    }
+
+    /**
+     * @param int $groupId
      * @param int $userId
      */
     public function addMembership($groupId, $userId)
@@ -157,6 +181,15 @@ class MembershipManager
         $this->client->addGroupUser($groupId, $userId);
 
         $this->queue->addGroupToQueue($groupId);
+    }
+
+    /**
+     * @param int $groupId
+     * @param int $groupToAddId
+     */
+    public function addGroupMembership($groupId, $groupToAddId)
+    {
+        $this->client->addGroupGroup($groupId, $groupToAddId);
     }
 
     /**

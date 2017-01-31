@@ -6,7 +6,7 @@
         </div>
 
         <a href="#" class="add rounded"
-           data-url="{{ path('membership_add_group', {groupId: group.id, groupToAddId: groupToAdd.id}) }}">
+           data-url="{{ path('group_membership_add', {groupId: group.id, groupToAddId: groupToAdd.id}) }}">
             <i class="fa fa-plus"></i>
         </a>
 
@@ -15,6 +15,6 @@
 
 {% set offset = offset + limit %}
 {% if offset < groups.totalCount %}
-    <a class="groups-next" href="{{ path('search_group_groups', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
+    <a class="groups-next" href="{{ path('group_groups_linkable', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
 {% endif %}
 </div>

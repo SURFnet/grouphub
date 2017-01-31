@@ -45,7 +45,7 @@ class MembershipController extends Controller
     }
 
     /**
-     * @Route("/group/{groupId}/group/{groupToAddId}/add", name="membership_add_group")
+     * @Route("/group/{groupId}/group/{groupToAddId}/add", name="group_membership_add")
      * @Method("POST")
      *
      * @param int $groupId
@@ -53,7 +53,31 @@ class MembershipController extends Controller
      *
      * @return Response
      */
-    public function addMembershipGroupAction($groupId, $groupToAddId)
+    public function addGroupMembershipAction($groupId, $groupToAddId)
+    {
+        $group = $this->get('app.group_manager')->getGroup($groupId);
+
+        if (empty($group)) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $this->get('app.membership_manager')->addGroupMembership($groupId, $groupToAddId);
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/group/{groupId}/copyMembersFromGroup/{groupToCopyMembersFromId}", name="membership_copy_members_from_group")
+     * @Method("POST")
+     *
+     * @param int $groupId
+     * @param int $groupToCopyMembersFromId
+     *
+     * @return Response
+     */
+    public function addMembersFromGroupAction($groupId, $groupToCopyMembersFromId)
     {
         /** @var GroupManager $groupManager */
         $groupManager = $this->get('app.group_manager');
@@ -70,9 +94,9 @@ class MembershipController extends Controller
         /** @var MembershipManager $membershipManager */
         $membershipManager = $this->get('app.membership_manager');
 
-        $findMemberShips = function () use ($membershipManager, $groupToAddId) {
+        $findMemberShips = function () use ($membershipManager, $groupToCopyMembersFromId) {
             return $membershipManager
-                ->findGroupMemberships($groupToAddId, null, 0, PHP_INT_MAX)
+                ->findGroupMemberships($groupToCopyMembersFromId, null, 0, PHP_INT_MAX)
                 ->toArray();
         };
 
@@ -159,6 +183,30 @@ class MembershipController extends Controller
         $this->denyAccessUnlessGranted('EDIT', $group);
 
         $this->get('app.membership_manager')->deleteMembership($groupId, $userId);
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/group/{groupId}/group/{memberGroupId}/delete", name="member_group_delete")
+     * @Method("POST")
+     *
+     * @param int $groupId
+     * @param int $memberGroupId
+     *
+     * @return Response
+     */
+    public function deleteMemberGroupAction($groupId, $memberGroupId)
+    {
+        $group = $this->get('app.group_manager')->getGroup($groupId);
+
+        if (empty($group)) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $this->get('app.membership_manager')->deleteMemberGroup($groupId, $memberGroupId);
 
         return new Response();
     }

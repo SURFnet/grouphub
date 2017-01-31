@@ -1,14 +1,15 @@
 var grouphub = (function ($) {
     'use strict';
 
-    var groupSearchReq, searchReq,
-        userId = $('body').data('user-id');
+    var groupSearchReq;
+    var searchReq;
+    var loggedInUserId = $('body').data('user-id');
 
     var searchGroups = function () {
-        var $this = $(this),
-            $searchContainer = $('#group_search'),
-            $searchResults = $searchContainer.children('ul').first(),
-            $sort = $searchContainer.find('input:checked');
+        var $this = $(this);
+        var $searchContainer = $('#group_search');
+        var $searchResults = $searchContainer.children('ul').first();
+        var $sort = $searchContainer.find('input:checked');
 
         groupSearchReq = $.get({
             url: $searchResults.data('url'),
@@ -25,14 +26,17 @@ var grouphub = (function ($) {
     };
 
     var searchUsersOrGroups = function () {
-        var $this = $(this),
-            $searchContainer = $this.closest('.search_container'),
-            $searchResults = $searchContainer.next('ul');
-
+        var $this = $(this);
+        var $searchContainer = $this.closest('.search_container');
+        var $searchResults = $searchContainer.next('ul');
+        var $searchTab = $searchResults.parent();
         var url = $searchResults.data('url');
-        var type = $searchContainer.find("select[name=search-type]").val();
-        if (type === 'group') {
-            url = url.replace('users', 'groups');
+
+        if ($searchTab.attr('id') === 'add_members_tab') {
+            var searchType = $searchContainer.find("select[name=search-type]").val();
+            if (searchType === 'group') {
+                url = url.replace('users/search', 'groups/copyable');
+            }
         }
 
         $searchResults.html('<li class="spinner"><i class="fa fa-spinner fa-spin"></li>');
@@ -102,10 +106,18 @@ var grouphub = (function ($) {
         });
     };
 
+    var updateGroupsInGroup = function () {
+        var $groups = $('.edit_group #group_in_group_tab ul.member_collection');
+
+        $.get($groups.data('url'), function (data) {
+            $groups.html(data);
+        });
+    };
+
     var userAddMode = function (groupId, userId) {
-        var $member = $('.edit_group #group_members_tab .users').find('.user-' + userId),
-            $user = $('.edit_group #add_members_tab .users').find('.user-' + userId),
-            $tpl = $('.edit_group .user-add-tpl').clone();
+        var $member = $('.edit_group #group_members_tab .users_or_groups').find('.user-' + userId);
+        var $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId);
+        var $tpl = $('.edit_group .user-add-tpl').clone();
 
         $member.remove();
         $user.find('.actions').html(function () {
@@ -114,10 +126,10 @@ var grouphub = (function ($) {
     };
 
     var userEditMode = function (groupId, userId, value) {
-        var $members = $('.edit_group #group_members_tab .users'),
-            $member = $members.find('.user-' + userId),
-            $user = $('.edit_group #add_members_tab .users').find('.user-' + userId),
-            $tpl = $('.edit_group .user-edit-tpl').clone();
+        var $members = $('.edit_group #group_members_tab .users_or_groups');
+        var $member = $members.find('.user-' + userId);
+        var $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId);
+        var $tpl = $('.edit_group .user-edit-tpl').clone();
 
         value = typeof value !== 'undefined' ? value : 'member';
 
@@ -126,7 +138,7 @@ var grouphub = (function ($) {
 
         $user.find('.actions').html($tpl);
 
-        if ($member.length == 0) {
+        if ($member.length === 0) {
             $members.append($user.clone());
         } else {
             $member.find('.actions').html($tpl);
@@ -156,10 +168,10 @@ var grouphub = (function ($) {
     };
 
     var init = function () {
-        var $editGroup = $('#edit_group'),
-            $joinConfirm = $('#join_group'),
-            $leaveConfirm = $('#group_leave_confirmation'),
-            $groupContainer = $('#groups');
+        var $editGroup = $('#edit_group');
+        var $joinConfirm = $('#join_group');
+        var $leaveConfirm = $('#group_leave_confirmation');
+        var $groupContainer = $('#groups');
 
         refreshNotificationsCount();
 
@@ -186,9 +198,9 @@ var grouphub = (function ($) {
         });
 
         $('nav ul li input').on('change', function () {
-            var $this = $(this),
-                $group = $('#' + $this.attr('class')),
-                checked = $this.is(':checked');
+            var $this = $(this);
+            var $group = $('#' + $this.attr('class'));
+            var checked = $this.is(':checked');
 
             if (checked) {
                 $group.removeClass('hidden');
@@ -211,8 +223,8 @@ var grouphub = (function ($) {
         });
 
         $groupContainer.on('click', '.sort .close', function () {
-            var $this = $(this),
-                $container = $this.closest('.group');
+            var $this = $(this);
+            var $container = $this.closest('.group');
 
             $container.addClass('hidden');
 
@@ -228,8 +240,8 @@ var grouphub = (function ($) {
         });
 
         $groupContainer.on('click', '.spinner a', function () {
-            var $this = $(this),
-                $container = $this.closest('.spinner');
+            var $this = $(this);
+            var $container = $this.closest('.spinner');
 
             $container.html('<i class="fa fa-spinner fa-spin">');
 
@@ -261,11 +273,11 @@ var grouphub = (function ($) {
         });
 
         $groupContainer.on('change', '.sort', function () {
-            var $this = $(this),
-                $container = $this.closest('.group'),
-                $sort = $this.find('input:checked'),
-                isSearch = $container.is('#group_search'),
-                query = isSearch ? $('#searchInput').val() : '';
+            var $this = $(this);
+            var $container = $this.closest('.group');
+            var $sort = $this.find('input:checked');
+            var isSearch = $container.is('#group_search');
+            var query = isSearch ? $('#searchInput').val() : '';
 
             $.cookie($container.attr('id') + '_sort_order', $sort.val(), {path: '/'});
 
@@ -290,8 +302,8 @@ var grouphub = (function ($) {
         });
 
         $joinConfirm.on('click', '.confirm', function () {
-            var $this = $(this),
-                $form = $this.closest('form');
+            var $this = $(this);
+            var $form = $this.closest('form');
 
             $form.attr('action', $this.data('url'));
             $form.submit();
@@ -355,42 +367,34 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $editGroup.on('click', '#add_members', function() {
-            $('#group_members').removeClass('active');
-            $('#group_members_tab').addClass('hidden');
+        function toggleActiveTab ($tab) {
+            var $tabContent = $('#' + $tab.attr('id') + '_tab');
+            $tabContent.siblings().addClass('hidden');
+            $tab.closest('ul').find('a').removeClass('active');
 
-            $('#add_members').addClass('active');
-            $('#add_members_tab').removeClass('hidden');
+            $tabContent.removeClass('hidden');
+            $tab.addClass('active');
 
-            initScroll('#add_members_tab ul');
-
-            return false;
-        });
-
-        $editGroup.on('click', '#group_members', function() {
-            $('#group_members').addClass('active');
-            $('#group_members_tab').removeClass('hidden');
-
-            $('#add_members').removeClass('active');
-            $('#add_members_tab').addClass('hidden');
-
-            initScroll('#group_members_tab ul');
+            initScroll($tabContent.attr('id') + ' ul');
 
             return false;
+        }
+
+        $editGroup.on('click', '.tabs a', function() {
+            return toggleActiveTab($(this));
         });
 
         $editGroup.on('click', '.add', function () {
-            var $this = $(this),
-                $searchResults = $editGroup.find('#add_members_tab .users');
+            var $this = $(this);
 
-            $.post($this.data('url'), function (membersHtml) {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    $searchResult = $this.closest('li'),
-                    user = $searchResult.data('user-id'),
-                    group = $searchResult.data('group-id');
+            $.post($this.data('url'), function () {
+                var id = $editGroup.find('.edit_group').data('id');
+                var $member = $this.closest('li');
+                var userId = $member.data('user-id');
+                var groupId = $member.data('group-id');
 
-                if (group) {
-                    $searchResults.html(membersHtml);
+                if (groupId) {
+                    var $searchResults = $editGroup.find('#add_groups_tab .users_or_groups');
 
                     // Init each user
                     $searchResults.find('li').each(function (index, userLi) {
@@ -400,14 +404,18 @@ var grouphub = (function ($) {
                     });
 
                     updateGroups();
+                    updateGroupsInGroup();
+
+                    $member.hide();
+
                     return;
                 }
 
                 incrementGroupMemberCount(id);
 
-                userEditMode(id, user);
+                userEditMode(id, userId);
 
-                if (user == userId) {
+                if (userId === loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -424,7 +432,7 @@ var grouphub = (function ($) {
 
                 userEditMode(id, user, $this.val());
 
-                if (user == userId) {
+                if (user === loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -435,13 +443,20 @@ var grouphub = (function ($) {
 
             $.post($this.data('url'), function () {
                 var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
+                    $user = $this.closest('li'),
+                    $memberGroup = $this.closest('li');
+
+
+                if ($memberGroup) {
+                    $memberGroup.remove();
+                    return;
+                }
 
                 decrementGroupMemberCount(id);
 
-                userAddMode(id, user);
+                userAddMode(id, $user.data('user-id'));
 
-                if (user == userId) {
+                if ($user.data('user-id') === loggedInUserId) {
                     updateGroups();
                 }
             });
@@ -464,14 +479,14 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('change', 'header form :input', function () {
-            var $this = $(this),
-                $form = $this.closest('form');
+            var $this = $(this);
+            var $form = $this.closest('form');
 
             $.post($form.attr('action'), $form.serialize(), function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    $group = $('.group-' + id),
-                    title = $form.find('input').val(),
-                    descr = $form.find('textarea').val();
+                var id = $editGroup.find('.edit_group').data('id');
+                var $group = $('.group-' + id);
+                var title = $form.find('input').val();
+                var descr = $form.find('textarea').val();
 
                 descr = descr.length === 0 ? '&nbsp;' : descr;
 
@@ -494,8 +509,8 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('click', '#group_deletion_confirmation a.confirm', function () {
-            var $this = $(this),
-                $form = $this.closest('form');
+            var $this = $(this);
+            var $form = $this.closest('form');
 
             $form.attr('action', $this.data('url'));
             $form.submit();
@@ -513,7 +528,7 @@ var grouphub = (function ($) {
 
         // Trigger search when type is changed
         $editGroup.on('change', 'select[name=search-type]', function() {
-            $('.searchInput').trigger('keyup');
+            $(this).parent().find('.searchInput').trigger('keyup');
         });
 
         $editGroup.on('click', '.prospect_details', function () {
@@ -526,14 +541,14 @@ var grouphub = (function ($) {
             var $this = $(this);
 
             $.post($this.data('url'), function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
+                var id = $editGroup.find('.edit_group').data('id');
+                var user = $this.closest('li').data('user-id');
 
                 if ($this.hasClass('confirm')) {
 
                     incrementGroupMemberCount(id);
 
-                    if (user == userId) {
+                    if (user == loggedInUserId) {
                         updateGroups();
                     }
 
@@ -559,8 +574,8 @@ var grouphub = (function ($) {
         });
 
         $('#notifications').on('click', '.confirm, .cancel', function () {
-            var $this = $(this),
-                $article = $this.closest('article');
+            var $this = $(this);
+            var $article = $this.closest('article');
 
             $.post($this.data('url'), function () {
                 removeNotification($article.data('id'));
@@ -571,7 +586,7 @@ var grouphub = (function ($) {
 
                 incrementGroupMemberCount($article.data('group-id'));
 
-                if ($article.data('from-id') == userId) {
+                if ($article.data('from-id') === loggedInUserId) {
                     updateGroups();
                 }
             });

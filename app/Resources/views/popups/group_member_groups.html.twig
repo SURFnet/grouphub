@@ -1,0 +1,25 @@
+<div class="jscroll-inner">
+{% for memberGroup in memberGroups %}
+    <li class="memberGroup-{{ memberGroup.memberGroup.id }}" data-memberGroup-id="{{ memberGroup.memberGroup.id }}">
+        <div>
+            <p>{{ memberGroup.memberGroup.name }}</p>
+        </div>
+
+        <div class="actions">
+
+            {% if is_granted('EDIT', group) %}
+                <a href="#" class="delete rounded"
+                   data-url="{{ path('member_group_delete', {groupId: group.id, memberGroupId: memberGroup.memberGroup.id}) }}">
+                    <i class="fa fa-minus"></i>
+                </a>
+            {% endif %}
+
+        </div>
+    </li>
+{% endfor %}
+
+{% set offset = offset + limit %}
+{% if offset < memberGroups.totalCount %}
+    <a class="groups-next" href="{{ path('search_group_memberGroups', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
+{% endif %}
+</div>

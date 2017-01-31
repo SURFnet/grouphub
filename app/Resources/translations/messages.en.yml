@@ -1,5 +1,8 @@
 GroupHUB: 'GroupHUB'
 
+Groups: 'Groups'
+Users: 'Users'
+
 New Group: 'New Group'
 Notifications: 'Notifications'
 Info: 'Info'
@@ -42,6 +45,7 @@ Cancel: 'Cancel'
 
 Group members: 'Group members'
 Add members: 'Add members'
+Add groups: 'Add groups'
 
 Admin: 'Administrator'
 

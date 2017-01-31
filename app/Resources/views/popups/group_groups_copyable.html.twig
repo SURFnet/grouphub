@@ -1,0 +1,20 @@
+<div class="jscroll-inner">
+{% for groupToCopyMembersFrom in groups %}
+    <li class="group-{{ groupToCopyMembersFrom.id }}" data-group-id="{{ groupToCopyMembersFrom.id }}">
+        <div>
+            <p>{{ groupToCopyMembersFrom.name }}</p>
+        </div>
+
+        <a href="#" class="add rounded"
+           data-url="{{ path('membership_copy_members_from_group', {groupId: group.id, groupToCopyMembersFromId: groupToCopyMembersFrom.id}) }}">
+            <i class="fa fa-copy"></i>
+        </a>
+
+    </li>
+{% endfor %}
+
+{% set offset = offset + limit %}
+{% if offset < groups.totalCount %}
+    <a class="groups-next" href="{{ path('group_groups_copyable', {'id': group.id, 'query': query, 'offset': offset, 'limit': limit}) }}"></a>
+{% endif %}
+</div>

@@ -59,10 +59,20 @@ class GroupController extends Controller
         $limit = 12;
 
         $members = $this->get('app.membership_manager')->findGroupMemberships($group->getId(), null, $offset, $limit);
+        $memberGroups = $this->get('app.membership_manager')->findGroupMemberGroups($group->getId(), $offset, $limit);
 
-        $users = $form = $notifications = $memberships = null;
+        $users = $groups = $linkableGroups = $form = $notifications = $memberships = null;
         if ($this->isGranted('EDIT', $group)) {
             $users = $this->get('app.user_manager')->findUsers(null, $offset, $limit);
+            $groups = $this->get('app.group_manager')->findGroups(null, null, $offset, $limit, SortOrder::ascending('name'));
+            $linkableGroups = $this->get('app.group_manager')->findGroupsLinkable(
+                $group->getId(),
+                null,
+                null,
+                $offset,
+                $limit,
+                SortOrder::ascending('name')
+            );
             $memberships = $this->get('app.membership_manager')->findGroupMembershipsForUsers($group->getId(), $users);
 
             $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
@@ -78,15 +88,18 @@ class GroupController extends Controller
         return $this->render(
             ':popups:group_details.html.twig',
             [
-                'group'         => $group,
-                'members'       => $members,
-                'memberships'   => $memberships,
-                'users'         => $users,
-                'form'          => $form,
+                'group' => $group,
+                'members' => $members,
+                'memberships' => $memberships,
+                'memberGroups' => $memberGroups,
+                'users' => $users,
+                'groups' => $groups,
+                'linkableGroups' => $linkableGroups,
+                'form' => $form,
                 'notifications' => $notifications,
-                'query'         => '',
-                'offset'        => $offset,
-                'limit'         => $limit
+                'query' => '',
+                'offset' => $offset,
+                'limit' => $limit,
             ]
         );
     }
@@ -183,7 +196,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/group/{id}/groups/search", name="search_group_groups")
+     * @Route("/{_locale}/group/{id}/groups/copyable", name="search_group_groups_copyable")
      * @Method("GET")
      *
      * @param int $id
@@ -191,7 +204,7 @@ class GroupController extends Controller
      *
      * @return Response
      */
-    public function searchGroupsAction($id, Request $request)
+    public function searchGroupsCopyableAction($id, Request $request)
     {
         $group = $this->getGroup($id);
 
@@ -211,7 +224,48 @@ class GroupController extends Controller
         );
 
         return $this->render(
-            ':popups:group_groups.html.twig',
+            ':popups:group_groups_copyable.html.twig',
+            [
+                'group' => $group,
+                'groups' => $groups,
+                'notifications' => $notifications,
+                'query' => $query,
+                'offset' => $offset,
+                'limit' => $limit
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/group/{id}/groups/linkable", name="group_groups_linkable")
+     * @Method("GET")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function searchGroupsLinkableAction($id, Request $request)
+    {
+        $group = $this->getGroup($id);
+
+        $this->denyAccessUnlessGranted('EDIT', $group);
+
+        $query = $request->query->get('query');
+        $offset = $request->query->get('offset', 0);
+        $limit = $request->query->get('limit', 12);
+
+        /** @var GroupManager $groupManager */
+        $groupManager = $this->get('app.group_manager');
+        $groups = $groupManager->findGroupsLinkable($id, $query, null, $offset, $limit, SortOrder::ascending('name'));
+
+        $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
+            $this->getUser()->getId(),
+            $group->getId()
+        );
+
+        return $this->render(
+            ':popups:group_groups_linkable.html.twig',
             [
                 'group' => $group,
                 'groups' => $groups,
@@ -255,6 +309,46 @@ class GroupController extends Controller
             [
                 'group'         => $group,
                 'members'       => $members,
+                'notifications' => $notifications,
+                'query'         => $query,
+                'offset'        => $offset,
+                'limit'         => $limit
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/group/{id}/member_groups/search", name="search_group_member_groups")
+     * @Method("GET")
+     *
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function searchMemberGroupsAction($id, Request $request)
+    {
+        $group = $this->getGroup($id);
+
+        $query = $request->query->get('query');
+        $offset = $request->query->get('offset', 0);
+        $limit = $request->query->get('limit', 12);
+
+        $memberGroups = $this->get('app.membership_manager')->findGroupMemberGroups($group->getId(), $query, $offset, $limit);
+
+        $notifications = null;
+        if ($this->isGranted('EDIT', $group)) {
+            $notifications = $this->get('app.notification_manager')->findNotificationsForGroup(
+                $this->getUser()->getId(),
+                $group->getId()
+            );
+        }
+
+        return $this->render(
+            ':popups:group_member_groups.html.twig',
+            [
+                'group'         => $group,
+                'memberGroups'  => $memberGroups,
                 'notifications' => $notifications,
                 'query'         => $query,
                 'offset'        => $offset,
