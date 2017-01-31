@@ -35,6 +35,11 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     /**
      * @var string
      */
+    private $displayName;
+
+    /**
+     * @var string
+     */
     private $loginName;
 
     /**
@@ -52,6 +57,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
      * @param string $reference
      * @param string $firstName
      * @param string $lastName
+     * @param string $displayName
      * @param string $loginName
      * @param array  $annotations
      */
@@ -60,6 +66,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $reference = '',
         $firstName = '',
         $lastName = '',
+        $displayName = '',
         $loginName = '',
         array $annotations = []
     ) {
@@ -67,6 +74,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $this->reference = $reference;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->displayName = $displayName;
         $this->loginName = $loginName;
         $this->annotations = $annotations;
     }
@@ -109,6 +117,14 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     public function getName()
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
     }
 
     /**
