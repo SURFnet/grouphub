@@ -5,9 +5,6 @@ namespace AppBundle\Ldap;
 use Symfony\Component\Ldap\Exception\ConnectionException;
 use Symfony\Component\Ldap\Exception\LdapException;
 
-/**
- * Class LdapClient
- */
 class LdapClient
 {
     const PAGE_SIZE = 1000;
