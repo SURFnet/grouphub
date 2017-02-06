@@ -1333,32 +1333,32 @@ footer a {
     max-height: 280px; }
 
 @media screen and (min-height: 600px) {
-    .edit_group_container ul.users {
+    .edit_group_container ul.member_collection {
         max-height: 364px;
     }
 }
 @media screen and (min-height: 768px) {
-    .edit_group_container ul.users {
+    .edit_group_container ul.member_collection {
         max-height: 498px;
     }
 }
 @media screen and (min-height: 800px) {
-    .edit_group_container ul.users {
+    .edit_group_container ul.member_collection {
         max-height: 524px;
     }
 }
 @media screen and (min-height: 980px) {
-    .edit_group_container ul.users {
+    .edit_group_container ul.member_collection {
         max-height: 668px;
     }
 }
 @media screen and (min-height: 1024px) {
-    .edit_group_container ul.users {
+    .edit_group_container ul.member_collection {
         max-height: 703px;
     }
 }
 @media screen and (min-height: 1280px) {
-    .edit_group_container ul.users {
+    .edit_group_container ul.member_collection {
         max-height: 908px;
     }
 }
