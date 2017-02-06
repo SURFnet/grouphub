@@ -116,3 +116,10 @@ services:
           - '@app.ldap.group_name_formatter'
         tags:
           - { name: twig.extension }
+
+    app.twig_extension.user:
+        class: AppBundle\Twig\UserExtension
+        arguments:
+          - '@security.token_storage'
+        tags:
+          - { name: twig.extension }
