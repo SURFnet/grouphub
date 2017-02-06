@@ -49,16 +49,12 @@ class Normalizer
                 $annotations['email'] = $user[$mapping['email']][0];
             }
 
-            $firstName = '';
-            if (!empty($mapping['firstName']) && isset($user[$mapping['firstName']][0])) {
-                $firstName = $user[$mapping['firstName']][0];
-            }
-
             $result[] = new User(
                 null,
                 $user['dn'],
-                $firstName,
+                $this->getUserAttributeIfExists($user, 'firstName', ''),
                 $user[$mapping['lastName']][0],
+                $this->getUserAttributeIfExists($user, 'displayName', ''),
                 $user[$mapping['loginName']][0],
                 $annotations
             );
@@ -158,10 +154,12 @@ class Normalizer
 
         $cn = $this->nameFormatter->getCommonName($group);
 
-        $data = array_filter([
-            'cn'                    => $cn,
-            $mapping['description'] => $group->getDescription(),
-        ]);
+        $data = array_filter(
+            [
+                'cn' => $cn,
+                $mapping['description'] => $group->getDescription(),
+            ]
+        );
 
         $data = array_merge($data, $mapping['extra_attributes']);
 
@@ -229,5 +227,29 @@ class Normalizer
             $this->mapping['user']['lastName'],
             $this->mapping['user']['loginName'],
         ];
+    }
+
+    /**
+     * @param array  $user
+     * @param string $attribute
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    private function getUserAttributeIfExists(array $user, $attribute, $default = null)
+    {
+        $mapping = $this->mapping['user'];
+
+        if (empty($mapping[$attribute])) {
+            return $default;
+        }
+
+        $attributeName = $mapping[$attribute];
+
+        if (!isset($user[$attributeName][0])) {
+            return $default;
+        }
+
+        return $user[$attributeName][0];
     }
 }
