@@ -4,12 +4,8 @@ namespace AppBundle\Ldap;
 
 use Symfony\Component\Ldap\Exception\ConnectionException;
 use Symfony\Component\Ldap\Exception\LdapException;
-use Symfony\Component\Ldap\LdapClientInterface;
 
-/**
- * Class LdapClient
- */
-class LdapClient implements LdapClientInterface
+class LdapClient
 {
     const PAGE_SIZE = 1000;
     const ERROR_NO_SUCH_ATTRIBUTE = 'No such attribute';
