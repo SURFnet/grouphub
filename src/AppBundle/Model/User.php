@@ -43,7 +43,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     private $loginName;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $avatarUrl;
 
@@ -74,7 +74,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $lastName = '',
         $displayName = '',
         $loginName = '',
-        $avatarUrl = '',
+        $avatarUrl = null,
         array $annotations = []
     ) {
         $this->id = $id;
@@ -144,7 +144,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAvatarUrl()
     {
