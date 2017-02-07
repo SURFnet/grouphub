@@ -26,4 +26,14 @@ class UserTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('John1', $user->getDisplayName());
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAvatarUrl()
+    {
+        $user = new User(123, '', 'John', 'Smith', 'John1', 'jsmith', 'http://example.com/image.jpg');
+
+        $this->assertSame('http://example.com/image.jpg', $user->getAvatarUrl());
+    }
 }

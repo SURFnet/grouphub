@@ -43,6 +43,11 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     private $loginName;
 
     /**
+     * @var string
+     */
+    private $avatarUrl;
+
+    /**
      * @var array
      */
     private $samlAttributes;
@@ -59,6 +64,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
      * @param string $lastName
      * @param string $displayName
      * @param string $loginName
+     * @param string $avatarUrl
      * @param array  $annotations
      */
     public function __construct(
@@ -68,6 +74,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $lastName = '',
         $displayName = '',
         $loginName = '',
+        $avatarUrl = '',
         array $annotations = []
     ) {
         $this->id = $id;
@@ -76,6 +83,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $this->lastName = $lastName;
         $this->displayName = $displayName;
         $this->loginName = $loginName;
+        $this->avatarUrl = $avatarUrl;
         $this->annotations = $annotations;
     }
 
@@ -133,6 +141,14 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     public function getLoginName()
     {
         return $this->loginName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatarUrl;
     }
 
     /**
