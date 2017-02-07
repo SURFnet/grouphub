@@ -1547,6 +1547,15 @@ li.spinner a {
     margin-bottom: 4px;
 }
 
+.user-avatar {
+    float: left;
+    width: 45px;
+}
+
+.user-name {
+    float: left;
+}
+
 .actions {
     float: right;
     width: 55%;
@@ -1556,4 +1565,10 @@ li.spinner a {
     height: 35px;
     line-height: 35px;
     float: left;
+}
+
+img.thumbnail {
+    object-fit: cover;
+    width: 35px;
+    height: 35px;
 }
