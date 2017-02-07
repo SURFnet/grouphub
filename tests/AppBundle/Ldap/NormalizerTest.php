@@ -61,8 +61,8 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
             'Smith',
             'Smith, John',
             'jsmith',
-            'http://example.com/image.jpg',
-            ['email' => 'jsmith@example.com']
+            'jsmith@example.com',
+            'http://example.com/image.jpg'
         );
 
         $this->assertEquals($expectedUser, $result[0]);

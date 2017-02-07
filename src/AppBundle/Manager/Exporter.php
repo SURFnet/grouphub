@@ -47,7 +47,7 @@ class Exporter
                     $user->getLoginName(),
                     $user->getFirstName(),
                     $user->getLastName(),
-                    $user->getEmail(),
+                    $user->getEmailAddress(),
                 ],
                 ';'
             );

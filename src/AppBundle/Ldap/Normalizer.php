@@ -43,12 +43,6 @@ class Normalizer
         for ($i = 0; $i < $users['count']; $i++) {
             $user = $users[$i];
 
-            $annotations = [];
-
-            if (isset($user[$mapping['email']][0])) {
-                $annotations['email'] = $user[$mapping['email']][0];
-            }
-
             $result[] = new User(
                 null,
                 $user['dn'],
@@ -56,8 +50,8 @@ class Normalizer
                 $user[$mapping['lastName']][0],
                 $this->getUserAttributeIfExists($user, 'displayName', ''),
                 $user[$mapping['loginName']][0],
-                $this->getUserAttributeIfExists($user, 'avatarUrl', null),
-                $annotations
+                $this->getUserAttributeIfExists($user, 'email', null),
+                $this->getUserAttributeIfExists($user, 'avatarUrl', null)
             );
         }
 
