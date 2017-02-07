@@ -42,10 +42,13 @@ class Normalizer
         }
 
         return [
-            'reference'   => $user->getReference(),
-            'firstName'   => $user->getFirstName(),
-            'lastName'    => $user->getLastName(),
-            'loginName'   => $user->getLoginName(),
+            'reference' => $user->getReference(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'displayName' => $user->getDisplayName(),
+            'loginName' => $user->getLoginName(),
+            'emailAddress' => $user->getEmailAddress(),
+            'avatarUrl' => $user->getAvatarUrl(),
             'annotations' => $annotations,
         ];
     }
