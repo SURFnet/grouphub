@@ -399,7 +399,6 @@ var grouphub = (function ($) {
                     // Init each user
                     $searchResults.find('li').each(function (index, userLi) {
                         var userId = $(userLi).data('user-id');
-                        incrementGroupMemberCount(id);
                         userEditMode(id, userId);
                     });
 
@@ -411,7 +410,9 @@ var grouphub = (function ($) {
                     return;
                 }
 
-                incrementGroupMemberCount(id);
+                if (userId) {
+                    incrementGroupMemberCount(id);
+                }
 
                 userEditMode(id, userId);
 
