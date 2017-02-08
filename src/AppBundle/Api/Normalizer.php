@@ -36,9 +36,9 @@ class Normalizer
      */
     public function normalizeUser(User $user)
     {
-        $annotations = [];
-        foreach ($user->getAnnotations() as $key => $annotation) {
-            $annotations[] = ['key' => $key, 'value' => $annotation];
+        $extraAttributes = [];
+        foreach ($user->getExtraAttributes() as $attribute => $value) {
+            $extraAttributes[] = ['attribute' => $attribute, 'value' => $value];
         }
 
         return [
@@ -49,7 +49,7 @@ class Normalizer
             'loginName' => $user->getLoginName(),
             'emailAddress' => $user->getEmailAddress(),
             'avatarUrl' => $user->getAvatarUrl(),
-            'annotations' => $annotations,
+            'extraAttributes' => $extraAttributes,
         ];
     }
 
@@ -98,10 +98,10 @@ class Normalizer
      */
     public function denormalizeUser(array $user)
     {
-        $annotations = [];
-        if (isset($user['annotations'])) {
-            foreach ($user['annotations'] as $annotation) {
-                $annotations[$annotation['attribute']] = $annotation['value'];
+        $extraAttributes = [];
+        if (isset($user['extra_attributes'])) {
+            foreach ($user['extra_attributes'] as $attribute) {
+                $extraAttributes[$attribute['attribute']] = $attribute['value'];
             }
         }
 
@@ -114,7 +114,7 @@ class Normalizer
             isset($user['login_name']) ? $user['login_name'] : '',
             isset($user['email_address']) ? $user['email_address'] : '',
             isset($user['avatar_url']) ? $user['avatar_url'] : '',
-            $annotations
+            $extraAttributes
         );
     }
 
