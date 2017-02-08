@@ -1572,3 +1572,14 @@ img.thumbnail {
     width: 35px;
     height: 35px;
 }
+
+.user ul.extra-attributes,
+.user ul.extra-attributes li {
+    padding: 0;
+}
+
+.user ul.extra-attributes li {
+    border: none;
+    color: #8a8a8a;
+    font-size: 13px;
+}
