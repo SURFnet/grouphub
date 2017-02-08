@@ -16,11 +16,23 @@ services:
         class: AppBundle\Ldap\LdapClients
         public: false
 
+    app.ldap.mapping_factory:
+        class: AppBundle\Ldap\MappingFactory
+        arguments:
+          - '%ldap.mapping%'
+        public: false
+
+    app.ldap.user_mapping:
+        class: AppBundle\Ldap\UserMapping
+        factory: 'app.ldap.mapping_factory:getUserMapping'
+        public: false
+
     app.ldap_normalizer:
         class: AppBundle\Ldap\Normalizer
         arguments:
           - '@app.ldap.group_name_formatter'
           - '%ldap.mapping%'
+          - '@app.ldap.user_mapping'
         public: false
 
     app.ldap.group_name_formatter:
