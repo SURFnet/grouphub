@@ -32,6 +32,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
             'displayName' => 'displ_name',
             'loginName' => 'an',
             'avatarUrl' => 'image',
+            'extraAttribute' => 'extra',
         ];
 
         $userMapping = new UserMapping($userMapping);
@@ -48,6 +49,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
                 'displ_name' => ['Smith, John'],
                 'image' => ['http://example.com/image.jpg'],
                 'mail' => ['jsmith@example.com'],
+                'extra' => ['Foo Bar'],
             ],
         ];
 
@@ -63,7 +65,8 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
             'Smith, John',
             'jsmith',
             'jsmith@example.com',
-            'http://example.com/image.jpg'
+            'http://example.com/image.jpg',
+            ['extraAttribute' => 'Foo Bar']
         );
 
         $this->assertEquals($expectedUser, $result[0]);

@@ -48,6 +48,15 @@ class Normalizer
         for ($i = 0; $i < $users['count']; $i++) {
             $user = $users[$i];
 
+            $extraAttributes = [];
+            foreach ($this->userMapping->getExtraFieldNames() as $extraFieldName) {
+                $attribute = $this->getUserAttributeIfExists($user, $extraFieldName, null);
+
+                if ($attribute !== null) {
+                    $extraAttributes[$extraFieldName] = $attribute;
+                }
+            }
+
             $result[] = new User(
                 null,
                 $user['dn'],
@@ -56,7 +65,8 @@ class Normalizer
                 $this->getUserAttributeIfExists($user, 'displayName', ''),
                 $user[$this->userMapping->getLdapAttributeName('loginName')][0],
                 $this->getUserAttributeIfExists($user, 'email', null),
-                $this->getUserAttributeIfExists($user, 'avatarUrl', null)
+                $this->getUserAttributeIfExists($user, 'avatarUrl', null),
+                $extraAttributes
             );
         }
 

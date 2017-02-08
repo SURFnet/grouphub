@@ -36,4 +36,21 @@ class UserMappingTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('attribute', $userMapping->getLdapAttributeName('field'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFieldNamesThatAreNotStandardFields()
+    {
+        $userMapping = new UserMapping(
+            [
+                'loginName' => 'login_name',
+                'displayName' => 'Display Name',
+                'extraField' => 'extra_attribute',
+                'otherExtraField' => 'extra_attribute_2',
+            ]
+        );
+
+        $this->assertEquals(['extraField', 'otherExtraField'], $userMapping->getExtraFieldNames());
+    }
 }

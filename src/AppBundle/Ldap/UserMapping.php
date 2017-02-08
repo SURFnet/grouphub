@@ -33,4 +33,32 @@ final class UserMapping
     {
         return $this->mapping[$fieldName];
     }
+
+    /**
+     * @return array
+     */
+    public function getFieldNames()
+    {
+        return array_keys($this->mapping);
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtraFieldNames()
+    {
+        $standardFields = [
+            'firstName',
+            'lastName',
+            'loginName',
+            'displayName',
+            'avatarUrl',
+            'email',
+            'employeeNumber',
+        ];
+
+        $extraFieldNames = array_diff($this->getFieldNames(), $standardFields);
+
+        return array_values($extraFieldNames);
+    }
 }
