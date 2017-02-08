@@ -7,9 +7,6 @@ use Hslavich\SimplesamlphpBundle\Security\Core\User\SamlUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * Class User
- */
 class User implements Comparable, UserInterface, EquatableInterface, SamlUserInterface
 {
     /**
@@ -45,12 +42,12 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     /**
      * @var string|null
      */
-    private $avatarUrl;
+    private $emailAddress;
 
     /**
-     * @var array
+     * @var string|null
      */
-    private $samlAttributes;
+    private $avatarUrl;
 
     /**
      * @var array
@@ -58,14 +55,15 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     private $annotations = [];
 
     /**
-     * @param int    $id
-     * @param string $reference
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $displayName
-     * @param string $loginName
-     * @param string $avatarUrl
-     * @param array  $annotations
+     * @param int         $id
+     * @param string      $reference
+     * @param string      $firstName
+     * @param string      $lastName
+     * @param string      $displayName
+     * @param string      $loginName
+     * @param string|null $emailAddress
+     * @param string|null $avatarUrl
+     * @param array       $annotations
      */
     public function __construct(
         $id = null,
@@ -74,6 +72,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $lastName = '',
         $displayName = '',
         $loginName = '',
+        $emailAddress = null,
         $avatarUrl = null,
         array $annotations = []
     ) {
@@ -83,6 +82,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $this->lastName = $lastName;
         $this->displayName = $displayName;
         $this->loginName = $loginName;
+        $this->emailAddress = $emailAddress;
         $this->avatarUrl = $avatarUrl;
         $this->annotations = $annotations;
     }
@@ -146,6 +146,24 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     /**
      * @return string|null
      */
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
+    }
+
+    /**
+     * @param string $emailAddress
+     *
+     * @return void
+     */
+    public function setEmailAddress($emailAddress)
+    {
+        $this->emailAddress = $emailAddress;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getAvatarUrl()
     {
         return $this->avatarUrl;
@@ -170,6 +188,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $ref2 = strtoupper($other->getReference());
 
         $c = new \Collator('en');
+
         return $c->compare($ref1, $ref2);
     }
 
@@ -196,7 +215,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
             return false;
         }
 
-        if ($other->getEmail() !== $this->getEmail()) {
+        if ($other->getEmailAddress() !== $this->getEmailAddress()) {
             return false;
         }
 
@@ -264,22 +283,8 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
      */
     public function setSamlAttributes(array $attributes)
     {
-        $this->samlAttributes = $attributes;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        if (isset($this->annotations['email'])) {
-            return $this->annotations['email'];
+        if (isset($attributes['urn:mace:dir:attribute-def:mail'][0])) {
+            $this->emailAddress = $attributes['urn:mace:dir:attribute-def:mail'][0];
         }
-
-        if (isset($this->samlAttributes['urn:mace:dir:attribute-def:mail'][0])) {
-            return $this->samlAttributes['urn:mace:dir:attribute-def:mail'][0];
-        }
-
-        return '';
     }
 }

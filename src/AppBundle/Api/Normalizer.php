@@ -42,10 +42,13 @@ class Normalizer
         }
 
         return [
-            'reference'   => $user->getReference(),
-            'firstName'   => $user->getFirstName(),
-            'lastName'    => $user->getLastName(),
-            'loginName'   => $user->getLoginName(),
+            'reference' => $user->getReference(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'displayName' => $user->getDisplayName(),
+            'loginName' => $user->getLoginName(),
+            'emailAddress' => $user->getEmailAddress(),
+            'avatarUrl' => $user->getAvatarUrl(),
             'annotations' => $annotations,
         ];
     }
@@ -109,6 +112,7 @@ class Normalizer
             isset($user['last_name']) ? $user['last_name'] : '',
             isset($user['display_name']) ? $user['display_name'] : '',
             isset($user['login_name']) ? $user['login_name'] : '',
+            isset($user['email_address']) ? $user['email_address'] : '',
             isset($user['avatar_url']) ? $user['avatar_url'] : '',
             $annotations
         );
