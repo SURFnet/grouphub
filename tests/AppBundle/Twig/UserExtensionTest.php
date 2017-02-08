@@ -28,6 +28,11 @@ class UserExtensionTest extends PHPUnit_Framework_TestCase
      */
     private $securityToken;
 
+    /**
+     * @var TokenStorage
+     */
+    private $tokenStorage;
+
     protected function setUp()
     {
         $this->twigLoader = new Twig_Loader_Array();
@@ -35,11 +40,8 @@ class UserExtensionTest extends PHPUnit_Framework_TestCase
 
         $this->securityToken = new UsernamePasswordToken('username', 'password', 'provider');
 
-        $tokenStorage = new TokenStorage();
-        $tokenStorage->setToken($this->securityToken);
-
-        $extension = new UserExtension($tokenStorage);
-        $this->twig->addExtension($extension);
+        $this->tokenStorage = new TokenStorage();
+        $this->tokenStorage->setToken($this->securityToken);
     }
 
     /**
@@ -49,6 +51,8 @@ class UserExtensionTest extends PHPUnit_Framework_TestCase
     {
         $this->securityToken->setUser($this->createUser('Display Name', 'UID'));
 
+        $extension = new UserExtension($this->tokenStorage, []);
+        $this->twig->addExtension($extension);
         $this->twigLoader->setTemplate('template.html.twig', '{{ username() }}');
 
         $this->assertSame('Display Name', $this->twig->render('template.html.twig'));
@@ -61,9 +65,23 @@ class UserExtensionTest extends PHPUnit_Framework_TestCase
     {
         $this->securityToken->setUser($this->createUser('', 'UID'));
 
+        $extension = new UserExtension($this->tokenStorage, []);
+        $this->twig->addExtension($extension);
         $this->twigLoader->setTemplate('template.html.twig', '{{ username() }}');
 
         $this->assertSame('UID', $this->twig->render('template.html.twig'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRenderUserAttribute()
+    {
+        $extension = new UserExtension($this->tokenStorage, ['foo' => 'Foo label']);
+        $this->twig->addExtension($extension);
+        $this->twigLoader->setTemplate('template.html.twig', "{{ render_extra_user_attribute('foo', 'value') }}");
+
+        $this->assertSame('Foo label: value', $this->twig->render('template.html.twig'));
     }
 
     /**

@@ -42,10 +42,11 @@ parameters:
     ldap.mapping:
         user:
             firstName: givenname
-            lastName:  sn
+            lastName: sn
             loginName: uid
             avatarUrl: avatar
-            email:     mail
+            email: mail
+            employeeNumber: employeeNumber
         group:
             description: description
             accountName: ~
@@ -53,6 +54,9 @@ parameters:
             name: ~
             extra_attributes:
                 objectClass: groupOfNames
+
+    ldap_extra_user_attribute_labels:
+        employeeNumber: 'Employee number'
 
     ldap_ad_hoc_group_prefix: ~
     ldap_semi_formal_group_prefix: ~

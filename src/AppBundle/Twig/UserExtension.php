@@ -14,9 +14,15 @@ final class UserExtension extends Twig_Extension
      */
     private $tokenStorage;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    /**
+     * @var array
+     */
+    private $userAttributeLabels;
+
+    public function __construct(TokenStorageInterface $tokenStorage, array $userAttributeLabels)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->userAttributeLabels = $userAttributeLabels;
     }
 
     /**
@@ -26,6 +32,7 @@ final class UserExtension extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction('username', [$this, 'getUserName']),
+            new Twig_SimpleFunction('render_extra_user_attribute', [$this, 'renderExtraUserAttribute']),
         ];
     }
 
@@ -41,6 +48,21 @@ final class UserExtension extends Twig_Extension
         }
 
         return $user->getDisplayName();
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $value
+     *
+     * @return string
+     */
+    public function renderExtraUserAttribute($attribute, $value)
+    {
+        if (isset($this->userAttributeLabels[$attribute])) {
+            $attribute = $this->userAttributeLabels[$attribute];
+        }
+
+        return sprintf('%s: %s', $attribute, $value);
     }
 
     /**

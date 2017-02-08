@@ -21,13 +21,20 @@ class Normalizer
     private $mapping;
 
     /**
+     * @var UserMapping
+     */
+    private $userMapping;
+
+    /**
      * @param GroupNameFormatter $nameFormatter
      * @param array              $mapping
+     * @param UserMapping        $userMapping
      */
-    public function __construct(GroupNameFormatter $nameFormatter, array $mapping)
+    public function __construct(GroupNameFormatter $nameFormatter, array $mapping, UserMapping $userMapping)
     {
         $this->mapping = $mapping;
         $this->nameFormatter = $nameFormatter;
+        $this->userMapping = $userMapping;
     }
 
     /**
@@ -37,21 +44,29 @@ class Normalizer
      */
     public function denormalizeUsers(array $users)
     {
-        $mapping = $this->mapping['user'];
-
         $result = [];
         for ($i = 0; $i < $users['count']; $i++) {
             $user = $users[$i];
+
+            $extraAttributes = [];
+            foreach ($this->userMapping->getExtraFieldNames() as $extraFieldName) {
+                $attribute = $this->getUserAttributeIfExists($user, $extraFieldName, null);
+
+                if ($attribute !== null) {
+                    $extraAttributes[$extraFieldName] = $attribute;
+                }
+            }
 
             $result[] = new User(
                 null,
                 $user['dn'],
                 $this->getUserAttributeIfExists($user, 'firstName', ''),
-                $user[$mapping['lastName']][0],
+                $user[$this->userMapping->getLdapAttributeName('lastName')][0],
                 $this->getUserAttributeIfExists($user, 'displayName', ''),
-                $user[$mapping['loginName']][0],
+                $user[$this->userMapping->getLdapAttributeName('loginName')][0],
                 $this->getUserAttributeIfExists($user, 'email', null),
-                $this->getUserAttributeIfExists($user, 'avatarUrl', null)
+                $this->getUserAttributeIfExists($user, 'avatarUrl', null),
+                $extraAttributes
             );
         }
 
@@ -233,13 +248,11 @@ class Normalizer
      */
     private function getUserAttributeIfExists(array $user, $attribute, $default = null)
     {
-        $mapping = $this->mapping['user'];
-
-        if (empty($mapping[$attribute])) {
+        if (!$this->userMapping->hasField($attribute)) {
             return $default;
         }
 
-        $attributeName = $mapping[$attribute];
+        $attributeName = $this->userMapping->getLdapAttributeName($attribute);
 
         if (!isset($user[$attributeName][0])) {
             return $default;

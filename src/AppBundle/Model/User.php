@@ -50,9 +50,11 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     private $avatarUrl;
 
     /**
-     * @var array
+     * @var string[]
+     *
+     * Contains "extra" attributes, that can be defined per institution and have no meaning in the application itself
      */
-    private $annotations = [];
+    private $extraAttributes = [];
 
     /**
      * @param int         $id
@@ -63,7 +65,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
      * @param string      $loginName
      * @param string|null $emailAddress
      * @param string|null $avatarUrl
-     * @param array       $annotations
+     * @param array       $extraAttributes
      */
     public function __construct(
         $id = null,
@@ -74,7 +76,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $loginName = '',
         $emailAddress = null,
         $avatarUrl = null,
-        array $annotations = []
+        array $extraAttributes = []
     ) {
         $this->id = $id;
         $this->reference = $reference;
@@ -84,7 +86,7 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
         $this->loginName = $loginName;
         $this->emailAddress = $emailAddress;
         $this->avatarUrl = $avatarUrl;
-        $this->annotations = $annotations;
+        $this->extraAttributes = $extraAttributes;
     }
 
     /**
@@ -172,9 +174,9 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
     /**
      * @return array
      */
-    public function getAnnotations()
+    public function getExtraAttributes()
     {
-        return $this->annotations;
+        return $this->extraAttributes;
     }
 
     /**

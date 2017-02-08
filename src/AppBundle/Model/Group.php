@@ -214,6 +214,14 @@ class Group implements Comparable
     }
 
     /**
+     * @return bool
+     */
+    public function isSemiFormal()
+    {
+        return $this->isOfType(self::TYPE_SEMI_FORMAL);
+    }
+
+    /**
      * @return User
      */
     public function getOwner()

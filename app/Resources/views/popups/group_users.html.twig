@@ -1,9 +1,29 @@
 <div class="jscroll-inner">
 {% for user in users %}
-    <li class="user-{{ user.id }}" data-user-id="{{ user.id }}">
-        <div>
-            <p>{{ user.name }}</p>
+    <li class="user user-{{ user.id }}" data-user-id="{{ user.id }}">
+        {% if group.semiFormal %}
+            <div class="user-avatar">
+                {% if user.avatarUrl is not empty %}
+                    <img class="thumbnail" src="{{ user.avatarUrl }}" />
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="user-name">
+            {% if user.extraAttributes|length > 0 %}
+                <a class="btn-circular toggle-extra-user-info" href="#"><span
+                        class="fa fa-angle-double-down"></span></a>
+            {% endif %}
+            <p>{{ user.displayName }}</p>
             <span>{{ user.emailAddress }}&nbsp;</span>
+
+            {% if group.semiFormal %}
+                <ul class="extra-attributes hidden">
+                    {% for key, value in user.extraAttributes %}
+                        <li>{{ render_extra_user_attribute(key, value) }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <div class="actions">

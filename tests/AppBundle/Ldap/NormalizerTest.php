@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Ldap;
 
 use AppBundle\Ldap\GroupNameFormatter;
 use AppBundle\Ldap\Normalizer;
+use AppBundle\Ldap\UserMapping;
 use AppBundle\Model\User;
 use PHPUnit_Framework_TestCase;
 
@@ -24,18 +25,19 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
      */
     public function shouldDenormalizeUsers()
     {
-        $mapping = [
-            'user' => [
-                'firstName' => 'givenName',
-                'lastName' => 'sn',
-                'email' => 'mail',
-                'displayName' => 'displ_name',
-                'loginName' => 'an',
-                'avatarUrl' => 'image',
-            ],
+        $userMapping = [
+            'firstName' => 'givenName',
+            'lastName' => 'sn',
+            'email' => 'mail',
+            'displayName' => 'displ_name',
+            'loginName' => 'an',
+            'avatarUrl' => 'image',
+            'extraAttribute' => 'extra',
         ];
 
-        $normalizer = new Normalizer($this->groupNameFormatter, $mapping);
+        $userMapping = new UserMapping($userMapping);
+
+        $normalizer = new Normalizer($this->groupNameFormatter, [], $userMapping);
 
         $users = [
             'count' => 1,
@@ -47,6 +49,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
                 'displ_name' => ['Smith, John'],
                 'image' => ['http://example.com/image.jpg'],
                 'mail' => ['jsmith@example.com'],
+                'extra' => ['Foo Bar'],
             ],
         ];
 
@@ -62,7 +65,8 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
             'Smith, John',
             'jsmith',
             'jsmith@example.com',
-            'http://example.com/image.jpg'
+            'http://example.com/image.jpg',
+            ['extraAttribute' => 'Foo Bar']
         );
 
         $this->assertEquals($expectedUser, $result[0]);
