@@ -10,11 +10,12 @@
         {% endif %}
 
         <div class="user-name">
+            <a class="btn-circular toggle-extra-user-info" href="#"><span class="fa fa-angle-double-down"></span></a>
             <p>{{ user.displayName }}</p>
             <span>{{ user.emailAddress }}&nbsp;</span>
 
             {% if group.semiFormal %}
-                <ul class="extra-attributes">
+                <ul class="extra-attributes hidden">
                     {% for key, value in user.extraAttributes %}
                         <li>{{ key }}: {{ value }}</li>
                     {% endfor %}

@@ -1583,3 +1583,15 @@ img.thumbnail {
     color: #8a8a8a;
     font-size: 13px;
 }
+
+.btn-circular {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+
+    border: 1px solid #a6a6a6;
+    border-radius: 50%;
+
+    line-height: 100%;
+    text-align: center;
+}

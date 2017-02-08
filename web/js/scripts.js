@@ -464,6 +464,17 @@ var grouphub = (function ($) {
             return false;
         });
 
+        $editGroup.on('click', '.toggle-extra-user-info', function () {
+            var $extraGroupInfo = $(this).parent().find('.extra-attributes');
+            var $span = $(this).find('span');
+
+            $extraGroupInfo.toggleClass('hidden');
+
+            $span.toggleClass('fa-angle-double-down fa-angle-double-up');
+
+            return false;
+        });
+
         $editGroup.on('click', '#edit_group_link', function () {
             var $this = $(this);
 
