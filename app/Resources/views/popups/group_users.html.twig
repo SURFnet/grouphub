@@ -20,7 +20,7 @@
             {% if group.semiFormal %}
                 <ul class="extra-attributes hidden">
                     {% for key, value in user.extraAttributes %}
-                        <li>{{ key }}: {{ value }}</li>
+                        <li>{{ render_extra_user_attribute(key, value) }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}

@@ -56,7 +56,7 @@ parameters:
                 objectClass: groupOfNames
 
     ldap_extra_user_attribute_labels:
-        employee_number: 'Employee number'
+        employeeNumber: 'Employee number'
 
     ldap_ad_hoc_group_prefix: ~
     ldap_semi_formal_group_prefix: ~

@@ -133,5 +133,6 @@ services:
         class: AppBundle\Twig\UserExtension
         arguments:
           - '@security.token_storage'
+          - '%ldap_extra_user_attribute_labels%'
         tags:
           - { name: twig.extension }
