@@ -56,6 +56,7 @@ class Normalizer
                 $user[$mapping['lastName']][0],
                 $this->getUserAttributeIfExists($user, 'displayName', ''),
                 $user[$mapping['loginName']][0],
+                $this->getUserAttributeIfExists($user, 'avatarUrl', null),
                 $annotations
             );
         }

@@ -44,6 +44,7 @@ parameters:
             firstName: givenname
             lastName:  sn
             loginName: uid
+            avatarUrl: avatar
             email:     mail
         group:
             description: description

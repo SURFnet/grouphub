@@ -31,6 +31,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
                 'email' => 'mail',
                 'displayName' => 'displ_name',
                 'loginName' => 'an',
+                'avatarUrl' => 'image',
             ],
         ];
 
@@ -44,6 +45,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
                 'sn' => ['Smith'],
                 'an' => ['jsmith'],
                 'displ_name' => ['Smith, John'],
+                'image' => ['http://example.com/image.jpg'],
                 'mail' => ['jsmith@example.com'],
             ],
         ];
@@ -59,6 +61,7 @@ class NormalizerTest extends PHPUnit_Framework_TestCase
             'Smith',
             'Smith, John',
             'jsmith',
+            'http://example.com/image.jpg',
             ['email' => 'jsmith@example.com']
         );
 
