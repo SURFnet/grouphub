@@ -229,14 +229,7 @@ class Normalizer
      */
     public function getUserFields()
     {
-        return [
-            'dn',
-            'cn',
-            $this->mapping['user']['email'],
-            $this->mapping['user']['firstName'],
-            $this->mapping['user']['lastName'],
-            $this->mapping['user']['loginName'],
-        ];
+        return array_merge(['dn', 'cn'], $this->userMapping->getLdapAttributeNames());
     }
 
     /**
