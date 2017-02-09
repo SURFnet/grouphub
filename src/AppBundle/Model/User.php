@@ -198,6 +198,8 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
      * @param User $other
      *
      * @return bool
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function equals($other)
     {
