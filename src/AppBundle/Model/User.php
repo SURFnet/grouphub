@@ -217,7 +217,19 @@ class User implements Comparable, UserInterface, EquatableInterface, SamlUserInt
             return false;
         }
 
+        if ($other->getDisplayName() !== $this->getDisplayName()) {
+            return false;
+        }
+
         if ($other->getEmailAddress() !== $this->getEmailAddress()) {
+            return false;
+        }
+
+        if ($other->getAvatarUrl() !== $this->getAvatarUrl()) {
+            return false;
+        }
+
+        if ($other->getExtraAttributes() !== $this->getExtraAttributes()) {
             return false;
         }
 
