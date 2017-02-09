@@ -424,21 +424,6 @@ var grouphub = (function ($) {
             return false;
         });
 
-        $editGroup.on('change', '.roles', function () {
-            var $this = $(this);
-
-            $.post($this.data('url'), {'role': $this.val()}, function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    user = $this.closest('li').data('user-id');
-
-                userEditMode(id, user, $this.val());
-
-                if (user === loggedInUserId) {
-                    updateGroups();
-                }
-            });
-        });
-
         $editGroup.on('click', '.delete', function () {
             var $this = $(this);
 
@@ -463,6 +448,21 @@ var grouphub = (function ($) {
             });
 
             return false;
+        });
+
+        $editGroup.on('change', '.roles', function () {
+            var $this = $(this);
+
+            $.post($this.data('url'), {'role': $this.val()}, function () {
+                var id = $editGroup.find('.edit_group').data('id'),
+                    user = $this.closest('li').data('user-id');
+
+                userEditMode(id, user, $this.val());
+
+                if (user === loggedInUserId) {
+                    updateGroups();
+                }
+            });
         });
 
         $editGroup.on('click', '.toggle-extra-user-info', function () {
