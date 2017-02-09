@@ -45,6 +45,14 @@ final class UserMapping
     /**
      * @return array
      */
+    public function getLdapAttributeNames()
+    {
+        return array_values($this->mapping);
+    }
+
+    /**
+     * @return array
+     */
     public function getExtraFieldNames()
     {
         $standardFields = [
@@ -54,7 +62,6 @@ final class UserMapping
             'displayName',
             'avatarUrl',
             'email',
-            'employeeNumber',
         ];
 
         $extraFieldNames = array_diff($this->getFieldNames(), $standardFields);
