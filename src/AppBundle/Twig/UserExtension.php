@@ -5,6 +5,7 @@ namespace AppBundle\Twig;
 use AppBundle\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig_Extension;
+use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 
 final class UserExtension extends Twig_Extension
@@ -37,6 +38,16 @@ final class UserExtension extends Twig_Extension
     }
 
     /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        return [
+            new Twig_SimpleFilter('display_name', [$this, 'getUserDisplayName']),
+        ];
+    }
+
+    /**
      * @return string
      */
     public function getUserName()
@@ -63,6 +74,20 @@ final class UserExtension extends Twig_Extension
         }
 
         return sprintf('%s: %s', $attribute, $value);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return string
+     */
+    public function getUserDisplayName(User $user)
+    {
+        if (empty($user->getDisplayName())) {
+            return $user->getName();
+        }
+
+        return $user->getDisplayName();
     }
 
     /**
