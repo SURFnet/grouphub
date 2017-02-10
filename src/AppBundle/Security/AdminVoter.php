@@ -37,7 +37,7 @@ class AdminVoter extends Voter
     /**
      * @inheritdoc
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $group, TokenInterface $token)
     {
         $user = $token->getUser();
 

@@ -82,4 +82,8 @@ parameters:
     all_groups_column_title_en: All groups
     all_groups_column_title_nl: Alle groepen
 
+    formal_group_member_visibility: NONE
+    semi_formal_group_member_visibility: MEMBERS
+    ad_hoc_group_member_visibility: ALL
+
     documentation_url: https://wiki.surfnet.nl/display/Grouphub/Grouphub+Home

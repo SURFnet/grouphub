@@ -37,9 +37,9 @@ class MembershipVoter extends Voter
     /**
      * @inheritdoc
      *
-     * @param Group $subject
+     * @param Group $group
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $group, TokenInterface $token)
     {
         /** @var User $user */
         $user = $token->getUser();
@@ -49,7 +49,7 @@ class MembershipVoter extends Voter
         }
 
         // A user is allowed to edit his own membership of grouphub groups
-        if ($subject->isOfType(Group::TYPE_AD_HOC)) {
+        if ($group->isOfType(Group::TYPE_AD_HOC)) {
             return true;
         }
 
