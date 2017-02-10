@@ -79,20 +79,36 @@ var grouphub = (function ($) {
         updateGroupMemberCounters(groupId, newMemberCount);
     };
 
+    var incrementGroupInGroupCount = function () {
+        var $tab = $('#group_in_group');
+        var newCount = $tab.data('group-count') + 1;
+
+        $tab.data('group-count', newCount);
+        $tab.find('.group-count').text('(' + newCount + ')');
+    };
+
+    var decrementGroupInGroupCount = function () {
+        var $tab = $('#group_in_group');
+        var newCount = $tab.data('group-count') - 1;
+
+        $tab.data('group-count', newCount);
+        $tab.find('.group-count').text('(' + newCount + ')');
+    };
+
     var getGroupMemberCount = function (groupId) {
-        var $groupMemberCounts = $('.group-' + groupId).find('.count');
+        var $groupMemberCounts = $('.group-' + groupId).find('.member-count');
 
         return parseInt($groupMemberCounts.first().text(), 10);
     };
 
     var updateGroupMemberCounters = function (groupId, newCount) {
-        var $groupMemberCounts = $('.group-' + groupId).find('.count');
+        var $groupMemberCounts = $('.group-' + groupId).find('.member-count');
 
         $groupMemberCounts.each(function () {
             $(this).html(newCount);
         });
 
-        var $editGroupMemberCount = $('.edit_group .count');
+        var $editGroupMemberCount = $('.edit_group .member-count');
         $editGroupMemberCount.text('(' + newCount + ')');
     };
 
@@ -412,6 +428,7 @@ var grouphub = (function ($) {
 
                     updateGroups();
                     updateGroupsInGroup();
+                    incrementGroupInGroupCount();
 
                     $member.hide();
 
@@ -443,6 +460,7 @@ var grouphub = (function ($) {
 
                 if (groupId) {
                     updateLinkableGroups();
+                    decrementGroupInGroupCount();
 
                     $member.hide();
 
