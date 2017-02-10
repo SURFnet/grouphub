@@ -47,12 +47,12 @@
         <ul class="tabs">
             <li>
                 <a id="group_members" href="#" class="active">
-                    {{ 'Group members'|trans }} <span class="count">({{ group.userCount }})</span>
+                    {{ 'Group members'|trans }} <span class="member-count">({{ group.userCount }})</span>
                 </a>
             </li>
             <li>
-                <a id="group_in_group" href="#">
-                    {{ 'Group In Group'|trans }}
+                <a id="group_in_group" href="#" data-group-count="{{ group.groupCount }}">
+                    {{ 'Group In Group'|trans }} <span class="group-count">({{ group.groupCount }})</span>
                 </a>
             </li>
             <li>

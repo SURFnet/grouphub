@@ -158,6 +158,8 @@ class Normalizer
      * @param array $group
      *
      * @return Group
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function denormalizeGroup(array $group)
     {
@@ -170,7 +172,8 @@ class Normalizer
             isset($group['owner']) ? $this->denormalizeUser($group['owner']) : null,
             isset($group['parent']['id']) ? $group['parent']['id'] : null,
             isset($group['timestamp']) ? new DateTime($group['timestamp']) : null,
-            isset($group['user_count']) ? $group['user_count'] : 0
+            isset($group['user_count']) ? $group['user_count'] : 0,
+            isset($group['group_count']) ? $group['group_count'] : 0
         );
     }
 
