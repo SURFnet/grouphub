@@ -96,7 +96,11 @@ services:
 
     app.group_voter:
         class: AppBundle\Security\GroupVoter
-        arguments: ["@app.membership_manager"]
+        arguments:
+            - '@app.membership_manager'
+            - '%formal_group_member_visibility%'
+            - '%semi_formal_group_member_visibility%'
+            - '%ad_hoc_group_member_visibility%'
         tags:
             - { name: security.voter }
         public: false
