@@ -114,6 +114,14 @@ var grouphub = (function ($) {
         });
     };
 
+    var updateLinkableGroups = function () {
+        var $groups = $('.edit_group #add_groups_tab ul.member_collection');
+
+        $.get($groups.data('url'), function (data) {
+            $groups.html(data);
+        });
+    };
+
     var userAddMode = function (groupId, userId) {
         var $member = $('.edit_group #group_members_tab .users_or_groups').find('.user-' + userId);
         var $user = $('.edit_group #add_members_tab .users_or_groups').find('.user-' + userId);
@@ -428,21 +436,24 @@ var grouphub = (function ($) {
             var $this = $(this);
 
             $.post($this.data('url'), function () {
-                var id = $editGroup.find('.edit_group').data('id'),
-                    $user = $this.closest('li'),
-                    $memberGroup = $this.closest('li');
+                var id = $editGroup.find('.edit_group').data('id');
+                var $member = $this.closest('li');
+                var userId = $member.data('user-id');
+                var groupId = $member.data('membergroup-id');
 
+                if (groupId) {
+                    updateLinkableGroups();
 
-                if ($memberGroup) {
-                    $memberGroup.remove();
+                    $member.hide();
+
                     return;
                 }
 
                 decrementGroupMemberCount(id);
 
-                userAddMode(id, $user.data('user-id'));
+                userAddMode(id, userId);
 
-                if ($user.data('user-id') === loggedInUserId) {
+                if (userId === loggedInUserId) {
                     updateGroups();
                 }
             });
