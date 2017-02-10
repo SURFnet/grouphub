@@ -158,6 +158,8 @@ class Normalizer
      * @param array $group
      *
      * @return Group
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function denormalizeGroup(array $group)
     {

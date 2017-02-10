@@ -105,6 +105,8 @@ class Group implements Comparable
      * @param DateTime $timeStamp
      * @param int      $userCount
      * @param int      $groupCount
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         $id = null,
