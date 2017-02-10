@@ -85,6 +85,34 @@ class UserExtensionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function shouldReturnDisplayNameOfUser()
+    {
+        $extension = new UserExtension($this->tokenStorage, []);
+        $this->twig->addExtension($extension);
+        $this->twigLoader->setTemplate('template.html.twig', '{{ user|display_name }}');
+
+        $user = new User(null, null, null, null, 'DisplayName');
+
+        $this->assertSame('DisplayName', $this->twig->render('template.html.twig', ['user' => $user]));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFullNameIfDisplayNameIsEmpty()
+    {
+        $extension = new UserExtension($this->tokenStorage, []);
+        $this->twig->addExtension($extension);
+        $this->twigLoader->setTemplate('template.html.twig', '{{ user|display_name }}');
+
+        $user = new User(null, null, 'John', 'Smith');
+
+        $this->assertSame('John Smith', $this->twig->render('template.html.twig', ['user' => $user]));
+    }
+
+    /**
      * @param string $displayName
      * @param string $loginName
      *
