@@ -10,7 +10,7 @@
         {% endif %}
 
         <div class="user-name">
-            {% if user.extraAttributes|length > 0 %}
+            {% if group.semiFormal and user.extraAttributes|length > 0 %}
                 <a class="btn-circular toggle-extra-user-info" href="#"><span
                         class="fa fa-angle-double-down"></span></a>
             {% endif %}
