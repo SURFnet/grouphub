@@ -14,7 +14,7 @@
                 <a class="btn-circular toggle-extra-user-info" href="#"><span
                         class="fa fa-angle-double-down"></span></a>
             {% endif %}
-            <p>{{ user.displayName }}</p>
+            <p>{{ user|display_name }}</p>
             <span>{{ user.emailAddress }}&nbsp;</span>
 
             {% if group.semiFormal %}

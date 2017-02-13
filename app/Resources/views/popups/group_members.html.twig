@@ -2,7 +2,7 @@
 {% for member in members %}
     <li class="user-{{ member.user.id }}" data-user-id="{{ member.user.id }}">
         <div>
-            <p>{{ member.user.name }}</p>
+            <p>{{ member.user|display_name }}</p>
             <span>{{ member.user.emailAddress }}&nbsp;</span>
         </div>
 
