@@ -14,7 +14,7 @@
             <p class="date_and_owner">
                 {{ group.timeStamp|localizeddate('medium', 'none') }}
                 {% if type != 'my-owner' and type != 'org-owner' and group.ownerId > 2 %}
-                    - {{ group.owner.name }}
+                    - {{ group.owner|display_name }}
                 {% endif %}
             </p>
 

@@ -11,7 +11,7 @@
             <p class="description">{{ group.description }}&nbsp;</p>
             <p class="date_and_owner">{{ group.timeStamp|localizeddate('medium', 'none') }}
                 {% if group.ownerId > 2 %}
-                    - {{ group.owner.name }}
+                    - {{ group.owner|display_name }}
                 {% endif %}
             </p>
 
