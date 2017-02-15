@@ -1413,7 +1413,7 @@ footer a {
     font-size: 12px;
     margin-top: 4px; }
 /* line 248, _edit_group.scss */
-.edit_group_container ul.member_collection li a {
+.edit_group_container ul.member_collection li .actions a {
     float: right;
 }
 
@@ -1550,6 +1550,15 @@ li.spinner a {
     margin-bottom: 4px;
 }
 
+.user-expand, .user-avatar {
+    min-height: 10px;
+}
+
+.user-expand {
+    float: left;
+    width: 30px;
+}
+
 .user-avatar {
     float: left;
     width: 45px;
@@ -1561,7 +1570,11 @@ li.spinner a {
 
 .actions {
     float: right;
-    width: 55%;
+    width: 310px;
+}
+
+.actions select {
+    width: 200px;
 }
 
 .header ul:first-child a {

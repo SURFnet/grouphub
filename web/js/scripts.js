@@ -495,7 +495,7 @@ var grouphub = (function ($) {
         });
 
         $editGroup.on('click', '.toggle-extra-user-info', function () {
-            var $extraGroupInfo = $(this).parent().find('.extra-attributes');
+            var $extraGroupInfo = $(this).closest('li').find('.extra-attributes');
             var $span = $(this).find('span');
 
             $extraGroupInfo.toggleClass('hidden');
