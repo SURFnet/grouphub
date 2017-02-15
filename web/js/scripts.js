@@ -96,13 +96,13 @@ var grouphub = (function ($) {
     };
 
     var getGroupMemberCount = function (groupId) {
-        var $groupMemberCounts = $('.group-' + groupId).find('.member-count');
+        var $groupMemberCounts = $('.group-' + groupId).find('.count');
 
         return parseInt($groupMemberCounts.first().text(), 10);
     };
 
     var updateGroupMemberCounters = function (groupId, newCount) {
-        var $groupMemberCounts = $('.group-' + groupId).find('.member-count');
+        var $groupMemberCounts = $('.group-' + groupId).find('.count');
 
         $groupMemberCounts.each(function () {
             $(this).html(newCount);
