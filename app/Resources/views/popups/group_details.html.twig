@@ -46,10 +46,8 @@
 
         <ul class="tabs">
             <li>
-                {% if is_granted('VIEW_MEMBERS', group) %}
-                    <a id="group_members" href="#" class="active">
-                        {{ 'Group members'|trans }} <span class="member-count">({{ group.userCount }})</span> </a>
-                {% endif %}
+                <a id="group_members" href="#" class="active">
+                    {{ 'Group members'|trans }} <span class="member-count">({{ group.userCount }})</span> </a>
             </li>
             <li>
                 <a id="group_in_group" href="#" data-group-count="{{ group.groupCount }}">
@@ -72,8 +70,8 @@
         </ul>
 
         <div>
-            {% if is_granted('VIEW_MEMBERS', group) %}
-                <div id="group_members_tab">
+            <div id="group_members_tab">
+                {% if is_granted('VIEW_MEMBERS', group) %}
                     <div class="search_container">
                         <div class="input_container">
                             <i class="fa fa-search"></i>
@@ -87,8 +85,10 @@
                         data-url="{{ path('search_group_members', {'id': group.id}) }}">
                         {% include(':popups:group_members.html.twig') %}
                     </ul>
-                </div>
-            {% endif %}
+                {% else %}
+                    <div class="access-denied"><i class="fa fa-lock"></i></div>
+                {% endif %}
+            </div>
 
         <div id="group_in_group_tab" class="hidden">
             <ul class="member_collection" data-url="{{ path('search_group_member_groups', {'id': group.id}) }}">
