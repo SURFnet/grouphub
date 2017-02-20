@@ -32,7 +32,7 @@
                 <a class="button_join {{ color }}" href="#">
                     <span>{{ 'PROSPECT'|trans }}</span>
                 </a>
-            {% elseif group.type == 'grouphub' %}
+            {% elseif group.type == 'grouphub' and attribute(memberships, group.id) is defined and attribute(memberships, group.id).role != 'owner'%}
                 <a class="button_join {{ color }}" href="#" data-name="{{ group.name }}"
                    data-url="{{ path('my_membership_add', {'groupId': group.id}) }}">
                     <span>{{ 'JOIN'|trans }}</span>
