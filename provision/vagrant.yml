@@ -58,7 +58,7 @@
       apt_key: url=http://www.dotdeb.org/dotdeb.gpg
 
     - name: Install nodejs source
-      shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
+      shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
   tasks:
     - name: Install common packages
