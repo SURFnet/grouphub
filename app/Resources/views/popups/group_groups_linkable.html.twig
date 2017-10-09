@@ -5,10 +5,13 @@
             <p>{{ groupToAdd.name }}</p>
         </div>
 
+
+        <div class="actions">
         <a href="#" class="add rounded"
            data-url="{{ path('group_membership_add', {groupId: group.id, groupToAddId: groupToAdd.id}) }}">
             <i class="fa fa-plus"></i>
         </a>
+        </div>
 
     </li>
 {% endfor %}
