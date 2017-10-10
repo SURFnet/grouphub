@@ -399,7 +399,7 @@ var grouphub = (function ($) {
             $tabContent.removeClass('hidden');
             $tab.addClass('active');
 
-            initScroll($tabContent.attr('id') + ' ul');
+            initScroll('#' + $tabContent.attr('id') + ' ul');
 
             return false;
         }
