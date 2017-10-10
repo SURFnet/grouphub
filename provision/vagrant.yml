@@ -58,7 +58,7 @@
       apt_key: url=http://www.dotdeb.org/dotdeb.gpg
 
     - name: Install nodejs source
-      shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
+      shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
   tasks:
     - name: Install common packages
@@ -93,9 +93,6 @@
 
     - name: Enable fastcgi module
       command: a2enmod fastcgi
-
-    - name: Disable php5 module
-      action: apache2_module state=absent name=php5
 
     - name: Enable virtualhost
       command: a2ensite {{ sitename }}
