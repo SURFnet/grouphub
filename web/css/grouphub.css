@@ -1411,7 +1411,8 @@ footer a {
     background-color: #eaeaea;
     padding: 4px;
     font-size: 12px;
-    margin-top: 4px; }
+    margin-top: 0;
+}
 /* line 248, _edit_group.scss */
 .edit_group_container ul.member_collection li .actions a {
     float: right;
@@ -1576,6 +1577,12 @@ li.spinner a {
 .actions select {
     width: 200px;
 }
+
+/* Make sure that the actions are alligned nicely */
+.edit_group_container ul.member_collection li.user .actions {
+    padding-top: 10px
+}
+
 
 .header ul:first-child a {
     height: 35px;

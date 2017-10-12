@@ -122,6 +122,21 @@ var grouphub = (function ($) {
         });
     };
 
+    var updateGroupMembers = function () {
+        var $groups = $('.edit_group #group_members_tab ul.member_collection');
+
+        $.get($groups.data('url'), function (data) {
+            $groups.html(data);
+
+            var total = $('#group_members_tab div.jscroll-inner').data('total');
+            if (typeof total === 'undefined') {
+                return;
+            }
+            $('#group_members .member-count').text('(' + total + ')');
+        });
+    };
+
+
     var updateGroupsInGroup = function () {
         var $groups = $('.edit_group #group_in_group_tab ul.member_collection');
 
@@ -426,9 +441,7 @@ var grouphub = (function ($) {
                         userEditMode(id, userId);
                     });
 
-                    updateGroups();
-                    updateGroupsInGroup();
-                    incrementGroupInGroupCount();
+                    updateGroupMembers();
 
                     $member.hide();
 
