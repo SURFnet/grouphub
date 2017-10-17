@@ -1,4 +1,4 @@
-<div class="jscroll-inner">
+<div class="jscroll-inner" data-total="{{ memberGroups.totalCount }}">
 {% for memberGroup in memberGroups %}
     <li class="memberGroup-{{ memberGroup.memberGroup.id }}" data-memberGroup-id="{{ memberGroup.memberGroup.id }}">
         <div>

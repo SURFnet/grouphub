@@ -94,18 +94,13 @@ class MembershipController extends Controller
         /** @var MembershipManager $membershipManager */
         $membershipManager = $this->get('app.membership_manager');
 
-        $findMemberShips = function () use ($membershipManager, $groupToCopyMembersFromId) {
-            return $membershipManager
-                ->findGroupMemberships($groupToCopyMembersFromId, null, 0, PHP_INT_MAX)
-                ->toArray();
-        };
-
-        $mapMembersToUserIds = function (Membership $membership) {
-            return $membership->getUser()->getId();
-        };
+        $groupMemberships = $membershipManager
+          ->findGroupMemberships($groupToCopyMembersFromId, null, 0, PHP_INT_MAX)
+          ->toArray();
 
         $newMemberUserIds = [];
-        foreach (array_map($mapMembersToUserIds, $findMemberShips()) as $userId) {
+        foreach ($groupMemberships as $membership) {
+            $userId = $membership->getUser()->getId();
             $membershipManager->addMembership($groupId, $userId);
             $newMemberUserIds[] = $userId;
         };
