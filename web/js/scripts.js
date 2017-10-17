@@ -139,7 +139,8 @@ var grouphub = (function ($) {
             if (typeof total === 'undefined') {
                 return;
             }
-            $('#group_in_group .group-count').data('group-count', total).text('(' + total + ')');
+            $('#group_in_group').data('group-count', total);
+            $('#group_in_group .group-count').text('(' + total + ')');
         });
     };
 
