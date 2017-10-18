@@ -1,6 +1,6 @@
-<div class="jscroll-inner">
+<div class="jscroll-inner" data-total="{{ members.totalCount }}">
 {% for member in members %}
-    <li class="user-{{ member.user.id }}" data-user-id="{{ member.user.id }}">
+    <li class="user user-{{ member.user.id }}" data-user-id="{{ member.user.id }}">
         <div>
             <p>{{ member.user|display_name }}</p>
             <span>{{ member.user.emailAddress }}&nbsp;</span>

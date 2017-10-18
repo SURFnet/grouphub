@@ -448,11 +448,7 @@ class ApiClient
     {
         $data = $this->encode(['user' => $this->normalizer->normalizeUser($user)]);
 
-        try {
-            $this->guzzle->post('users', ['body' => $data]);
-        } catch (ClientException $e) {
-            throw new \RuntimeException('Failed adding User to API: ' . $e->getResponse()->getBody());
-        }
+        $this->guzzle->post('users', ['body' => $data]);
     }
 
     /**

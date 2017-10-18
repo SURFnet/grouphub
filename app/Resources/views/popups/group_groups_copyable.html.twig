@@ -5,11 +5,12 @@
             <p>{{ groupToCopyMembersFrom.name }}</p>
         </div>
 
-        <a href="#" class="add rounded"
-           data-url="{{ path('membership_copy_members_from_group', {groupId: group.id, groupToCopyMembersFromId: groupToCopyMembersFrom.id}) }}">
-            <i class="fa fa-copy"></i>
-        </a>
-
+        <div class="actions">
+            <a href="#" class="add rounded"
+               data-url="{{ path('membership_copy_members_from_group', {groupId: group.id, groupToCopyMembersFromId: groupToCopyMembersFrom.id}) }}">
+                <i class="fa fa-copy"></i>
+            </a>
+        </div>
     </li>
 {% endfor %}
 
