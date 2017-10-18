@@ -79,14 +79,6 @@ var grouphub = (function ($) {
         updateGroupMemberCounters(groupId, newMemberCount);
     };
 
-    var incrementGroupInGroupCount = function () {
-        var $tab = $('#group_in_group');
-        var newCount = $tab.data('group-count') + 1;
-
-        $tab.data('group-count', newCount);
-        $tab.find('.group-count').text('(' + newCount + ')');
-    };
-
     var decrementGroupInGroupCount = function () {
         var $tab = $('#group_in_group');
         var newCount = $tab.data('group-count') - 1;
@@ -122,11 +114,33 @@ var grouphub = (function ($) {
         });
     };
 
+    var updateGroupMembers = function () {
+        var $groups = $('.edit_group #group_members_tab ul.member_collection');
+
+        $.get($groups.data('url'), function (data) {
+            $groups.html(data);
+
+            var total = $('#group_members_tab div.jscroll-inner').data('total');
+            if (typeof total === 'undefined') {
+                return;
+            }
+            $('#group_members .member-count').data('member-count', total).text('(' + total + ')');
+        });
+    };
+
+
     var updateGroupsInGroup = function () {
         var $groups = $('.edit_group #group_in_group_tab ul.member_collection');
 
         $.get($groups.data('url'), function (data) {
             $groups.html(data);
+
+            var total = $('#group_in_group_tab div.jscroll-inner').data('total');
+            if (typeof total === 'undefined') {
+                return;
+            }
+            $('#group_in_group').data('group-count', total);
+            $('#group_in_group .group-count').text('(' + total + ')');
         });
     };
 
@@ -399,7 +413,7 @@ var grouphub = (function ($) {
             $tabContent.removeClass('hidden');
             $tab.addClass('active');
 
-            initScroll($tabContent.attr('id') + ' ul');
+            initScroll('#' + $tabContent.attr('id') + ' ul');
 
             return false;
         }
@@ -427,8 +441,8 @@ var grouphub = (function ($) {
                     });
 
                     updateGroups();
+                    updateGroupMembers();
                     updateGroupsInGroup();
-                    incrementGroupInGroupCount();
 
                     $member.hide();
 

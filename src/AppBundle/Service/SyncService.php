@@ -8,6 +8,7 @@ use AppBundle\Model\Group;
 use AppBundle\Model\Membership;
 use AppBundle\Model\User;
 use AppBundle\SynchronizableSequence;
+use GuzzleHttp\Exception\ClientException;
 use Monolog\Logger;
 
 /**
@@ -93,30 +94,9 @@ class SyncService
 
         $index = $grouphubUsers->synchronize($ldapUsers, true);
 
-        $this->logger->info(' - Going to add ' . count($grouphubUsers->getAddedElements()) . ' users to Grouphub...');
-        foreach ($grouphubUsers->getAddedElements() as $element) {
-            $this->logger->info(' -- Adding ' . $element->getReference());
-            /** @var User $element */
-            $this->api->addUser($element);
-        }
-
-        $this->logger->info(
-            ' - Going to update ' . count($grouphubUsers->getUpdatedElements()) . ' users in Grouphub...'
-        );
-        foreach ($grouphubUsers->getUpdatedElements() as $element) {
-            $this->logger->info(' -- Updating ' . $element['new']->getReference());
-            /** @var User[] $element */
-            $this->api->updateUser($element['old']->getId(), $element['new']);
-        }
-
-        $this->logger->info(
-            ' - Going to remove ' . count($grouphubUsers->getRemovedElements()) . ' users from Grouphub...'
-        );
-        foreach ($grouphubUsers->getRemovedElements() as $element) {
-            $this->logger->info(' -- Removing ' . $element->getReference());
-            /** @var User $element */
-            $this->api->removeUser($element->getId());
-        }
+        $this->addUsers($grouphubUsers);
+        $this->updateUsers($grouphubUsers);
+        $this->removeUsers($grouphubUsers);
 
         $this->syncUsers($offset + $index + 1);
     }
@@ -417,5 +397,76 @@ class SyncService
         }
 
         $this->syncGrouphubGroupAdmins($group, $offset + $index + 1);
+    }
+
+    /**
+     * @param SynchronizableSequence $grouphubUsers
+     */
+    private function addUsers($grouphubUsers)
+    {
+        $this->logger->info(
+            ' - Going to add ' . count(
+                $grouphubUsers->getAddedElements()
+            ) . ' users to Grouphub...'
+        );
+        foreach ($grouphubUsers->getAddedElements() as $element) {
+            $this->logger->info(' -- Adding ' . $element->getReference());
+
+            try {
+                /** @var User $element */
+                $this->api->addUser($element);
+            } catch (ClientException $exception) {
+                $this->logger->error(
+                    ' -- Validation failed for user ' . $element->getReference()
+                );
+            }
+        }
+    }
+
+    /**
+     * @param SynchronizableSequence $grouphubUsers
+     */
+    private function updateUsers($grouphubUsers)
+    {
+        $this->logger->info(
+            ' - Going to update ' . count(
+                $grouphubUsers->getUpdatedElements()
+            ) . ' users in Grouphub...'
+        );
+        foreach ($grouphubUsers->getUpdatedElements() as $element) {
+            $this->logger->info(
+                ' -- Updating ' . $element['new']->getReference()
+            );
+            /** @var User[] $element */
+
+            try {
+                $this->api->updateUser(
+                    $element['old']->getId(),
+                    $element['new']
+                );
+            } catch (ClientException $exception) {
+                $this->logger->error(
+                    ' -- Validation failed for user ' . $element['new']->getReference()
+                );
+                continue;
+            }
+        }
+    }
+
+    /**
+     * @param SynchronizableSequence $grouphubUsers
+     */
+    private function removeUsers($grouphubUsers)
+    {
+        $this->logger->info(
+            ' - Going to remove ' . count(
+                $grouphubUsers->getRemovedElements()
+            ) . ' users from Grouphub...'
+        );
+        foreach ($grouphubUsers->getRemovedElements() as $element) {
+            $this->logger->info(' -- Removing ' . $element->getReference());
+            /** @var User $element */
+            $this->api->removeUser($element->getId());
+        }
     }
 }

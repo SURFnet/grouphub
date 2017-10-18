@@ -68,19 +68,12 @@ class IndexController extends Controller
             throw new BadRequestHttpException();
         }
 
-        $groups = $this->getGroups($request->cookies, $query, $sort, $offset, $limit, $type);
-
-        $pluckCollection = function ($value) {
-            if (isset($value['collection'])) {
-                return $value['collection'];
-            }
-
-            return $value;
-        };
+        $groups =  $this->getGroups($request->cookies, $query, $sort, $offset, $limit, $type);
+        $groups['myGroups'] =  $this->restructureMyGroups($type, $groups['myGroups']);
 
         return $this->render(
             $this->getTemplate($type),
-            is_null($type) ? $groups: array_map($pluckCollection, $groups)
+            $groups
         );
     }
 
@@ -109,7 +102,8 @@ class IndexController extends Controller
         $organisationGroups = new Collection();
         $organisationGroupsSortOrder = $this->createSortOrder($this->findSignedOrderInCookie($cookies, 'organisation_groups'), $signedOrder);
         if (!empty($searchQuery) && ($type === null || $type === 'search' || $type === 'results')) {
-            $organisationGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $organisationGroupsSortOrder);
+            $searchSortOrder = SortOrder::createFromSignedOrder($signedOrder);
+            $organisationGroups = $groupManager->findGroups($searchQuery, null, $offset, $limit, $searchSortOrder);
         }
 
         $memberships = $this->get('app.membership_manager')->findUserMembershipOfGroups(
@@ -273,5 +267,30 @@ class IndexController extends Controller
     private function findSignedOrderInCookie(ParameterBag $cookies, $groupName)
     {
         return json_decode($cookies->get(sprintf('group_%s_sort_order', $groupName)));
+    }
+
+    /**
+     * Re-structure myGroups to support the different partial templates
+     *
+     * @param string $type
+     * @param array $myGroups
+     *
+     * @return mixed
+     */
+    private function restructureMyGroups($type, $myGroups)
+    {
+        $partialTypes = [
+          'my-owner',
+          'my-admin',
+          'my-member',
+          'org-owner',
+          'org-admin',
+          'org-member',
+        ];
+
+        if (in_array($type, $partialTypes)) {
+            return $myGroups['collection'];
+        }
+        return $myGroups;
     }
 }

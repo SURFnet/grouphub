@@ -196,7 +196,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/group/{id}/groups/copyable", name="search_group_groups_copyable")
+     * @Route("/{_locale}/group/{id}/groups/copyable", name="group_groups_copyable")
      * @Method("GET")
      *
      * @param int $id

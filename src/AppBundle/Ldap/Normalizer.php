@@ -65,7 +65,7 @@ class Normalizer
                 $this->getUserAttributeIfExists($user, 'displayName', ''),
                 $user[$this->userMapping->getLdapAttributeName('loginName')][0],
                 $this->getUserAttributeIfExists($user, 'email', null),
-                $this->getUserAttributeIfExists($user, 'avatarUrl', null),
+                $this->getUserAttributeIfExists($user, 'avatarUrl', ''),
                 $extraAttributes
             );
         }
