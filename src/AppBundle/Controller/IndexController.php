@@ -68,7 +68,8 @@ class IndexController extends Controller
             throw new BadRequestHttpException();
         }
 
-        $groups = $this->getGroups($request->cookies, $query, $sort, $offset, $limit, $type);
+        $groups =  $this->getGroups($request->cookies, $query, $sort, $offset, $limit, $type);
+        $groups['myGroups'] =  $this->restructureMyGroups($type, $groups['myGroups']);
 
         return $this->render(
             $this->getTemplate($type),
@@ -266,5 +267,30 @@ class IndexController extends Controller
     private function findSignedOrderInCookie(ParameterBag $cookies, $groupName)
     {
         return json_decode($cookies->get(sprintf('group_%s_sort_order', $groupName)));
+    }
+
+    /**
+     * Re-structure myGroups to support the different partial templates
+     *
+     * @param string $type
+     * @param array $myGroups
+     *
+     * @return mixed
+     */
+    private function restructureMyGroups($type, $myGroups)
+    {
+        $partialTypes = [
+          'my-owner',
+          'my-admin',
+          'my-member',
+          'org-owner',
+          'org-admin',
+          'org-member',
+        ];
+
+        if (in_array($type, $partialTypes)) {
+            return $myGroups['collection'];
+        }
+        return $myGroups;
     }
 }
