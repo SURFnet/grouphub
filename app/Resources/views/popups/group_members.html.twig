@@ -1,9 +1,34 @@
 <div class="jscroll-inner" data-total="{{ members.totalCount }}">
 {% for member in members %}
     <li class="user user-{{ member.user.id }}" data-user-id="{{ member.user.id }}">
-        <div>
+
+        <div class="user-expand">
+            {% if group.semiFormal and member.user.extraAttributes|length > 0 %}
+                <a class="btn-circular toggle-extra-user-info" href="#"><span
+                            class="fa fa-angle-double-down"></span></a>
+            {% endif %}
+        </div>
+
+        {% if group.semiFormal %}
+            <div class="user-avatar">
+                {% if member.user.avatarUrl is not empty %}
+                    <img class="thumbnail" src="{{ member.user.avatarUrl }}" />
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="user-name">
             <p>{{ member.user|display_name }}</p>
             <span>{{ member.user.emailAddress }}&nbsp;</span>
+
+            {% if group.semiFormal %}
+                <ul class="extra-attributes hidden">
+                    {% for key, value in member.user.extraAttributes %}
+                        <li>{{ render_extra_user_attribute(key, value) }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
         </div>
 
         <div class="actions">
