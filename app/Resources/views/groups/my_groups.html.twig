@@ -4,8 +4,6 @@
     <section class="background_blue sort">
         <a id="close_my_groups" href="#" class="close"><i class="fa fa-times"></i></a>
 
-        {% include ':groups:_sort.html.twig' with {'color': 'blue', 'sort': myGroups.sort} %}
-
         <div>
             <h3>{{ attribute(_context, 'my_groups_column_title_' ~ app.request.locale)|upper }}</h3>
             <p>{{ 'You own or are a member of the group'|trans }}</p>
